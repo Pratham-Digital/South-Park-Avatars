@@ -6,29 +6,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MenuActivity extends Activity{
-
+public class MenuActivity extends Activity {
     private Button createClothing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-        createClothing=(Button)findViewById(R.id.createClothing);
-        createClothing.setOnClickListener(new View.OnClickListener()
-                              {
-                                  public void onClick(View v)
-                                  {
-                                      Intent i=new Intent(getApplicationContext(),ClothTypePickerActivity.class);
-                                      startActivity(i);
-                                  }
-                              }
-        );
-
-
     }
 
+    public void onPlayButtonClick(View view) {
+        Intent intent = new Intent(this, PlayActivity.class);
+        startActivity(intent);
+    }
 
-
-
+    public void onCreateClothingButtonClick(View view) {
+        Intent intent = new Intent(this, ClothTypePickerActivity.class);
+        startActivity(intent);
+    }
 }
