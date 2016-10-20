@@ -7,10 +7,13 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+
+         >
 
 
-        <activity android:name=".MenuActivity" >
+        <activity android:name=".MenuActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +21,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ClothTypePicker">
+        <activity android:name=".ClothTypePickerActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".Drawing">
+        <activity android:name=".DrawingActivity"
+            android:theme="@style/Theme.AppCompat.Light">
 
         </activity>
 

@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 /**
  * Created by peter on 2016. 10. 19..
  */
 
-public class ClothTypePicker extends Activity {
+public class ClothTypePickerActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +20,7 @@ public class ClothTypePicker extends Activity {
 
     public void ButtonOnClick(View v){
 
-        Intent intent=new Intent(getApplicationContext(),Drawing.class);
+        Intent intent=new Intent(getApplicationContext(),DrawingActivity.class);
 
 
         switch(v.getId()){
