@@ -1,6 +1,5 @@
 package com.rpg.southparkavatars;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,30 +7,28 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-
 import petrov.kristiyan.colorpicker.ColorPicker;
 
-
-
-
-
-public class DrawingActivity extends Activity{
-
+public class DrawingActivity extends AppCompatActivity {
     private Integer globalColor = Color.BLACK;
-    DrawingView dv ;
+    private DrawingView dv;
     private Paint mPaint;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawing_activity);
+
         LinearLayout paintingArea = (LinearLayout) findViewById(R.id.paint);
         dv = new DrawingView(paintingArea.getContext());
+
         paintingArea.addView(dv);
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -40,7 +37,6 @@ public class DrawingActivity extends Activity{
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(6);
-
     }
 
     public Integer getGlobalColor() {
@@ -70,11 +66,9 @@ public class DrawingActivity extends Activity{
         });
     }
 
-
-
     public class DrawingView extends View {
-        private Bitmap  mBitmap;
-        private Canvas  mCanvas;
+        private Bitmap mBitmap;
+        private Canvas mCanvas;
         private Path mPath;
         private Paint mBitmapPaint;
         Context context;
@@ -98,8 +92,8 @@ public class DrawingActivity extends Activity{
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
-            canvas.drawPath( mPath,  mPaint);
+            canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+            canvas.drawPath(mPath, mPaint);
         }
 
         private float mX, mY;
@@ -116,17 +110,16 @@ public class DrawingActivity extends Activity{
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
                 mY = y;
-
             }
         }
 
         private void touch_up() {
             mPath.lineTo(mX, mY);
             // commit the path to our offscreen
-            mCanvas.drawPath(mPath,  mPaint);
+            mCanvas.drawPath(mPath, mPaint);
             // kill this so we don't double draw
             mPath.reset();
         }
@@ -154,12 +147,8 @@ public class DrawingActivity extends Activity{
         }
     }
 
-
-    public void fillColor(View v){
+    public void fillColor(View v) {
         ImageView background = (ImageView) findViewById(R.id.color);
         background.setBackgroundColor(globalColor);
     }
-
-
-
 }
