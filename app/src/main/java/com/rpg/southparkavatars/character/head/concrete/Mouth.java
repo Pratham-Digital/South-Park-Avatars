@@ -10,4 +10,8 @@ public class Mouth extends HeadFeature {
     public Mouth(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }

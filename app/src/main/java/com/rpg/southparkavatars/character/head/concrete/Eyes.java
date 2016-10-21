@@ -10,4 +10,8 @@ public class Eyes extends HeadFeature {
     public Eyes(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }

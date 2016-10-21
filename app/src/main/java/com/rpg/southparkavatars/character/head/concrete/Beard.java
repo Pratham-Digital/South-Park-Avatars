@@ -10,4 +10,8 @@ public class Beard extends HeadFeature {
     public Beard(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }

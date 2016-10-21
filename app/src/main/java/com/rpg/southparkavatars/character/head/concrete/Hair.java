@@ -10,4 +10,8 @@ public class Hair extends HeadFeature {
     public Hair(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }

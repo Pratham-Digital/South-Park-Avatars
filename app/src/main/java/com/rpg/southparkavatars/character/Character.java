@@ -8,16 +8,16 @@ import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
 public class Character {
-    public static final Character instance = new Character();
+    private static final Character instance = new Character();
 
     private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
     private Bitmap skinColorBitmap;
 
-    CharacterChangedDelegate<Bitmap> skinColorDelegate;
-    CharacterChangedDelegate<Clothing> clothingDelegate;
-    CharacterChangedDelegate<HeadFeature> headFeatureDelegate;
+    private CharacterChangedDelegate<Bitmap> skinColorDelegate;
+    private CharacterChangedDelegate<Clothing> clothingDelegate;
+    private CharacterChangedDelegate<HeadFeature> headFeatureDelegate;
 
     private Character() {
     }

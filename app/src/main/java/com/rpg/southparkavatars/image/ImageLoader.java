@@ -49,22 +49,26 @@ abstract public class ImageLoader {
                     public void onClick(View v) {
                         if (path.startsWith("clothing")) {
                             String name = path.split("/")[1];
-                            Clothing clothing = null;
+                            Clothing clothing;
 
-                            if (name.equals("accessory_1")) {
-                                clothing = new BackAccessory(0, bitmap);
-                            } else if (name.equals("accessory_2")) {
-                                clothing = new HandAccessory(0, bitmap);
-                            } else {
-                                name = "com.rpg.southparkavatars.character.clothing.concrete." + StringUtils.capitalize(name);
+                            switch (name) {
+                                case "accessory_1":
+                                    clothing = new BackAccessory(0, bitmap);
+                                    break;
+                                case "accessory_2":
+                                    clothing = new HandAccessory(0, bitmap);
+                                    break;
+                                default:
+                                    name = "com.rpg.southparkavatars.character.clothing.concrete." + StringUtils.capitalize(name);
 
-                                clothing = (Clothing) createInstance(name, 0, bitmap);
+                                    clothing = (Clothing) createInstance(name, 0, bitmap);
+                                    break;
                             }
-                            character.addClothing(clothing);
 
+                            character.addClothing(clothing);
                         } else if (path.startsWith("head")) {
                             String name = path.split("/")[1];
-                            name = StringUtils.capitalize(name);
+                            name = "com.rpg.southparkavatars.character.head.concrete." + StringUtils.capitalize(name);
 
                             HeadFeature headFeature = (HeadFeature) createInstance(name, bitmap);
                             if (headFeature != null) {
