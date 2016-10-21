@@ -69,17 +69,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void initFragments() {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        for (Map.Entry<String, Fragment> entry : fragmentMap.entrySet()) {
-            Fragment value = entry.getValue();
-            fragmentTransaction
-                    .add(R.id.play_fragment_container, value)
-                    .hide(value);
-        }
-
-        fragmentTransaction.show(fragmentMap.get("skin"));
-        fragmentTransaction.commit();
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.play_fragment_container, fragmentMap.get("skin"))
+                .show(fragmentMap.get("skin"))
+                .commit();
 
         currentFragment = fragmentMap.get("skin");
     }
@@ -94,8 +88,11 @@ public class PlayActivity extends AppCompatActivity {
 
         if (currentFragment != newFragment) {
             fragmentManager.beginTransaction()
-                    .show(newFragment)
-                    .hide(currentFragment)
+//                    .hide(currentFragment)
+//                    .remove(currentFragment)
+//                    .add(R.id.play_fragment_container, newFragment)
+//                    .show(newFragment)
+                    .replace(R.id.play_fragment_container, newFragment)
                     .commit();
 
             currentFragment = newFragment;

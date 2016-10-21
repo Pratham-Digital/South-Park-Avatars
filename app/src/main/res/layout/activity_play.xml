@@ -226,12 +226,12 @@
                     android:onClick="onButtonClick"
                     android:text="Accessory 2" />
 
-                <Button
-                    android:id="@+id/background_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onButtonClick"
-                    android:text="Background" />
+                <!--<Button-->
+                    <!--android:id="@+id/background_tab_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:onClick="onButtonClick"-->
+                    <!--android:text="Background" />-->
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
