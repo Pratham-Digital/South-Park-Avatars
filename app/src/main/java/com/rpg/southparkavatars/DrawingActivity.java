@@ -1,29 +1,37 @@
 package com.rpg.southparkavatars;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class DrawingActivity extends AppCompatActivity {
+    private Integer state = 0;
     private Integer globalColor = Color.BLACK;
     private DrawingView dv;
     private Paint mPaint;
+    private final Point p1 = new Point();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawing_activity);
 
+        ImageView sablon = (ImageView)findViewById(R.id.sablon);
+        ImageView drawTitle = (ImageView)findViewById(R.id.drawTitle);
         LinearLayout paintingArea = (LinearLayout) findViewById(R.id.paint);
         dv = new DrawingView(paintingArea.getContext());
 
@@ -37,7 +45,49 @@ public class DrawingActivity extends AppCompatActivity {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(6);
+
+        Context context = getApplicationContext();
+        CharSequence toastText = "";
+        int duration = Toast.LENGTH_LONG;
+
+        Intent intent = getIntent();
+        String cloth_type = intent.getStringExtra("cloth-type");
+
+        switch(cloth_type){
+
+            case "Shirt":
+                toastText = "Draw a nice shirt!";
+                sablon.setImageResource(R.drawable.shirt_frame);
+                drawTitle.setImageResource(R.drawable.draw_shirt);
+                break;
+            case "Pants":
+                toastText = "Draw a nice pant!";
+                sablon.setImageResource(R.drawable.pants_frame);
+                drawTitle.setImageResource(R.drawable.draw_pant);
+                break;
+            case "Hat":
+                toastText = "Draw a nice hat!";
+                sablon.setImageResource(R.drawable.hat_frame);
+                drawTitle.setImageResource(R.drawable.draw_hat);
+                break;
+        }
+
+
+
+        Toast toast = Toast.makeText(context, toastText, duration);
+        toast.show();
     }
+
+
+
+    public void setState(Integer integer) {
+        this.state = integer;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
 
     public Integer getGlobalColor() {
         return globalColor;
@@ -47,8 +97,8 @@ public class DrawingActivity extends AppCompatActivity {
         this.globalColor = globalColor;
     }
 
-    public void setColor(View v) {
-        ColorPicker colorPicker = new ColorPicker(DrawingActivity.this);
+    public void setFillColor(View v) {
+        ColorPicker colorPicker = new ColorPicker(DrawingActivity.this).setRoundColorButton(true);
         colorPicker.show();
 
         colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
@@ -56,15 +106,34 @@ public class DrawingActivity extends AppCompatActivity {
             public void onChooseColor(int position, int color) {
                 globalColor = color;
                 setGlobalColor(color);
-                mPaint.setColor(globalColor);
+                mPaint.setColor(getGlobalColor());
+                setState(1);
             }
-
             @Override
-            public void onCancel() {
-                // put code
-            }
+            public void onCancel() {}
         });
     }
+
+
+    public void setPenColor(View v) {
+        ColorPicker colorPicker = new ColorPicker(DrawingActivity.this).setRoundColorButton(true);
+        colorPicker.show();
+
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+            @Override
+            public void onChooseColor(int position, int color) {
+                globalColor = color;
+                setGlobalColor(color);
+                mPaint.setColor(getGlobalColor());
+                if (getState() == 1)
+                    setState(0);
+            }
+            @Override
+            public void onCancel() {}
+        });
+    }
+
+
 
     public class DrawingView extends View {
         private Bitmap mBitmap;
@@ -131,24 +200,62 @@ public class DrawingActivity extends AppCompatActivity {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    touch_start(x, y);
-                    invalidate();
+                    if (getState() == 0) {
+                        touch_start(x, y);
+                        invalidate();
+                    } else {
+                        p1.x = (int) x;
+                        p1.y = (int) y;
+                        final int sourceColor = mBitmap.getPixel((int) x, (int) y);
+                        final int targetColor = mPaint.getColor();
+                        new TheTask(mBitmap, p1, sourceColor, targetColor).execute();
+                        invalidate();
+                    }
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    touch_move(x, y);
-                    invalidate();
+                    if (getState() == 0) {
+                        touch_move(x, y);
+                        invalidate();
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
-                    touch_up();
-                    invalidate();
+                    if (getState() == 0) {
+                        touch_up();
+                        invalidate();
+                    }
                     break;
             }
             return true;
         }
-    }
 
-    public void fillColor(View v) {
-        ImageView background = (ImageView) findViewById(R.id.color);
-        background.setBackgroundColor(globalColor);
+
+        class TheTask extends AsyncTask<Void, Integer, Void> {
+
+            Bitmap bmp;
+            Point pt;
+            int replacementColor, targetColor;
+
+            public TheTask(Bitmap bm, Point p, int sc, int tc) {
+                this.bmp = bm;
+                this.pt = p;
+                this.replacementColor = tc;
+                this.targetColor = sc;
+
+            }
+
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                QueueLinearFloodFiller f = new QueueLinearFloodFiller(bmp, targetColor, replacementColor);
+                f.floodFill(pt.x, pt.y);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                invalidate();
+            }
+        }
+
     }
 }
