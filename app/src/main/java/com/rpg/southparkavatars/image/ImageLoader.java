@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rpg.southparkavatars.character.Character;
+import com.rpg.southparkavatars.character.SkinColor;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.concrete.BackAccessory;
 import com.rpg.southparkavatars.character.clothing.concrete.HandAccessory;
@@ -29,17 +30,17 @@ abstract public class ImageLoader {
 
     static public void loadImages(Context context, final String path, ViewGroup viewGroup) {
         assetManager = context.getAssets();
-        List<String> shirtNameList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
         final Character character = Character.getInstance();
 
         try {
-            shirtNameList = Arrays.asList(assetManager.list(path));
+            nameList = Arrays.asList(assetManager.list(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for (String shirtName : shirtNameList) {
-            try (InputStream iStream = assetManager.open(path + "/" + shirtName)) {
+        for (final String itemName : nameList) {
+            try (InputStream iStream = assetManager.open(path + "/" + itemName)) {
                 final ImageView image = new ImageView(context);
                 final Bitmap bitmap = BitmapFactory.decodeStream(iStream);
 
@@ -75,7 +76,21 @@ abstract public class ImageLoader {
                                 character.addHeadFeature(headFeature);
                             }
                         } else if (path.equals("skin_color")) {
-                            character.setSkinColorBitmap(bitmap);
+                            SkinColor color;
+
+                            if (itemName.startsWith("asian")) {
+                                color = SkinColor.ASIAN;
+                            } else if (itemName.startsWith("black")) {
+                                color = SkinColor.BLACK;
+                            } else if (itemName.startsWith("latin")) {
+                                color = SkinColor.LATIN;
+                            } else if (itemName.startsWith("white")) {
+                                color = SkinColor.WHITE;
+                            } else {
+                                color = SkinColor.JERSEY;
+                            }
+
+                            character.setSkinColorBitmap(bitmap, color);
                         }
                     }
                 });

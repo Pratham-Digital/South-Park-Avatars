@@ -1,9 +1,10 @@
 package com.rpg.southparkavatars.character.clothing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class CompositeClothing extends Clothing {
+public class CompositeClothing extends Clothing implements Iterable<Clothing> {
     private List<Clothing> clothes = new ArrayList<>();
 
     public CompositeClothing() {
@@ -24,5 +25,10 @@ public class CompositeClothing extends Clothing {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Iterator<Clothing> iterator() {
+        return clothes.iterator();
     }
 }

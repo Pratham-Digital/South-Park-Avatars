@@ -22,10 +22,10 @@ public class Character {
     private Character() {
     }
 
-    public void setSkinColorBitmap(Bitmap skinColorBitmap) {
+    public void setSkinColorBitmap(Bitmap skinColorBitmap, SkinColor color) {
         this.skinColorBitmap = skinColorBitmap;
 
-        skinColorDelegate.invoke(skinColorBitmap);
+        ((CharacterSkinColorChanged) skinColorDelegate).invokeWithData(skinColorBitmap, color);
     }
 
     public Bitmap getSkinColorBitmap() {
@@ -33,9 +33,26 @@ public class Character {
     }
 
     public void addClothing(Clothing clothing) {
-        clothes.add(clothing);
+        Clothing oldClothing = (Clothing) getSameTypeObjectAlreadyWorn(clothing);
 
+        if (oldClothing != null) {
+            clothes.remove(oldClothing);
+        }
+
+        clothes.add(clothing);
         clothingDelegate.invoke(clothing);
+    }
+
+    private Object getSameTypeObjectAlreadyWorn(Object newClothing) {
+        Class<?> newClass = newClothing.getClass();
+
+        for (Object clothing : clothes) {
+            if (clothing.getClass().equals(newClass)) {
+                return clothing;
+            }
+        }
+
+        return null;
     }
 
     public void removeClothing(Clothing clothing) {
@@ -43,8 +60,13 @@ public class Character {
     }
 
     public void addHeadFeature(HeadFeature headFeature) {
-        headFeatures.add(headFeature);
+        HeadFeature oldHeadFeature = (HeadFeature) getSameTypeObjectAlreadyWorn(headFeature);
 
+        if (oldHeadFeature != null) {
+            headFeatures.remove(oldHeadFeature);
+        }
+
+        headFeatures.add(headFeature);
         headFeatureDelegate.invoke(headFeature);
     }
 
