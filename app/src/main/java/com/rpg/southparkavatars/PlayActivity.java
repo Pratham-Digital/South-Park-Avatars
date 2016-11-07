@@ -2,7 +2,6 @@ package com.rpg.southparkavatars;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,9 +10,9 @@ import android.widget.Button;
 
 import com.google.common.collect.ImmutableMap;
 import com.rpg.southparkavatars.character.Character;
-import com.rpg.southparkavatars.character.CharacterClothingChanged;
-import com.rpg.southparkavatars.character.CharacterHeadFeatureChanged;
-import com.rpg.southparkavatars.character.CharacterSkinColorChanged;
+import com.rpg.southparkavatars.character.ClothingChangedObserver;
+import com.rpg.southparkavatars.character.HeadFeatureChangedObserver;
+import com.rpg.southparkavatars.character.SkinColorChangedObserver;
 import com.rpg.southparkavatars.fragments.AccessoryOneListFragment;
 import com.rpg.southparkavatars.fragments.AccessoryTwoListFragment;
 import com.rpg.southparkavatars.fragments.BackgroundListFragment;
@@ -56,16 +55,16 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        initCharacterDelegate();
+        initCharacterObservers();
         initFragments();
     }
 
-    private void initCharacterDelegate() {
+    private void initCharacterObservers() {
         ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
 
-        character.setSkinColorDelegate(new CharacterSkinColorChanged(root));
-        character.setClothingDelegate(new CharacterClothingChanged(root));
-        character.setHeadFeatureDelegate(new CharacterHeadFeatureChanged(root));
+        character.attach(new ClothingChangedObserver(root));
+        character.attach(new HeadFeatureChangedObserver(root));
+        character.attach(new SkinColorChangedObserver(root));
     }
 
     private void initFragments() {
@@ -88,10 +87,6 @@ public class PlayActivity extends AppCompatActivity {
 
         if (currentFragment != newFragment) {
             fragmentManager.beginTransaction()
-//                    .hide(currentFragment)
-//                    .remove(currentFragment)
-//                    .add(R.id.play_fragment_container, newFragment)
-//                    .show(newFragment)
                     .replace(R.id.play_fragment_container, newFragment)
                     .commit();
 

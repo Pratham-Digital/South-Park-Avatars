@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.SkinColor;
 import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.character.clothing.concrete.BackAccessory;
-import com.rpg.southparkavatars.character.clothing.concrete.HandAccessory;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,15 +24,16 @@ import java.util.Arrays;
 import java.util.List;
 
 abstract public class ImageLoader {
-    private static AssetManager assetManager;
+    private static final String HEAD_PACKAGE = "com.rpg.southparkavatars.character.head.concrete.";
+    private static final String CLOTHING_PACKAGE = "com.rpg.southparkavatars.character.clothing.concrete.";
 
     static public void loadImages(Context context, final String path, ViewGroup viewGroup) {
-        assetManager = context.getAssets();
+        AssetManager assetManager = context.getAssets();
         List<String> nameList = new ArrayList<>();
-        final Character character = Character.getInstance();
 
+        final Character character = Character.getInstance();
         try {
-            nameList = Arrays.asList(assetManager.list(path));
+            nameList.addAll(Arrays.asList(assetManager.list(path)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,46 +49,18 @@ abstract public class ImageLoader {
                     public void onClick(View v) {
                         if (path.startsWith("clothing")) {
                             String name = path.split("/")[1];
-                            Clothing clothing;
+                            name = CLOTHING_PACKAGE + StringUtils.capitalize(name);
 
-                            switch (name) {
-                                case "accessory_1":
-                                    clothing = new BackAccessory(0, bitmap);
-                                    break;
-                                case "accessory_2":
-                                    clothing = new HandAccessory(0, bitmap);
-                                    break;
-                                default:
-                                    name = "com.rpg.southparkavatars.character.clothing.concrete." + StringUtils.capitalize(name);
-
-                                    clothing = (Clothing) createInstance(name, 0, bitmap);
-                                    break;
-                            }
-
+                            Clothing clothing = (Clothing) createInstance(name, 0, bitmap);
                             character.addClothing(clothing);
                         } else if (path.startsWith("head")) {
                             String name = path.split("/")[1];
-                            name = "com.rpg.southparkavatars.character.head.concrete." + StringUtils.capitalize(name);
+                            name = HEAD_PACKAGE + StringUtils.capitalize(name);
 
                             HeadFeature headFeature = (HeadFeature) createInstance(name, bitmap);
-                            if (headFeature != null) {
-                                character.addHeadFeature(headFeature);
-                            }
+                            character.addHeadFeature(headFeature);
                         } else if (path.equals("skin_color")) {
-                            SkinColor color;
-
-                            if (itemName.startsWith("asian")) {
-                                color = SkinColor.ASIAN;
-                            } else if (itemName.startsWith("black")) {
-                                color = SkinColor.BLACK;
-                            } else if (itemName.startsWith("latin")) {
-                                color = SkinColor.LATIN;
-                            } else if (itemName.startsWith("white")) {
-                                color = SkinColor.WHITE;
-                            } else {
-                                color = SkinColor.JERSEY;
-                            }
-
+                            SkinColor color = SkinColor.valueOf(itemName.split("_")[0].toUpperCase());
                             character.setSkinColorBitmap(bitmap, color);
                         }
                     }
@@ -110,7 +81,7 @@ abstract public class ImageLoader {
             Class[] ctorParamsType = new Class[ctorParams.length];
 
             for (int i = 0; i < ctorParams.length; i++) {
-                if (ctorParams[i].getClass().getSimpleName().equals(Integer.class.getSimpleName())) {
+                if (ctorParams[i].getClass().equals(Integer.class)) {
                     ctorParamsType[i] = int.class;
                 } else {
                     ctorParamsType[i] = ctorParams[i].getClass();

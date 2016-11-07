@@ -1,6 +1,9 @@
 package com.rpg.southparkavatars.character.head;
 
-public abstract class HeadFeature {
-    public HeadFeature() {
-    }
+import android.graphics.Bitmap;
+
+public interface HeadFeature {
+    int getrId();
+
+    Bitmap getBitmap();
 }

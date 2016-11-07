@@ -2,30 +2,37 @@ package com.rpg.southparkavatars.character;
 
 import android.graphics.Bitmap;
 
+import com.rpg.southparkavatars.Observer;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
-public class Character {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Character implements Observable {
     private static final Character instance = new Character();
 
     private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
-    private Bitmap skinColorBitmap;
+    private List<Observer> observers = new ArrayList<>();
 
-    private CharacterChangedDelegate<Bitmap> skinColorDelegate;
-    private CharacterChangedDelegate<Clothing> clothingDelegate;
-    private CharacterChangedDelegate<HeadFeature> headFeatureDelegate;
+    private Bitmap skinColorBitmap;
+    private SkinColor skinColor;
 
     private Character() {
     }
 
-    public void setSkinColorBitmap(Bitmap skinColorBitmap, SkinColor color) {
-        this.skinColorBitmap = skinColorBitmap;
+    public void attach(Observer observer) {
+        observers.add(observer);
+    }
 
-        ((CharacterSkinColorChanged) skinColorDelegate).invokeWithData(skinColorBitmap, color);
+    public void notifyAllObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 
     public Bitmap getSkinColorBitmap() {
@@ -40,7 +47,11 @@ public class Character {
         }
 
         clothes.add(clothing);
-        clothingDelegate.invoke(clothing);
+        notifyAllObservers();
+    }
+
+    public CompositeClothing getClothes() {
+        return clothes;
     }
 
     private Object getSameTypeObjectAlreadyWorn(Object newClothing) {
@@ -55,6 +66,10 @@ public class Character {
         return null;
     }
 
+    public SkinColor getSkinColor() {
+        return skinColor;
+    }
+
     public void removeClothing(Clothing clothing) {
         clothes.remove(clothing);
     }
@@ -67,26 +82,25 @@ public class Character {
         }
 
         headFeatures.add(headFeature);
-        headFeatureDelegate.invoke(headFeature);
+        notifyAllObservers();
     }
 
     public void removeHeadFeature(HeadFeature headFeature) {
         headFeatures.remove(headFeature);
     }
 
-    public void setSkinColorDelegate(CharacterChangedDelegate<Bitmap> skinColorDelegate) {
-        this.skinColorDelegate = skinColorDelegate;
-    }
-
-    public void setClothingDelegate(CharacterChangedDelegate<Clothing> clothingDelegate) {
-        this.clothingDelegate = clothingDelegate;
-    }
-
-    public void setHeadFeatureDelegate(CharacterChangedDelegate<HeadFeature> headFeatureDelegate) {
-        this.headFeatureDelegate = headFeatureDelegate;
+    public CompositeHeadFeature getHeadFeatures() {
+        return headFeatures;
     }
 
     public static Character getInstance() {
         return instance;
+    }
+
+    public void setSkinColorBitmap(Bitmap skinColorBitmap, SkinColor skinColor) {
+        this.skinColorBitmap = skinColorBitmap;
+        this.skinColor = skinColor;
+
+        notifyAllObservers();
     }
 }

@@ -1,13 +1,11 @@
 package com.rpg.southparkavatars.character.clothing;
 
-public abstract class Clothing {
-    private int coolness;
+import android.graphics.Bitmap;
 
-    public Clothing(int coolness) {
-        this.coolness = coolness;
-    }
+public interface Clothing {
+    int getCoolness();
 
-    public int getCoolness() {
-        return coolness;
-    }
+    int getrId();
+
+    Bitmap getBitmap();
 }

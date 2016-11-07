@@ -1,14 +1,17 @@
 package com.rpg.southparkavatars.character.clothing;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CompositeClothing extends Clothing implements Iterable<Clothing> {
+public class CompositeClothing implements Clothing, Iterable<Clothing> {
+    private int coolness = 0;
     private List<Clothing> clothes = new ArrayList<>();
 
     public CompositeClothing() {
-        super(0);
+        super();
     }
 
     public void add(Clothing clothing) {
@@ -30,5 +33,20 @@ public class CompositeClothing extends Clothing implements Iterable<Clothing> {
     @Override
     public Iterator<Clothing> iterator() {
         return clothes.iterator();
+    }
+
+    @Override
+    public int getCoolness() {
+        return coolness;
+    }
+
+    @Override
+    public int getrId() {
+        return 0;
+    }
+
+    @Override
+    public Bitmap getBitmap() {
+        return null;
     }
 }

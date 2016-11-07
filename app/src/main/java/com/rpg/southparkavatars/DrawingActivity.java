@@ -30,8 +30,8 @@ public class DrawingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawing_activity);
 
-        ImageView sablon = (ImageView)findViewById(R.id.sablon);
-        ImageView drawTitle = (ImageView)findViewById(R.id.drawTitle);
+        ImageView sablon = (ImageView) findViewById(R.id.sablon);
+        ImageView drawTitle = (ImageView) findViewById(R.id.drawTitle);
         LinearLayout paintingArea = (LinearLayout) findViewById(R.id.paint);
         dv = new DrawingView(paintingArea.getContext());
 
@@ -53,7 +53,7 @@ public class DrawingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String cloth_type = intent.getStringExtra("cloth-type");
 
-        switch(cloth_type){
+        switch (cloth_type) {
 
             case "Shirt":
                 toastText = "Draw a nice shirt!";
@@ -73,11 +73,9 @@ public class DrawingActivity extends AppCompatActivity {
         }
 
 
-
         Toast toast = Toast.makeText(context, toastText, duration);
         toast.show();
     }
-
 
 
     public void setState(Integer integer) {
@@ -109,8 +107,10 @@ public class DrawingActivity extends AppCompatActivity {
                 mPaint.setColor(getGlobalColor());
                 setState(1);
             }
+
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+            }
         });
     }
 
@@ -128,11 +128,12 @@ public class DrawingActivity extends AppCompatActivity {
                 if (getState() == 1)
                     setState(0);
             }
+
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+            }
         });
     }
-
 
 
     public class DrawingView extends View {
@@ -230,7 +231,6 @@ public class DrawingActivity extends AppCompatActivity {
 
 
         class TheTask extends AsyncTask<Void, Integer, Void> {
-
             Bitmap bmp;
             Point pt;
             int replacementColor, targetColor;
@@ -240,9 +240,7 @@ public class DrawingActivity extends AppCompatActivity {
                 this.pt = p;
                 this.replacementColor = tc;
                 this.targetColor = sc;
-
             }
-
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -256,6 +254,5 @@ public class DrawingActivity extends AppCompatActivity {
                 invalidate();
             }
         }
-
     }
 }

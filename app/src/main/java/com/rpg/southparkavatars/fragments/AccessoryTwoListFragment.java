@@ -11,7 +11,7 @@ import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.image.ImageLoader;
 
 public class AccessoryTwoListFragment extends Fragment {
-    private final String DIRECTORY_NAME = "clothing/accessory_2";
+    private final String DIRECTORY_NAME = "clothing/handAccessory";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

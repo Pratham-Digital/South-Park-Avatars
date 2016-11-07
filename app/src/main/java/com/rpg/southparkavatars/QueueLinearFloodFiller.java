@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
-
 public class QueueLinearFloodFiller {
 
     protected Bitmap image = null;
@@ -16,8 +15,8 @@ public class QueueLinearFloodFiller {
     protected int height = 0;
     protected int[] pixels = null;
     protected int fillColor = 0;
-    protected int[] tolerance = new int[] { 0, 0, 0, 0 };
-    protected int[] startColor = new int[] { 0, 0, 0, 0 };
+    protected int[] tolerance = new int[]{0, 0, 0, 0};
+    protected int[] startColor = new int[]{0, 0, 0, 0};
     protected boolean[] pixelsChecked;
     protected Queue<FloodFillRange> ranges;
 
@@ -53,9 +52,8 @@ public class QueueLinearFloodFiller {
     }
 
     public void setTolerance(int value) {
-        tolerance = new int[] { value, value, value, value };
+        tolerance = new int[]{value, value, value, value};
     }
-
 
 
     public Bitmap getImage() {
