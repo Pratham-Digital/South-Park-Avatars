@@ -1,9 +1,10 @@
-package com.rpg.southparkavatars.character;
+package com.rpg.southparkavatars.observer;
 
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.rpg.southparkavatars.Observer;
+import com.rpg.southparkavatars.character.Character;
+import com.rpg.southparkavatars.observer.Observer;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 
 public class ClothingChangedObserver extends Observer {

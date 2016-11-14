@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 
-public class BackAccessory implements Clothing {
+public class Back implements Clothing {
     private int rId;
     private int coolness;
     private Bitmap bitmap;
 
-    public BackAccessory(int coolness, Bitmap bitmap) {
+    public Back(int coolness, Bitmap bitmap) {
         rId = R.id.accessory_2_image;
         this.coolness = coolness;
         this.bitmap = bitmap;

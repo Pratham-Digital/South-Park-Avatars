@@ -2,7 +2,7 @@ package com.rpg.southparkavatars.character;
 
 import android.graphics.Bitmap;
 
-import com.rpg.southparkavatars.Observer;
+import com.rpg.southparkavatars.observer.Observer;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
@@ -20,7 +20,7 @@ public class Character implements Observable {
     private List<Observer> observers = new ArrayList<>();
 
     private Bitmap skinColorBitmap;
-    private SkinColor skinColor;
+    private Skin skin;
 
     private Character() {
     }
@@ -35,8 +35,17 @@ public class Character implements Observable {
         }
     }
 
-    public Bitmap getSkinColorBitmap() {
-        return skinColorBitmap;
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+        notifyAllObservers();
+    }
+
+    public Skin.Color getSkinColor() {
+        return skin.getColor();
+    }
+
+    public Bitmap getSkinBitmap() {
+        return skin.getBitmap();
     }
 
     public void addClothing(Clothing clothing) {
@@ -66,10 +75,6 @@ public class Character implements Observable {
         return null;
     }
 
-    public SkinColor getSkinColor() {
-        return skinColor;
-    }
-
     public void removeClothing(Clothing clothing) {
         clothes.remove(clothing);
     }
@@ -95,12 +100,5 @@ public class Character implements Observable {
 
     public static Character getInstance() {
         return instance;
-    }
-
-    public void setSkinColorBitmap(Bitmap skinColorBitmap, SkinColor skinColor) {
-        this.skinColorBitmap = skinColorBitmap;
-        this.skinColor = skinColor;
-
-        notifyAllObservers();
     }
 }
