@@ -147,6 +147,7 @@
             android:scrollbars="none">
 
             <LinearLayout
+                android:id="@+id/tab_button_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -155,114 +156,17 @@
                     android:id="@+id/skinColor_tab_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
+                    android:onClick="onSkinButtonClick"
                     android:text="Skin" />
-
-                <Button
-                    android:id="@+id/hair_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Hair" />
-
-                <Button
-                    android:id="@+id/mouth_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Mouth" />
-
-                <Button
-                    android:id="@+id/beard_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Beard" />
-
-                <Button
-                    android:id="@+id/eye_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Eyes" />
-
-                <Button
-                    android:id="@+id/shirt_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Shirt" />
-
-                <Button
-                    android:id="@+id/glasses_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Glasses" />
-
-                <Button
-                    android:id="@+id/necklace_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Necklace" />
-
-                <Button
-                    android:id="@+id/pants_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Pants" />
-
-                <Button
-                    android:id="@+id/hat_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Hat" />
-
-                <Button
-                    android:id="@+id/accessories_1_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Accessory 1" />
-
-                <Button
-                    android:id="@+id/accessories_2_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onItemCategoryButtonClick"
-                    android:text="Accessory 2" />
-
-                <!--<Button-->
-                <!--android:id="@+id/background_tab_button"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:onClick="onButtonClick"-->
-                <!--android:text="Background" />-->
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/play_fragment_container"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginBottom="10dp"-->
-    <!--android:orientation="horizontal" />-->
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scrollbars="none">
-
-        <!--<ListView-->
-        <!--android:id="@+id/item_list_layout"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="50dp"></ListView>-->
 
         <LinearLayout
             android:id="@+id/item_list_layout"

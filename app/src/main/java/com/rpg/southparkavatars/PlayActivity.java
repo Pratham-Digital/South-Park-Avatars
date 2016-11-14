@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -28,12 +29,16 @@ import com.rpg.southparkavatars.observer.SkinColorChangedObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener {
     private Character character = Character.getInstance();
     private AsyncTaskFactory asyncTaskFactory;
+
     private LinearLayout itemListLayout;
+    private LinearLayout tabButtonLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,14 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         setContentView(R.layout.activity_play);
 
         asyncTaskFactory = new AsyncTaskFactory(this, getAssets());
+
         itemListLayout = (LinearLayout) findViewById(R.id.item_list_layout);
+        tabButtonLayout = (LinearLayout) findViewById(R.id.tab_button_layout);
 
         asyncTaskFactory.createClothingLoadingTask(Hat.class)
                 .execute();
 
+        initButtons();
         initCharacterObservers();
     }
 
@@ -118,56 +126,45 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         }
     }
 
-    public void onItemCategoryButtonClick(View view) {
-        switch (view.getId()) {
-            case R.id.accessories_1_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Back.class)
-                        .execute();
-                break;
-            case R.id.accessories_2_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Hand.class)
-                        .execute();
-                break;
-            case R.id.beard_tab_button:
-                asyncTaskFactory.createHeadFeaturesLoadingTask(Beard.class)
-                        .execute();
-                break;
-            case R.id.eye_tab_button:
-                asyncTaskFactory.createHeadFeaturesLoadingTask(Eyes.class)
-                        .execute();
-                break;
-            case R.id.glasses_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Glasses.class)
-                        .execute();
-                break;
-            case R.id.hair_tab_button:
-                asyncTaskFactory.createHeadFeaturesLoadingTask(Hair.class)
-                        .execute();
-                break;
-            case R.id.hat_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Hat.class)
-                        .execute();
-                break;
-            case R.id.mouth_tab_button:
-                asyncTaskFactory.createHeadFeaturesLoadingTask(Mouth.class)
-                        .execute();
-                break;
-            case R.id.necklace_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Necklace.class)
-                        .execute();
-                break;
-            case R.id.pants_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Pants.class)
-                        .execute();
-                break;
-            case R.id.shirt_tab_button:
-                asyncTaskFactory.createClothingLoadingTask(Shirt.class)
-                        .execute();
-                break;
-            case R.id.skinColor_tab_button:
-                asyncTaskFactory.createSkinLoadingTask()
-                        .execute();
-                break;
+    public void initButtons() {
+        generateHeadFeatureButtons();
+        generateClothingButtons();
+    }
+
+    private void generateClothingButtons() {
+        List<Class<? extends Clothing>> clothingClasses = Arrays.asList(Back.class, Glasses.class, Hand.class, Hat.class, Necklace.class, Pants.class, Shirt.class);
+        for (final Class<? extends Clothing> clothingClass : clothingClasses) {
+            Button button = new Button(this);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    asyncTaskFactory.createClothingLoadingTask(clothingClass)
+                            .execute();
+                }
+            });
+            button.setText(clothingClass.getSimpleName());
+            tabButtonLayout.addView(button);
         }
+    }
+
+    private void generateHeadFeatureButtons() {
+        List<Class<? extends HeadFeature>> featureClasses = Arrays.asList(Beard.class, Eyes.class, Hair.class, Mouth.class);
+        for (final Class<? extends HeadFeature> featureClass : featureClasses) {
+            Button button = new Button(this);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    asyncTaskFactory.createHeadFeaturesLoadingTask(featureClass)
+                            .execute();
+                }
+            });
+            button.setText(featureClass.getSimpleName());
+            tabButtonLayout.addView(button);
+        }
+    }
+
+    public void onSkinButtonClick(View view) {
+        asyncTaskFactory.createSkinLoadingTask()
+                .execute();
     }
 }

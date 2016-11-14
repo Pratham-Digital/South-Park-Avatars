@@ -18,13 +18,15 @@ public class SkinColorChangedObserver extends Observer {
     public void update() {
         Character character = Character.getInstance();
 
-        ImageView handImage = (ImageView) viewGroup.findViewById(R.id.hand_image);
-        ImageView headImage = (ImageView) viewGroup.findViewById(R.id.head_image);
-        ImageView skinImage = (ImageView) viewGroup.findViewById(R.id.body_image);
+        if (character.hasSkin()) {
+            ImageView handImage = (ImageView) viewGroup.findViewById(R.id.hand_image);
+            ImageView headImage = (ImageView) viewGroup.findViewById(R.id.head_image);
+            ImageView skinImage = (ImageView) viewGroup.findViewById(R.id.body_image);
 
-        handImage.setImageResource(character.getSkinColor().getrDrawableHand());
-        headImage.setImageResource(character.getSkinColor().getrDrawableHead());
+            handImage.setImageResource(character.getSkinColor().getrDrawableHand());
+            headImage.setImageResource(character.getSkinColor().getrDrawableHead());
 
-        skinImage.setImageBitmap(character.getSkinBitmap());
+            skinImage.setImageBitmap(character.getSkinBitmap());
+        }
     }
 }

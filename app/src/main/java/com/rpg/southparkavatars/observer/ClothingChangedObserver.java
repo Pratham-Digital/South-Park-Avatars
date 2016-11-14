@@ -17,6 +17,7 @@ public class ClothingChangedObserver extends Observer {
     @Override
     public void update() {
         Character character = Character.getInstance();
+
         for (Clothing clothing : character.getClothes()) {
             ImageView imageView = (ImageView) viewGroup.findViewById(clothing.getrId());
             imageView.setImageBitmap(clothing.getBitmap());

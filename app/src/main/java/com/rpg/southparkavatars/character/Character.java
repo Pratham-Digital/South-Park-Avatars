@@ -18,8 +18,6 @@ public class Character implements Observable {
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
     private List<Observer> observers = new ArrayList<>();
-
-    private Bitmap skinColorBitmap;
     private Skin skin;
 
     private Character() {
@@ -46,6 +44,10 @@ public class Character implements Observable {
 
     public Bitmap getSkinBitmap() {
         return skin.getBitmap();
+    }
+
+    public boolean hasSkin() {
+        return skin != null;
     }
 
     public void addClothing(Clothing clothing) {
