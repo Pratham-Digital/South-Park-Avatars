@@ -19,7 +19,8 @@
         android:orientation="vertical">
 
         <EditText
-            android:layout_width="match_parent"
+            android:id="@+id/name_edit_text"
+            android:layout_width="272dp"
             android:layout_height="wrap_content"
             android:hint="Name"
             android:textAlignment="center"
@@ -163,6 +164,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/beard_image"
         android:onClick="onSaveButtonClick"
         android:text="save" />
 

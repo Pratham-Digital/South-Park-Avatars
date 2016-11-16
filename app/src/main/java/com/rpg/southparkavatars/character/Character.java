@@ -16,6 +16,8 @@ import java.util.List;
 public class Character implements Observable {
     private static final transient Character instance = new Character();
 
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("compositeClothes")
     private CompositeClothing clothes = new CompositeClothing();
     @JsonProperty("compositeHeadFeatures")
@@ -46,6 +48,14 @@ public class Character implements Observable {
         notifyAllObservers();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Skin.Color getSkinColor() {
         return skin.getColor();
     }
@@ -59,7 +69,7 @@ public class Character implements Observable {
     }
 
     public void addClothing(Clothing clothing) {
-        Clothing oldClothing = (Clothing) getSameTypeObjectAlreadyWorn(clothing);
+        Clothing oldClothing = getSameTypeObjectAlreadyWorn(clothing);
 
         if (oldClothing != null) {
             clothes.remove(oldClothing);
@@ -73,12 +83,24 @@ public class Character implements Observable {
         return clothes;
     }
 
-    private Object getSameTypeObjectAlreadyWorn(Object newClothing) {
+    private Clothing getSameTypeObjectAlreadyWorn(Clothing newClothing) {
         Class<?> newClass = newClothing.getClass();
 
-        for (Object clothing : clothes) {
+        for (Clothing clothing : clothes) {
             if (clothing.getClass().equals(newClass)) {
                 return clothing;
+            }
+        }
+
+        return null;
+    }
+
+    private HeadFeature getSameTypeObjectAlreadyWorn(HeadFeature newFeature) {
+        Class<?> newClass = newFeature.getClass();
+
+        for (HeadFeature feature : headFeatures) {
+            if (feature.getClass().equals(newClass)) {
+                return feature;
             }
         }
 
@@ -90,7 +112,7 @@ public class Character implements Observable {
     }
 
     public void addHeadFeature(HeadFeature headFeature) {
-        HeadFeature oldHeadFeature = (HeadFeature) getSameTypeObjectAlreadyWorn(headFeature);
+        HeadFeature oldHeadFeature = getSameTypeObjectAlreadyWorn(headFeature);
 
         if (oldHeadFeature != null) {
             headFeatures.remove(oldHeadFeature);

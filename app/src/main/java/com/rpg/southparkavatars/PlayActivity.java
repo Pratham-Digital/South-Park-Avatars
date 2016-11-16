@@ -3,10 +3,12 @@ package com.rpg.southparkavatars;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -37,6 +39,8 @@ import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -51,6 +55,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
     private LinearLayout itemListLayout;
     private LinearLayout tabButtonLayout;
+    private EditText nameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
         itemListLayout = (LinearLayout) findViewById(R.id.item_list_layout);
         tabButtonLayout = (LinearLayout) findViewById(R.id.tab_button_layout);
+        nameEditText = (EditText) findViewById(R.id.name_edit_text);
 
         asyncTaskFactory.createClothingLoadingTask(Hat.class)
                 .execute();
@@ -134,7 +140,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithSkinColors(List<Skin> skins) {
         for (final Skin skin : skins) {
             ImageView imageView = new ImageView(this);
-            Bitmap bitmap = BitmapLoader.load(skin.getPath().toString());
+            Bitmap bitmap = BitmapLoader.load(skin.getPath());
 
             imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -192,10 +198,19 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     public void onSaveButtonClick(View view) {
+        String name = String.valueOf(nameEditText.getText());
+        if (StringUtils.isEmpty(name)) {
+            Snackbar.make(findViewById(R.id.activity_play),
+                    "ERROR: Name cannot be empty!", Snackbar.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        character.setName(name);
         File file = new File(getFilesDir() + File.separator + "characters.json");
         ItemPersister<Character> persister = new CharacterPersister(file);
-        persister.save(character);
-//        Character[] characters = persister.loadAll();
+//        persister.save(character);
+        Character[] characters = persister.loadAll();
     }
 
     @Override
