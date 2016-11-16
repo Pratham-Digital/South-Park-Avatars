@@ -1,6 +1,7 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 
 import com.rpg.southparkavatars.character.clothing.Clothes;
 import com.rpg.southparkavatars.character.head.HeadFeatures;

@@ -1,14 +1,15 @@
 package com.rpg.southparkavatars.observer;
 
+import android.graphics.Bitmap;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.character.Character;
-import com.rpg.southparkavatars.observer.Observer;
 import com.rpg.southparkavatars.R;
 
 public class SkinColorChangedObserver extends Observer {
-    ViewGroup viewGroup;
+    private ViewGroup viewGroup;
 
     public SkinColorChangedObserver(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
@@ -26,7 +27,8 @@ public class SkinColorChangedObserver extends Observer {
             handImage.setImageResource(character.getSkinColor().getrDrawableHand());
             headImage.setImageResource(character.getSkinColor().getrDrawableHead());
 
-            skinImage.setImageBitmap(character.getSkinBitmap());
+            Bitmap bitmap = BitmapLoader.load(character.getSkinPath());
+            skinImage.setImageBitmap(bitmap);
         }
     }
 }

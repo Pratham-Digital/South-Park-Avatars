@@ -1,24 +1,12 @@
 package com.rpg.southparkavatars.character.head.concrete;
 
-import android.graphics.Bitmap;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
-public class Hair implements HeadFeature {
-    private int rId;
-    private Bitmap bitmap;
-
-    public Hair(Bitmap bitmap) {
-        rId = R.id.hair_image;
-        this.bitmap = bitmap;
-    }
-
-    public int getrId() {
-        return rId;
-    }
-
-    public Bitmap getBitmap() {
-        return bitmap;
+public class Hair extends HeadFeature {
+    public Hair(@JsonProperty("path") String path) {
+        super(path);
+        setrId(R.id.hair_image);
     }
 }

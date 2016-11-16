@@ -1,27 +1,32 @@
 package com.rpg.southparkavatars.character;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.R;
 
-public class Skin {
-    Bitmap bitmap;
-    Color color;
+import java.io.Serializable;
 
-    public Skin(Bitmap bitmap, Color color) {
-        this.bitmap = bitmap;
+public class Skin {
+    private String path;
+    private Color color;
+
+    @JsonCreator
+    public Skin(@JsonProperty("path") String path, @JsonProperty("color") Color color) {
+        this.path = path;
         this.color = color;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public String getPath() {
+        return path;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public enum Color {
+    public enum Color implements Serializable {
         WHITE(R.drawable.white_character_hand, R.drawable.white_character_head),
         LATIN(R.drawable.latin_character_hand, R.drawable.latin_character_head),
         BLACK(R.drawable.black_character_hand, R.drawable.black_character_head),

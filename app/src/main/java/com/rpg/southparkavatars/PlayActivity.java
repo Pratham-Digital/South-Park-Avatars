@@ -1,5 +1,7 @@
 package com.rpg.southparkavatars;
 
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,6 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.Skin;
 import com.rpg.southparkavatars.character.clothing.Clothing;
@@ -28,14 +33,21 @@ import com.rpg.southparkavatars.observer.HeadFeatureChangedObserver;
 import com.rpg.southparkavatars.observer.SkinColorChangedObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
+import com.rpg.southparkavatars.tool.BitmapLoader;
+import com.rpg.southparkavatars.tool.CharacterPersister;
+import com.rpg.southparkavatars.tool.ItemPersister;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener {
     private Character character = Character.getInstance();
     private AsyncTaskFactory asyncTaskFactory;
+    private AssetManager assetManager;
 
     private LinearLayout itemListLayout;
     private LinearLayout tabButtonLayout;
@@ -44,6 +56,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        assetManager = getAssets();
+        BitmapLoader.setAssetManager(assetManager);
 
         asyncTaskFactory = new AsyncTaskFactory(this, getAssets());
 
@@ -86,7 +101,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithClothes(List<Clothing> clothes) {
         for (final Clothing clothing : clothes) {
             ImageView imageView = new ImageView(this);
-            imageView.setImageBitmap(clothing.getBitmap());
+            Bitmap bitmap = BitmapLoader.load(clothing.getPath());
+
+            imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,7 +118,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithHeadFeatures(List<HeadFeature> features) {
         for (final HeadFeature feature : features) {
             ImageView imageView = new ImageView(this);
-            imageView.setImageBitmap(feature.getBitmap());
+            Bitmap bitmap = BitmapLoader.load(feature.getPath());
+
+            imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,13 +134,16 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithSkinColors(List<Skin> skins) {
         for (final Skin skin : skins) {
             ImageView imageView = new ImageView(this);
-            imageView.setImageBitmap(skin.getBitmap());
+            Bitmap bitmap = BitmapLoader.load(skin.getPath().toString());
+
+            imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     character.setSkin(skin);
                 }
             });
+
             itemListLayout.addView(imageView);
         }
     }
@@ -132,7 +154,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     private void generateClothingButtons() {
-        List<Class<? extends Clothing>> clothingClasses = Arrays.asList(Back.class, Glasses.class, Hand.class, Hat.class, Necklace.class, Pants.class, Shirt.class);
+        List<Class<? extends Clothing>> clothingClasses = Arrays.asList(Back.class, Glasses.class, Hand.class,
+                Hat.class, Necklace.class, Pants.class, Shirt.class);
         for (final Class<? extends Clothing> clothingClass : clothingClasses) {
             Button button = new Button(this);
             button.setOnClickListener(new View.OnClickListener() {
@@ -166,5 +189,22 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     public void onSkinButtonClick(View view) {
         asyncTaskFactory.createSkinLoadingTask()
                 .execute();
+    }
+
+    public void onSaveButtonClick(View view) {
+        File file = new File(getFilesDir() + File.separator + "characters.json");
+        ItemPersister<Character> persister = new CharacterPersister(file);
+        persister.save(character);
+//        Character[] characters = persister.loadAll();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

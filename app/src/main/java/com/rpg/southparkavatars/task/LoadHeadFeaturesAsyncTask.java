@@ -3,6 +3,7 @@ package com.rpg.southparkavatars.task;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
@@ -37,26 +38,19 @@ public class LoadHeadFeaturesAsyncTask<T extends HeadFeature> extends AsyncTask<
 
         for (String item : getItemNameList()) {
             String filePath = path + File.separator + item;
-
-            try (InputStream inputStream = assetManager.open(filePath)) {
-                T object = createObject(inputStream);
-                clothes.add(object);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            T object = createObject(filePath);
+            clothes.add(object);
         }
 
         return clothes;
     }
 
-    private T createObject(InputStream inputStream) {
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+    private T createObject(String path) {
         try {
-            Constructor<T> ctor = headFeatureClass.getConstructor(Bitmap.class);
-            return ctor.newInstance(bitmap);
-        } catch (NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException | InstantiationException e) {
+            Constructor<T> ctor = headFeatureClass.getConstructor(String.class);
+            return ctor.newInstance(path);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException
+                | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }

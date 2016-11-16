@@ -1,27 +1,27 @@
 package com.rpg.southparkavatars.character;
 
-import android.graphics.Bitmap;
-
-import com.rpg.southparkavatars.observer.Observer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Character implements Observable {
-    private static final Character instance = new Character();
+    private static final transient Character instance = new Character();
 
+    @JsonProperty("compositeClothes")
     private CompositeClothing clothes = new CompositeClothing();
+    @JsonProperty("compositeHeadFeatures")
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
-    private List<Observer> observers = new ArrayList<>();
-    private Skin skin;
+    private transient List<Observer> observers = new ArrayList<>();
 
-    private Character() {
-    }
+    @JsonProperty("skin")
+    private Skin skin;
 
     public void attach(Observer observer) {
         observers.add(observer);
@@ -42,8 +42,8 @@ public class Character implements Observable {
         return skin.getColor();
     }
 
-    public Bitmap getSkinBitmap() {
-        return skin.getBitmap();
+    public String getSkinPath() {
+        return skin.getPath();
     }
 
     public boolean hasSkin() {

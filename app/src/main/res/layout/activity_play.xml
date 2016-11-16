@@ -16,7 +16,7 @@
         android:id="@+id/name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <EditText
             android:layout_width="match_parent"
@@ -161,6 +161,12 @@
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onSaveButtonClick"
+        android:text="save" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"

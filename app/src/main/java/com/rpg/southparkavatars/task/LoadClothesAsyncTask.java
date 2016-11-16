@@ -1,16 +1,12 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.rpg.southparkavatars.character.clothing.Clothing;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -36,24 +32,18 @@ public class LoadClothesAsyncTask<T extends Clothing> extends AsyncTask<Void, Vo
         List<Clothing> clothes = new ArrayList<>();
 
         for (String item : getItemNameList()) {
-            String filePath = path + File.separator + item;
-
-            try (InputStream inputStream = assetManager.open(filePath)) {
-                T object = createObject(inputStream);
-                clothes.add(object);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String filePath = path + '/' + item;
+            T object = createObject(filePath);
+            clothes.add(object);
         }
 
         return clothes;
     }
 
-    private T createObject(InputStream inputStream) {
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+    private T createObject(String path) {
         try {
-            Constructor<T> ctor = clothingClass.getConstructor(int.class, Bitmap.class);
-            return ctor.newInstance(0, bitmap);
+            Constructor<T> ctor = clothingClass.getConstructor(int.class, String.class);
+            return ctor.newInstance(0, path);
         } catch (NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();

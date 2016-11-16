@@ -1,8 +1,7 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
@@ -10,7 +9,6 @@ import com.rpg.southparkavatars.character.Skin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,19 +29,13 @@ public class LoadSkinAsyncTask extends AsyncTask<Void, Void, List<Skin>> {
         List<Skin> skinColors = new ArrayList<>();
 
         for (String item : getItemNameList()) {
+            String fileName = item.substring(0, item.indexOf('.'));
             String filePath = path + File.separator + item;
 
-            try (InputStream inputStream = assetManager.open(filePath)) {
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                String fileName = item.substring(0, item.indexOf('.'));
+            Skin.Color color = Skin.Color.valueOf(fileName.toUpperCase());
+            Skin skin = new Skin(filePath, color);
 
-                Skin.Color color = Skin.Color.valueOf(fileName.toUpperCase());
-                Skin skin = new Skin(bitmap, color);
-
-                skinColors.add(skin);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            skinColors.add(skin);
         }
 
         return skinColors;
