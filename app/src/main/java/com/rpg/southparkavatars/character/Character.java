@@ -5,6 +5,9 @@ import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.HeadFeatures;
+import com.rpg.southparkavatars.character.head.concrete.Eyes;
+import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.observer.Observer;
 
 import java.util.ArrayList;
@@ -17,11 +20,16 @@ public class Character implements Observable {
     private CompositeClothing clothes = new CompositeClothing();
     @JsonProperty("compositeHeadFeatures")
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
-
     private transient List<Observer> observers = new ArrayList<>();
 
     @JsonProperty("skin")
     private Skin skin;
+
+    public Character() {
+        skin = new Skin(Skin.Color.WHITE);
+        headFeatures.add(new Eyes(HeadFeatures.EYES.getDefaultPath()));
+        headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
+    }
 
     public void attach(Observer observer) {
         observers.add(observer);

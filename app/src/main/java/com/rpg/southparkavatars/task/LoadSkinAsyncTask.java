@@ -33,7 +33,7 @@ public class LoadSkinAsyncTask extends AsyncTask<Void, Void, List<Skin>> {
             String filePath = path + File.separator + item;
 
             Skin.Color color = Skin.Color.valueOf(fileName.toUpperCase());
-            Skin skin = new Skin(filePath, color);
+            Skin skin = new Skin(color);
 
             skinColors.add(skin);
         }
