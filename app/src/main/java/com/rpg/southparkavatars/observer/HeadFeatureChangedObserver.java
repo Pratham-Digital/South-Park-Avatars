@@ -8,7 +8,9 @@ import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
-public class HeadFeatureChangedObserver extends Observer {
+import java.util.List;
+
+public class HeadFeatureChangedObserver implements CharacterObserver {
     ViewGroup viewGroup;
 
     public HeadFeatureChangedObserver(ViewGroup viewGroup) {
@@ -16,13 +18,16 @@ public class HeadFeatureChangedObserver extends Observer {
     }
 
     @Override
-    public void update() {
-        Character character = Character.getInstance();
-        for (HeadFeature headFeature : character.getHeadFeatures()) {
-            ImageView imageView = (ImageView) viewGroup.findViewById(headFeature.getrId());
-            Bitmap bitmap = BitmapLoader.load(headFeature.getPath());
+    public void update(CharacterChangedEvent event) {
+        List<HeadFeature> features = event.getHeadFeatures();
 
-            imageView.setImageBitmap(bitmap);
+        if (features != null) {
+            for (HeadFeature headFeature : features) {
+                ImageView imageView = (ImageView) viewGroup.findViewById(headFeature.getrId());
+                Bitmap bitmap = BitmapLoader.load(headFeature.getPath());
+
+                imageView.setImageBitmap(bitmap);
+            }
         }
     }
 }

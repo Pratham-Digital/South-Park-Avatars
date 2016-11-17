@@ -25,4 +25,9 @@ public class MenuActivity extends Activity {
         Intent intent = new Intent(this, ClothTypePickerActivity.class);
         startActivity(intent);
     }
+
+    public void onLoadCharacterButtonClick(View view) {
+        Intent intent = new Intent(this, LoadCharacterActivity.class);
+        startActivity(intent);
+    }
 }

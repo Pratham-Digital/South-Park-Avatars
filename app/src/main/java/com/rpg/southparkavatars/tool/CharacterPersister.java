@@ -2,6 +2,7 @@ package com.rpg.southparkavatars.tool;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpg.southparkavatars.character.Character;
 
@@ -24,15 +25,19 @@ public class CharacterPersister implements ItemPersister<Character> {
     }
 
     @Override
-    public void save(Character item) {
-        Character character = Character.getInstance();
+    public void save(Character character) {
+//        Character character = Character.getInstance();
         Character[] characters = null;
 
-        try (FileReader fileIn = new FileReader(path)) {
-            if (!path.exists()) {
+        if (!path.exists()) {
+            try {
                 FileUtils.touch(path);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
+        try (FileReader fileIn = new FileReader(path)) {
             characters = mapper.readValue(fileIn, Character[].class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +57,16 @@ public class CharacterPersister implements ItemPersister<Character> {
             characters = mapper.readValue(fileIn, Character[].class);
             return characters;
         } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String serialize(Character object) {
+        try {
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }

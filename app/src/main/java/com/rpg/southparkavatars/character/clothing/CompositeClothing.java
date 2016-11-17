@@ -12,6 +12,7 @@ import java.util.List;
 public class CompositeClothing extends Clothing implements Iterable<Clothing> {
     @JsonProperty("coolness")
     private int coolness = 0;
+    @JsonProperty("clothes")
     private List<Clothing> clothes = new ArrayList<>();
 
     public CompositeClothing() {
@@ -42,5 +43,9 @@ public class CompositeClothing extends Clothing implements Iterable<Clothing> {
     @Override
     public int getCoolness() {
         return coolness;
+    }
+
+    public List<Clothing> getClothes() {
+        return clothes;
     }
 }

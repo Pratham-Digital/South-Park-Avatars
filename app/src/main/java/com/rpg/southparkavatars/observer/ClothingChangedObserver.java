@@ -8,7 +8,9 @@ import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 
-public class ClothingChangedObserver extends Observer {
+import java.util.List;
+
+public class ClothingChangedObserver implements CharacterObserver {
     ViewGroup viewGroup;
 
     public ClothingChangedObserver(ViewGroup viewGroup) {
@@ -16,14 +18,15 @@ public class ClothingChangedObserver extends Observer {
     }
 
     @Override
-    public void update() {
-        Character character = Character.getInstance();
+    public void update(CharacterChangedEvent event) {
+        List<Clothing> clothes = event.getClothes();
 
-        for (Clothing clothing : character.getClothes()) {
-            ImageView imageView = (ImageView) viewGroup.findViewById(clothing.getrId());
-            Bitmap bitmap = BitmapLoader.load(clothing.getPath());
-
-            imageView.setImageBitmap(bitmap);
+        if (clothes != null) {
+            for (Clothing clothing : clothes) {
+                ImageView imageView = (ImageView) viewGroup.findViewById(clothing.getrId());
+                Bitmap bitmap = BitmapLoader.load(clothing.getPath());
+                imageView.setImageBitmap(bitmap);
+            }
         }
     }
 }

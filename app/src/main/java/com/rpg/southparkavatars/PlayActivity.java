@@ -1,5 +1,6 @@
 package com.rpg.southparkavatars;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener {
-    private Character character = Character.getInstance();
+    private Character character;
     private AsyncTaskFactory asyncTaskFactory;
     private AssetManager assetManager;
 
@@ -61,6 +62,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        character = new Character();
 
         assetManager = getAssets();
         BitmapLoader.setAssetManager(assetManager);
@@ -76,6 +79,22 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
         initButtons();
         initCharacterObservers();
+        loadPersistedCharacter();
+    }
+
+    private void loadPersistedCharacter() {
+        Intent starterIntent = getIntent();
+        String serialized;
+        if (starterIntent != null && (serialized = starterIntent.getStringExtra("character")) != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                Character savedCharacter = mapper.readValue(serialized, Character.class);
+                nameEditText.setText(savedCharacter.getName());
+                character.copy(savedCharacter);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initCharacterObservers() {
@@ -209,8 +228,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         character.setName(name);
         File file = new File(getFilesDir() + File.separator + "characters.json");
         ItemPersister<Character> persister = new CharacterPersister(file);
-//        persister.save(character);
-        Character[] characters = persister.loadAll();
+        persister.save(character);
+//        Character[] characters = persister.loadAll();
     }
 
     @Override

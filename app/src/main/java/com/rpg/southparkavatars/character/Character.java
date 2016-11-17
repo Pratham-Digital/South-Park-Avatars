@@ -1,5 +1,6 @@
 package com.rpg.southparkavatars.character;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
@@ -8,24 +9,29 @@ import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.observer.Observer;
+import com.rpg.southparkavatars.observer.CharacterChangedEvent;
+import com.rpg.southparkavatars.observer.CharacterObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Character implements Observable {
-    private static final transient Character instance = new Character();
-
-    @JsonProperty("name")
+public class Character implements ObservableCharacter {
     private String name;
-    @JsonProperty("compositeClothes")
     private CompositeClothing clothes = new CompositeClothing();
-    @JsonProperty("compositeHeadFeatures")
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
-    private transient List<Observer> observers = new ArrayList<>();
-
-    @JsonProperty("skin")
+    private transient List<CharacterObserver> observers = new ArrayList<>();
     private Skin skin;
+
+    @JsonCreator
+    public Character(@JsonProperty("name") String name,
+                     @JsonProperty("compositeClothes") CompositeClothing clothes,
+                     @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
+                     @JsonProperty("skin") Skin skin) {
+        this.name = name;
+        this.clothes = clothes;
+        this.headFeatures = headFeatures;
+        this.skin = skin;
+    }
 
     public Character() {
         skin = new Skin(Skin.Color.WHITE);
@@ -33,19 +39,32 @@ public class Character implements Observable {
         headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
     }
 
-    public void attach(Observer observer) {
+    public void copy(Character character) {
+        name = character.name;
+        clothes = character.clothes;
+        headFeatures = character.headFeatures;
+        skin = character.skin;
+
+        notifyAllObservers(new CharacterChangedEvent(
+                headFeatures.getHeadFeatures(), clothes.getClothes(), skin
+        ));
+    }
+
+    public void attach(CharacterObserver observer) {
         observers.add(observer);
     }
 
-    public void notifyAllObservers() {
-        for (Observer observer : observers) {
-            observer.update();
+    public void notifyAllObservers(CharacterChangedEvent event) {
+        for (CharacterObserver observer : observers) {
+            observer.update(event);
         }
     }
 
     public void setSkin(Skin skin) {
         this.skin = skin;
-        notifyAllObservers();
+        notifyAllObservers(new CharacterChangedEvent(
+                null, null, skin
+        ));
     }
 
     public String getName() {
@@ -76,7 +95,9 @@ public class Character implements Observable {
         }
 
         clothes.add(clothing);
-        notifyAllObservers();
+        notifyAllObservers(new CharacterChangedEvent(
+                null, clothes.getClothes(), null
+        ));
     }
 
     public CompositeClothing getClothes() {
@@ -119,7 +140,9 @@ public class Character implements Observable {
         }
 
         headFeatures.add(headFeature);
-        notifyAllObservers();
+        notifyAllObservers(new CharacterChangedEvent(
+                headFeatures.getHeadFeatures(), null, null
+        ));
     }
 
     public void removeHeadFeature(HeadFeature headFeature) {
@@ -128,9 +151,5 @@ public class Character implements Observable {
 
     public CompositeHeadFeature getHeadFeatures() {
         return headFeatures;
-    }
-
-    public static Character getInstance() {
-        return instance;
     }
 }

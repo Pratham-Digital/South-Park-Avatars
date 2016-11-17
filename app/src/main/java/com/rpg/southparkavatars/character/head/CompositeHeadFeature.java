@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CompositeHeadFeature extends HeadFeature implements Iterable<HeadFeature> {
+    @JsonProperty("headFeatures")
     private List<HeadFeature> headFeatures = new ArrayList<>();
 
     public CompositeHeadFeature() {
@@ -32,5 +33,9 @@ public class CompositeHeadFeature extends HeadFeature implements Iterable<HeadFe
     @Override
     public Iterator<HeadFeature> iterator() {
         return headFeatures.iterator();
+    }
+
+    public List<HeadFeature> getHeadFeatures() {
+        return headFeatures;
     }
 }
