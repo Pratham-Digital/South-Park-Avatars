@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -17,8 +18,6 @@ import android.widget.LinearLayout;
 import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.DrawableItem;
-import com.rpg.southparkavatars.character.Skin;
-import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class CharacterView extends LinearLayout {
 
     private AssetManager assetManager;
     private Canvas canvas;
-    private Bitmap background;
+    private Bitmap bitmap;
     private Paint paint;
 
     private RectF rect;
@@ -67,20 +66,20 @@ public class CharacterView extends LinearLayout {
     }
 
     private void initCanvas() {
-        background = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_4444);
-        canvas = new Canvas(background);
+        bitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_4444);
+        canvas = new Canvas(bitmap);
         paint = new Paint();
         paint.setColor(Color.parseColor("#CD5C5C"));
 
-        this.setBackground(new BitmapDrawable(getResources(), background));
+        this.setBackground(new BitmapDrawable(getResources(), bitmap));
     }
 
     public void draw(Character character) {
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
         drawItem(character.getSkin());
-        drawItems(character.getClothes().getClothes());
         drawItems(character.getHeadFeatures().getHeadFeatures());
+        drawItems(character.getClothes().getClothes());
 
         this.invalidate();
     }
@@ -114,5 +113,11 @@ public class CharacterView extends LinearLayout {
 
         rect.set(coordX, coordY, coordX + scale * width, coordY + scale * height);
         canvas.drawBitmap(bitmap, null, rect, paint);
+    }
+
+    public Image saveAsPNG() {
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 90, );
+
+        return null;
     }
 }

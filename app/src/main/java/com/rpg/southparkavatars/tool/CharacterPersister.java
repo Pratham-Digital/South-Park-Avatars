@@ -27,7 +27,12 @@ public class CharacterPersister implements ItemPersister<Character> {
     @Override
     public void save(Character character) {
         Character[] characters = null;
+        createPathIfNotExists();
+        characters = readCharacters(characters);
+        writeCharacter(character, characters);
+    }
 
+    private void createPathIfNotExists() {
         if (!path.exists()) {
             try {
                 FileUtils.touch(path);
@@ -35,17 +40,23 @@ public class CharacterPersister implements ItemPersister<Character> {
                 e.printStackTrace();
             }
         }
+    }
 
-        try (FileReader fileIn = new FileReader(path)) {
-            characters = mapper.readValue(fileIn, Character[].class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private void writeCharacter(Character character, Character[] characters) {
         try (FileWriter fileOut = new FileWriter(path, false)) {
             mapper.writeValue(fileOut, ArrayUtils.add(characters, character));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private Character[] readCharacters(Character[] characters) {
+        try (FileReader fileIn = new FileReader(path)) {
+            characters = mapper.readValue(fileIn, Character[].class);
+            return characters;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

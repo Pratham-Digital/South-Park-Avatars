@@ -2,6 +2,7 @@ package com.rpg.southparkavatars.character;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
@@ -14,10 +15,12 @@ import com.rpg.southparkavatars.observer.CharacterObserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Character implements ObservableCharacter {
     private String name;
     private Skin skin;
+    private String uuid;
 
     private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
@@ -27,17 +30,21 @@ public class Character implements ObservableCharacter {
     public Character(@JsonProperty("name") String name,
                      @JsonProperty("compositeClothes") CompositeClothing clothes,
                      @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
-                     @JsonProperty("skin") Skin skin) {
+                     @JsonProperty("skin") Skin skin,
+                     @JsonProperty("uuid") String uuid) {
         this.name = name;
         this.clothes = clothes;
         this.headFeatures = headFeatures;
         this.skin = skin;
+        this.uuid = uuid;
     }
 
     public Character() {
         skin = new Skin(Skin.Color.WHITE);
         headFeatures.add(new Eyes(HeadFeatures.EYES.getDefaultPath()));
         headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
+
+        uuid = UUID.randomUUID().toString();
 
         notifyAllObservers();
     }
@@ -47,6 +54,7 @@ public class Character implements ObservableCharacter {
         clothes = character.clothes;
         headFeatures = character.headFeatures;
         skin = character.skin;
+        uuid = character.uuid;
 
         notifyAllObservers();
     }
