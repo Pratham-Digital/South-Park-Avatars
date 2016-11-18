@@ -8,8 +8,8 @@ public class Beard extends HeadFeature {
     public Beard(@JsonProperty("path") String path) {
         super(path);
 
-        setScale(1.4f);
+        setScale(1.7f);
         setXPosDivider(2);
-        setYPosDivider(1.95f);
+        setYPosDivider(2f);
     }
 }
