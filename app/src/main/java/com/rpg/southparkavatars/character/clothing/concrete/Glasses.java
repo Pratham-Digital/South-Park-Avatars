@@ -8,8 +8,8 @@ public class Glasses extends Clothing {
     public Glasses(@JsonProperty("coolness") int coolness, @JsonProperty("path") String path) {
         super(coolness, path);
 
-        setScale(2.8f);
+        setScale(1.9f);
         setXPosDivider(2f);
-        setYPosDivider(3.5f);
+        setYPosDivider(2.8f);
     }
 }
