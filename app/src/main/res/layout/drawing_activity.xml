@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF">
-    
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_centerVertical="true"
-        android:id="@+id/color"
-        android:onClick="fillColor"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/color" />
 
     <Button
         android:layout_width="50dp"
@@ -19,17 +19,8 @@
         android:layout_toStartOf="@+id/fill"
         android:layout_marginEnd="22dp"
         android:id="@+id/pen"
-        android:onClick="setPenColor"
         android:background="@drawable/pen"/>
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="29dp"
-        android:id="@+id/sablon"
-        android:layout_above="@+id/paint"
-        android:layout_alignEnd="@+id/paint"
-        android:background="@drawable/border"/>
 
     <LinearLayout
         android:layout_width="260dp"
@@ -38,25 +29,10 @@
         android:orientation="horizontal"
         android:background="@drawable/border"
         android:layout_alignTop="@+id/color"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
     </LinearLayout>
 
-    <TextView
-        android:text="Scheme:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/sablon"
-        android:layout_alignStart="@+id/sablon"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/textView"
-        android:layout_alignEnd="@+id/sablon" />
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:id="@+id/drawTitle"
-        android:rotation="315"
-        android:layout_below="@+id/textView" />
 
     <Button
         android:layout_width="45dp"
@@ -72,9 +48,16 @@
         android:layout_height="50dp"
         android:layout_marginBottom="13dp"
         android:id="@+id/fill"
-        android:onClick="setFillColor"
         android:background="@drawable/fill"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/save"
         android:layout_marginEnd="19dp" />
+
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="80dp"
+        android:id="@+id/drawTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp" />
 </RelativeLayout>

@@ -16,15 +16,15 @@ public class ClothTypePickerActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.createShirt:
-                intent.putExtra("cloth-type", "Shirt");
+                intent.putExtra("clothType", "Shirt");
                 break;
 
             case R.id.createPants:
-                intent.putExtra("cloth-type", "Pants");
+                intent.putExtra("clothType", "Pants");
                 break;
 
             case R.id.createHat:
-                intent.putExtra("cloth-type", "Hat");
+                intent.putExtra("clothType", "Hat");
                 break;
         }
 
