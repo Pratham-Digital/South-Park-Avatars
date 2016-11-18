@@ -7,6 +7,9 @@ import com.rpg.southparkavatars.character.head.HeadFeature;
 public class Mouth extends HeadFeature {
     public Mouth(@JsonProperty("path") String path) {
         super(path);
-        setrId(R.id.mouth_image);
+
+        setScale(1f);
+        setXPosDivider(2);
+        setYPosDivider(1.9f);
     }
 }

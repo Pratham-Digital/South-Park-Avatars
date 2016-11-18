@@ -26,7 +26,6 @@ public class CharacterPersister implements ItemPersister<Character> {
 
     @Override
     public void save(Character character) {
-//        Character character = Character.getInstance();
         Character[] characters = null;
 
         if (!path.exists()) {

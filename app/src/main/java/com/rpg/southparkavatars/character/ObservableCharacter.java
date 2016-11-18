@@ -6,5 +6,5 @@ import com.rpg.southparkavatars.observer.CharacterObserver;
 public interface ObservableCharacter {
     void attach(CharacterObserver observer);
 
-    void notifyAllObservers(CharacterChangedEvent event);
+    void notifyAllObservers();
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.rpg.southparkavatars.character.DrawableItem;
 import com.rpg.southparkavatars.character.clothing.concrete.Back;
 import com.rpg.southparkavatars.character.clothing.concrete.Glasses;
 import com.rpg.southparkavatars.character.clothing.concrete.Hand;
@@ -22,10 +23,8 @@ import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
         @JsonSubTypes.Type(value = Pants.class, name = "pants"),
         @JsonSubTypes.Type(value = Shirt.class, name = "shirt")
 })
-public abstract class Clothing {
-    private transient int rId;
+public abstract class Clothing extends DrawableItem {
     private int coolness;
-    private String path;
 
     @JsonCreator
     public Clothing(@JsonProperty("coolness") int coolness, @JsonProperty("path") String path) {
@@ -39,13 +38,5 @@ public abstract class Clothing {
 
     public String getPath() {
         return path;
-    }
-
-    public int getrId() {
-        return rId;
-    }
-
-    protected void setrId(int rId) {
-        this.rId = rId;
     }
 }

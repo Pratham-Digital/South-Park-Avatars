@@ -3,18 +3,25 @@ package com.rpg.southparkavatars;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.Skin;
@@ -31,31 +38,30 @@ import com.rpg.southparkavatars.character.head.concrete.Beard;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.observer.ClothingChangedObserver;
-import com.rpg.southparkavatars.observer.HeadFeatureChangedObserver;
-import com.rpg.southparkavatars.observer.SkinColorChangedObserver;
+import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
+import com.rpg.southparkavatars.view.CharacterView;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class PlayActivity extends AppCompatActivity implements AsyncTaskListener {
+public class PlayActivity extends AppCompatActivity implements AsyncTaskListener, CharacterObserver {
     private Character character;
     private AsyncTaskFactory asyncTaskFactory;
     private AssetManager assetManager;
 
+    private CharacterView characterView;
     private LinearLayout itemListLayout;
     private LinearLayout tabButtonLayout;
+
     private EditText nameEditText;
 
     @Override
@@ -64,22 +70,24 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         setContentView(R.layout.activity_play);
 
         character = new Character();
-
-        assetManager = getAssets();
-        BitmapLoader.setAssetManager(assetManager);
+        character.attach(this);
 
         asyncTaskFactory = new AsyncTaskFactory(this, getAssets());
 
+        characterView = (CharacterView) findViewById(R.id.character_view);
+
         itemListLayout = (LinearLayout) findViewById(R.id.item_list_layout);
         tabButtonLayout = (LinearLayout) findViewById(R.id.tab_button_layout);
+
         nameEditText = (EditText) findViewById(R.id.name_edit_text);
 
         asyncTaskFactory.createClothingLoadingTask(Hat.class)
                 .execute();
 
         initButtons();
-        initCharacterObservers();
         loadPersistedCharacter();
+
+        characterView.draw(character);
     }
 
     private void loadPersistedCharacter() {
@@ -95,14 +103,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 e.printStackTrace();
             }
         }
-    }
-
-    private void initCharacterObservers() {
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-
-        character.attach(new ClothingChangedObserver(root));
-        character.attach(new HeadFeatureChangedObserver(root));
-        character.attach(new SkinColorChangedObserver(root));
     }
 
     @Override
@@ -240,5 +240,10 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void update() {
+        characterView.draw(character);
     }
 }

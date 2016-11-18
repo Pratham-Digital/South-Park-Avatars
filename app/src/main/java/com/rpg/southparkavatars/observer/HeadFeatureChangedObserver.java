@@ -10,14 +10,14 @@ import com.rpg.southparkavatars.character.head.HeadFeature;
 
 import java.util.List;
 
-public class HeadFeatureChangedObserver implements CharacterObserver {
+public class HeadFeatureChangedObserver { // implements CharacterObserver {
     ViewGroup viewGroup;
 
     public HeadFeatureChangedObserver(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
     }
 
-    @Override
+//    @Override
     public void update(CharacterChangedEvent event) {
         List<HeadFeature> features = event.getHeadFeatures();
 

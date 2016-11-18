@@ -8,8 +8,7 @@ import com.rpg.southparkavatars.R;
 
 import java.io.Serializable;
 
-public class Skin {
-    private String path;
+public class Skin extends DrawableItem {
     private Color color;
 
     public Skin(Color color) {
@@ -20,10 +19,10 @@ public class Skin {
     public Skin(@JsonProperty("color") Color color, @JsonProperty("path") String path) {
         this.color = color;
         this.path = path;
-    }
 
-    public String getPath() {
-        return path;
+        setScale(4);
+        setXPosDivider(2f);
+        setYPosDivider(2f);
     }
 
     public Color getColor() {
@@ -59,5 +58,7 @@ public class Skin {
         public int getrDrawableHead() {
             return rDrawableHead;
         }
+
+
     }
 }

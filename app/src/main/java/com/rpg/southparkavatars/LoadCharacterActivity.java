@@ -32,21 +32,23 @@ public class LoadCharacterActivity extends AppCompatActivity {
         final ItemPersister<Character> persister = new CharacterPersister(file);
         Character[] characters = persister.loadAll();
 
-        for (final Character character : characters) {
-            TextView textView = new TextView(this);
-            textView.setText(character.getName());
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LoadCharacterActivity.this, PlayActivity.class);
-                    String serialized = persister.serialize(character);
+        if (characters != null) {
+            for (final Character character : characters) {
+                TextView textView = new TextView(this);
+                textView.setText(character.getName());
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LoadCharacterActivity.this, PlayActivity.class);
+                        String serialized = persister.serialize(character);
 
-                    intent.putExtra("character", serialized);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-            characterNamesLayout.addView(textView);
+                        intent.putExtra("character", serialized);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                characterNamesLayout.addView(textView);
+            }
         }
     }
 }

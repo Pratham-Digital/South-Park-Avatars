@@ -17,10 +17,11 @@ import java.util.List;
 
 public class Character implements ObservableCharacter {
     private String name;
+    private Skin skin;
+
     private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
     private transient List<CharacterObserver> observers = new ArrayList<>();
-    private Skin skin;
 
     @JsonCreator
     public Character(@JsonProperty("name") String name,
@@ -37,6 +38,8 @@ public class Character implements ObservableCharacter {
         skin = new Skin(Skin.Color.WHITE);
         headFeatures.add(new Eyes(HeadFeatures.EYES.getDefaultPath()));
         headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
+
+        notifyAllObservers();
     }
 
     public void copy(Character character) {
@@ -45,26 +48,22 @@ public class Character implements ObservableCharacter {
         headFeatures = character.headFeatures;
         skin = character.skin;
 
-        notifyAllObservers(new CharacterChangedEvent(
-                headFeatures.getHeadFeatures(), clothes.getClothes(), skin
-        ));
+        notifyAllObservers();
     }
 
     public void attach(CharacterObserver observer) {
         observers.add(observer);
     }
 
-    public void notifyAllObservers(CharacterChangedEvent event) {
+    public void notifyAllObservers() {
         for (CharacterObserver observer : observers) {
-            observer.update(event);
+            observer.update();
         }
     }
 
     public void setSkin(Skin skin) {
         this.skin = skin;
-        notifyAllObservers(new CharacterChangedEvent(
-                null, null, skin
-        ));
+        notifyAllObservers();
     }
 
     public String getName() {
@@ -83,8 +82,8 @@ public class Character implements ObservableCharacter {
         return skin.getPath();
     }
 
-    public boolean hasSkin() {
-        return skin != null;
+    public Skin getSkin() {
+        return skin;
     }
 
     public void addClothing(Clothing clothing) {
@@ -95,9 +94,7 @@ public class Character implements ObservableCharacter {
         }
 
         clothes.add(clothing);
-        notifyAllObservers(new CharacterChangedEvent(
-                null, clothes.getClothes(), null
-        ));
+        notifyAllObservers();
     }
 
     public CompositeClothing getClothes() {
@@ -140,9 +137,7 @@ public class Character implements ObservableCharacter {
         }
 
         headFeatures.add(headFeature);
-        notifyAllObservers(new CharacterChangedEvent(
-                headFeatures.getHeadFeatures(), null, null
-        ));
+        notifyAllObservers();
     }
 
     public void removeHeadFeature(HeadFeature headFeature) {

@@ -10,14 +10,14 @@ import com.rpg.southparkavatars.character.clothing.Clothing;
 
 import java.util.List;
 
-public class ClothingChangedObserver implements CharacterObserver {
+public class ClothingChangedObserver { //  implements CharacterObserver {
     ViewGroup viewGroup;
 
     public ClothingChangedObserver(ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
     }
 
-    @Override
+//    @Override
     public void update(CharacterChangedEvent event) {
         List<Clothing> clothes = event.getClothes();
 

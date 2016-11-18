@@ -7,6 +7,9 @@ import com.rpg.southparkavatars.character.head.HeadFeature;
 public class Hair extends HeadFeature {
     public Hair(@JsonProperty("path") String path) {
         super(path);
-        setrId(R.id.hair_image);
+
+        setScale(1.8f);
+        setXPosDivider(2);
+        setYPosDivider(4.6f);
     }
 }

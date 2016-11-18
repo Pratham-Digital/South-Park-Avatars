@@ -7,6 +7,9 @@ import com.rpg.southparkavatars.character.clothing.Clothing;
 public class Shirt extends Clothing {
     public Shirt(@JsonProperty("coolness") int coolness, @JsonProperty("path") String path) {
         super(coolness, path);
-        setrId(R.id.shirt_image);
+
+        setScale(2.8f);
+        setXPosDivider(2f);
+        setYPosDivider(3.5f);
     }
 }

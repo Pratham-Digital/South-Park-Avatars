@@ -7,6 +7,9 @@ import com.rpg.southparkavatars.character.head.HeadFeature;
 public class Beard extends HeadFeature {
     public Beard(@JsonProperty("path") String path) {
         super(path);
-        setrId(R.id.beard_image);
+
+        setScale(1.4f);
+        setXPosDivider(2);
+        setYPosDivider(1.95f);
     }
 }
