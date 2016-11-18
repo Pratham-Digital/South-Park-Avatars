@@ -28,8 +28,9 @@ public class AsyncPainting extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+	if(targetColor != replacementColor)
         FloodFill(bmp, pt, targetColor, replacementColor);
-        return null;
+       return null;
     }
 
     public void FloodFill(Bitmap bmp, Point pt, int targetColor, int replacementColor)
