@@ -1,7 +1,6 @@
 package com.rpg.southparkavatars;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -215,11 +214,12 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                     .show();
             return;
         }
-
-        character.setName(name);
         File file = new File(getFilesDir() + File.separator + "characters.json");
         ItemPersister<Character> persister = new CharacterPersister(file);
+
+        character.setName(name);
         persister.save(character);
+        characterView.saveAsPNG(character);
 //        Character[] characters = persister.loadAll();
     }
 

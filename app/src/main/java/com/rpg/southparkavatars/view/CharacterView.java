@@ -20,6 +20,12 @@ import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.DrawableItem;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ClassPathUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class CharacterView extends LinearLayout {
@@ -116,8 +122,16 @@ public class CharacterView extends LinearLayout {
         canvas.drawBitmap(bitmap, null, rect, paint);
     }
 
-    public Image saveAsPNG() {
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 90, );
+    public Image saveAsPNG(Character character) {
+        File file = new File(getContext().getFilesDir().getPath()
+                + File.separator + "previews" + File.separator + character.getUuid() + ".png");
+
+        try (OutputStream os = FileUtils.openOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }

@@ -35,6 +35,15 @@ public class BitmapLoader {
             }
         }
 
+        File previewFile = new File(path);
+        if (previewFile.exists()) {
+            try (InputStream inputStream = FileUtils.openInputStream(previewFile)) {
+                return createBitmap(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return null;
     }
 

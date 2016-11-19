@@ -12,6 +12,7 @@ import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.observer.ObservableItem;
+import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class Character implements ObservableItem {
         headFeatures.add(new Eyes(HeadFeatures.EYES.getDefaultPath()));
         headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
 
-        uuid = UUID.randomUUID().toString();
+        uuid = UniqueIdentifierGenerator.getInstance().generateUuid();
 
         notifyAllObservers();
     }
@@ -94,6 +95,10 @@ public class Character implements ObservableItem {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     public void addClothing(AbstractClothing clothing) {
