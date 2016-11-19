@@ -1,4 +1,4 @@
-package com.rpg.southparkavatars.save;
+package com.rpg.southparkavatars.new_cloth;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.rpg.southparkavatars.R;
-import com.rpg.southparkavatars.new_cloth.CreatedClothing;
+import com.rpg.southparkavatars.new_cloth.CustomClothing;
+import com.rpg.southparkavatars.view.PaintingView;
 
 
 import java.io.File;
@@ -19,13 +20,15 @@ public class ClothingSaver {
     private Context context;
     private View view;
     private Activity activity;
-    private CreatedClothing createdClothing; // = new CreatedClothing(context, activity, view);
+    private PaintingView paintingView;
+    private CustomClothing customClothing;
 
-    public ClothingSaver(CreatedClothing createdClothing, Context context, Activity activity, View view) {
+    public ClothingSaver(CustomClothing customClothing, PaintingView paintingView, Context context, Activity activity, View view) {
         this.context = context;
         this.activity = activity;
         this.view = view;
-        this.createdClothing = createdClothing;
+        this.paintingView = paintingView;
+        this.customClothing = customClothing;
     }
 
     public void saveClothing() {
@@ -33,15 +36,12 @@ public class ClothingSaver {
         saveCloth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreatedClothing.PaintingView v1 = createdClothing.getDrawingView();
-                System.out.println(createdClothing.getDrawingView());
-
-                String path = createdClothing.getDirectory().getPath() + File.separator
-                        + createdClothing.getClothingTypeName() + "_" + filesInFolderCountString() + ".png";
+                String path = customClothing.getDirectory().getPath() + File.separator
+                        + customClothing.getClothingTypeName() + "_" + filesInFolderCountString() + ".png";
                 File file = new File(path);
 
                 try (FileOutputStream ostream = new FileOutputStream(file)) {
-                    v1.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, ostream);
+                    paintingView.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, ostream);
                     ostream.flush();
 
                     Toast.makeText(context, "image saved", Toast.LENGTH_LONG)
@@ -58,7 +58,7 @@ public class ClothingSaver {
     public String filesInFolderCountString() {
         final int PUSH_START_COUNTING = 15;
         int numberOfFiles = 0;
-        File dir = createdClothing.getDirectory();
+        File dir = customClothing.getDirectory();
 
         File[] files = dir.listFiles();
         if (files != null) {

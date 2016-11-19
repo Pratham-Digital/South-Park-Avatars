@@ -1,10 +1,9 @@
 package com.rpg.southparkavatars.character.head.concrete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rpg.southparkavatars.R;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
-public class Hair extends HeadFeature {
+public class Hair extends AbstractHeadFeature {
     public Hair(@JsonProperty("path") String path) {
         super(path);
 

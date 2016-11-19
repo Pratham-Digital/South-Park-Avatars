@@ -17,9 +17,9 @@ import com.rpg.southparkavatars.character.head.concrete.Mouth;
         @JsonSubTypes.Type(value = Hair.class, name = "hair"),
         @JsonSubTypes.Type(value = Mouth.class, name = "mouth")
 })
-public abstract class HeadFeature extends DrawableItem {
+public abstract class AbstractHeadFeature extends DrawableItem {
     @JsonCreator
-    public HeadFeature(@JsonProperty("path") String path) {
+    public AbstractHeadFeature(@JsonProperty("path") String path) {
         this.path = path;
     }
 

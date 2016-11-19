@@ -1,9 +1,9 @@
 package com.rpg.southparkavatars.character.head.concrete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
-public class Eyes extends HeadFeature {
+public class Eyes extends AbstractHeadFeature {
     public Eyes(@JsonProperty("path") String path) {
         super(path);
 

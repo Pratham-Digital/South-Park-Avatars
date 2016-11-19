@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.rpg.southparkavatars.new_cloth.PaintFacade;
+import com.rpg.southparkavatars.new_cloth.ClothingOperationsFacade;
 
 public class DrawingActivity extends AppCompatActivity {
+    private ClothingOperationsFacade clothingOperationsFacade;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View v = getLayoutInflater().inflate(R.layout.drawing_activity, null);
         setContentView(v);
 
-        PaintFacade paintFacade = new PaintFacade(DrawingActivity.this, this, v);
-        paintFacade.start();
+        clothingOperationsFacade = new ClothingOperationsFacade(DrawingActivity.this, this, v);
+    }
+
+    public void onSaveClothingButtonClick(View view) {
+        clothingOperationsFacade.persistClothing();
     }
 }

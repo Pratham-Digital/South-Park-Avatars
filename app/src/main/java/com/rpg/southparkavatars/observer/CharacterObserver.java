@@ -1,7 +1,5 @@
 package com.rpg.southparkavatars.observer;
 
-public interface CharacterObserver {
-//    void update(CharacterChangedEvent event);
-
+public interface CharacterObserver extends ItemObserver {
     void update();
 }

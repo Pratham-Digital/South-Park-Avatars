@@ -1,24 +1,20 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoadHeadFeaturesAsyncTask<T extends HeadFeature> extends AsyncTask<Void, Void, List<HeadFeature>> {
+public class LoadHeadFeaturesAsyncTask<T extends AbstractHeadFeature> extends AsyncTask<Void, Void, List<AbstractHeadFeature>> {
     private AssetManager assetManager;
     private String path;
     private Class<T> headFeatureClass;
@@ -33,8 +29,8 @@ public class LoadHeadFeaturesAsyncTask<T extends HeadFeature> extends AsyncTask<
     }
 
     @Override
-    protected List<HeadFeature> doInBackground(Void... params) {
-        List<HeadFeature> clothes = new ArrayList<>();
+    protected List<AbstractHeadFeature> doInBackground(Void... params) {
+        List<AbstractHeadFeature> clothes = new ArrayList<>();
 
         for (String item : getItemNameList()) {
             String filePath = path + File.separator + item;
@@ -68,7 +64,7 @@ public class LoadHeadFeaturesAsyncTask<T extends HeadFeature> extends AsyncTask<
     }
 
     @Override
-    protected void onPostExecute(List<HeadFeature> headFeatures) {
+    protected void onPostExecute(List<AbstractHeadFeature> headFeatures) {
         super.onPostExecute(headFeatures);
         callback.onHeadFeaturesAsyncTaskFinished(headFeatures);
     }

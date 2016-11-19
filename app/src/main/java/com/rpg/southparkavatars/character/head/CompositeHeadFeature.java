@@ -1,27 +1,24 @@
 package com.rpg.southparkavatars.character.head;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CompositeHeadFeature extends HeadFeature implements Iterable<HeadFeature> {
+public class CompositeHeadFeature extends AbstractHeadFeature implements Iterable<AbstractHeadFeature> {
     @JsonProperty("headFeatures")
-    private List<HeadFeature> headFeatures = new ArrayList<>();
+    private List<AbstractHeadFeature> headFeatures = new ArrayList<>();
 
     public CompositeHeadFeature() {
         super("");
     }
 
-    public void add(HeadFeature headFeature) {
+    public void add(AbstractHeadFeature headFeature) {
         headFeatures.add(headFeature);
     }
 
-    public void remove(HeadFeature headFeature) {
+    public void remove(AbstractHeadFeature headFeature) {
         headFeatures.remove(headFeature);
     }
 
@@ -31,11 +28,11 @@ public class CompositeHeadFeature extends HeadFeature implements Iterable<HeadFe
     }
 
     @Override
-    public Iterator<HeadFeature> iterator() {
+    public Iterator<AbstractHeadFeature> iterator() {
         return headFeatures.iterator();
     }
 
-    public List<HeadFeature> getHeadFeatures() {
+    public List<AbstractHeadFeature> getHeadFeatures() {
         return headFeatures;
     }
 }

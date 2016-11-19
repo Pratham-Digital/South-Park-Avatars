@@ -23,7 +23,7 @@ import com.rpg.southparkavatars.character.clothing.concrete.Hat;
 import com.rpg.southparkavatars.character.clothing.concrete.Necklace;
 import com.rpg.southparkavatars.character.clothing.concrete.Pants;
 import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Beard;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
@@ -102,7 +102,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     @Override
-    public void onHeadFeaturesAsyncTaskFinished(List<HeadFeature> headFeatures) {
+    public void onHeadFeaturesAsyncTaskFinished(List<AbstractHeadFeature> headFeatures) {
         itemListLayout.removeAllViews();
         fillItemListWithHeadFeatures(headFeatures);
     }
@@ -130,8 +130,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         }
     }
 
-    private void fillItemListWithHeadFeatures(List<HeadFeature> features) {
-        for (final HeadFeature feature : features) {
+    private void fillItemListWithHeadFeatures(List<AbstractHeadFeature> features) {
+        for (final AbstractHeadFeature feature : features) {
             ImageView imageView = new ImageView(this);
             Bitmap bitmap = BitmapLoader.load(feature.getPath());
 
@@ -186,8 +186,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     private void generateHeadFeatureButtons() {
-        List<Class<? extends HeadFeature>> featureClasses = Arrays.asList(Beard.class, Eyes.class, Hair.class, Mouth.class);
-        for (final Class<? extends HeadFeature> featureClass : featureClasses) {
+        List<Class<? extends AbstractHeadFeature>> featureClasses = Arrays.asList(Beard.class, Eyes.class, Hair.class, Mouth.class);
+        for (final Class<? extends AbstractHeadFeature> featureClass : featureClasses) {
             Button button = new Button(this);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

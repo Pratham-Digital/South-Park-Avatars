@@ -5,17 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.observer.CharacterObserver;
+import com.rpg.southparkavatars.observer.ItemObserver;
+import com.rpg.southparkavatars.observer.ObservableItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Character implements ObservableCharacter {
+public class Character implements ObservableItem {
     private String name;
     private Skin skin;
     private String uuid;
@@ -57,10 +59,12 @@ public class Character implements ObservableCharacter {
         notifyAllObservers();
     }
 
-    public void attach(CharacterObserver observer) {
-        observers.add(observer);
+    @Override
+    public void attach(ItemObserver observer) {
+        observers.add((CharacterObserver) observer);
     }
 
+    @Override
     public void notifyAllObservers() {
         for (CharacterObserver observer : observers) {
             observer.update();
@@ -119,10 +123,10 @@ public class Character implements ObservableCharacter {
         return null;
     }
 
-    private HeadFeature getSameTypeObjectAlreadyWorn(HeadFeature newFeature) {
+    private AbstractHeadFeature getSameTypeObjectAlreadyWorn(AbstractHeadFeature newFeature) {
         Class<?> newClass = newFeature.getClass();
 
-        for (HeadFeature feature : headFeatures) {
+        for (AbstractHeadFeature feature : headFeatures) {
             if (feature.getClass().equals(newClass)) {
                 return feature;
             }
@@ -135,8 +139,8 @@ public class Character implements ObservableCharacter {
         clothes.remove(clothing);
     }
 
-    public void addHeadFeature(HeadFeature headFeature) {
-        HeadFeature oldHeadFeature = getSameTypeObjectAlreadyWorn(headFeature);
+    public void addHeadFeature(AbstractHeadFeature headFeature) {
+        AbstractHeadFeature oldHeadFeature = getSameTypeObjectAlreadyWorn(headFeature);
 
         if (oldHeadFeature != null) {
             headFeatures.remove(oldHeadFeature);
@@ -146,7 +150,7 @@ public class Character implements ObservableCharacter {
         notifyAllObservers();
     }
 
-    public void removeHeadFeature(HeadFeature headFeature) {
+    public void removeHeadFeature(AbstractHeadFeature headFeature) {
         headFeatures.remove(headFeature);
     }
 

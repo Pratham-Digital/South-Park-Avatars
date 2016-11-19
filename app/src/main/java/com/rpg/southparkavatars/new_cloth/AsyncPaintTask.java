@@ -12,14 +12,14 @@ public class AsyncPaintTask extends AsyncTask<Void, Integer, Void> {
     private Bitmap bmp;
     private Point pt;
     private int replacementColor, targetColor;
-    private View v;
+    private View view;
 
-    public AsyncPaintTask(Bitmap bm, Point p, int sc, int tc, View v) {
+    public AsyncPaintTask(Bitmap bm, Point p, int sc, int tc, View view) {
         this.bmp = bm;
         this.pt = p;
         this.replacementColor = tc;
         this.targetColor = sc;
-        this.v = v;
+        this.view = view;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AsyncPaintTask extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        v.invalidate();
+        view.invalidate();
     }
 }
 

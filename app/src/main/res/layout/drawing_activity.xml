@@ -6,57 +6,56 @@
     android:background="#FFF">
 
     <ImageView
+        android:id="@+id/color"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/color" />
+        android:layout_centerVertical="true" />
 
     <Button
+        android:id="@+id/pen"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignTop="@+id/fill"
-        android:layout_toStartOf="@+id/fill"
         android:layout_marginEnd="22dp"
-        android:id="@+id/pen"
-        android:background="@drawable/pen"/>
+        android:layout_toStartOf="@+id/fill"
+        android:background="@drawable/pen" />
 
 
     <LinearLayout
+        android:id="@+id/paint"
         android:layout_width="260dp"
         android:layout_height="290dp"
-        android:id="@+id/paint"
-        android:orientation="horizontal"
-        android:background="@drawable/border"
         android:layout_alignTop="@+id/color"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-    </LinearLayout>
-
+        android:layout_centerVertical="true"
+        android:background="@drawable/border"
+        android:orientation="horizontal" />
 
     <Button
+        android:id="@+id/save_clothing_button"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:id="@+id/save_clothing_button"
-        android:background="@drawable/save"
+        android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/fill"
         android:layout_marginStart="16dp"
-        android:layout_alignParentEnd="true" />
+        android:background="@drawable/save"
+        android:onClick="onSaveClothingButtonClick" />
 
     <Button
+        android:id="@+id/fill"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/fill"
-        android:background="@drawable/fill"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="19dp"
         android:layout_toStartOf="@+id/save_clothing_button"
-        android:layout_marginEnd="19dp" />
+        android:background="@drawable/fill" />
 
     <ImageView
+        android:id="@+id/drawTitle"
         android:layout_width="240dp"
         android:layout_height="80dp"
-        android:id="@+id/drawTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp" />

@@ -5,8 +5,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rpg.southparkavatars.tool.BitmapLoader;
-import com.rpg.southparkavatars.character.Character;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
 import java.util.List;
 
@@ -19,10 +18,10 @@ public class HeadFeatureChangedObserver { // implements CharacterObserver {
 
 //    @Override
     public void update(CharacterChangedEvent event) {
-        List<HeadFeature> features = event.getHeadFeatures();
+        List<AbstractHeadFeature> features = event.getHeadFeatures();
 
         if (features != null) {
-            for (HeadFeature headFeature : features) {
+            for (AbstractHeadFeature headFeature : features) {
                 ImageView imageView = (ImageView) viewGroup.findViewById(headFeature.getrId());
                 Bitmap bitmap = BitmapLoader.load(headFeature.getPath());
 

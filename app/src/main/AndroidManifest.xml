@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ClothTypePickerActivity"
+            android:name=".ClothingTypePickerActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DrawingActivity"

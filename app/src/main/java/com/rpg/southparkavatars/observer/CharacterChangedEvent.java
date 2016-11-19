@@ -2,22 +2,22 @@ package com.rpg.southparkavatars.observer;
 
 import com.rpg.southparkavatars.character.Skin;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
 import java.util.List;
 
 public class CharacterChangedEvent {
-    private List<HeadFeature> headFeatures;
+    private List<AbstractHeadFeature> headFeatures;
     private List<AbstractClothing> clothes;
     private Skin skin;
 
-    public CharacterChangedEvent(List<HeadFeature> headFeatures, List<AbstractClothing> clothes, Skin skin) {
+    public CharacterChangedEvent(List<AbstractHeadFeature> headFeatures, List<AbstractClothing> clothes, Skin skin) {
         this.headFeatures = headFeatures;
         this.clothes = clothes;
         this.skin = skin;
     }
 
-    public List<HeadFeature> getHeadFeatures() {
+    public List<AbstractHeadFeature> getHeadFeatures() {
         return headFeatures;
     }
 

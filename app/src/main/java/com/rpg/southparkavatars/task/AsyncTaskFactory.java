@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.head.HeadFeature;
+import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
 public class AsyncTaskFactory {
     private AsyncTaskListener callback;
@@ -21,7 +21,7 @@ public class AsyncTaskFactory {
         return new LoadClothesAsyncTask<>(path, callback, assetManager, clothingClass);
     }
 
-    public <T extends HeadFeature> LoadHeadFeaturesAsyncTask<T> createHeadFeaturesLoadingTask(Class<T> headFeatureClass) {
+    public <T extends AbstractHeadFeature> LoadHeadFeaturesAsyncTask<T> createHeadFeaturesLoadingTask(Class<T> headFeatureClass) {
         String path = HeadFeatures.valueOf(headFeatureClass.getSimpleName().toUpperCase()).getPath();
         return new LoadHeadFeaturesAsyncTask<>(path, callback, assetManager, headFeatureClass);
     }
