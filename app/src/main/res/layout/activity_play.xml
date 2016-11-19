@@ -16,21 +16,23 @@
         android:id="@+id/top_part_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <EditText
             android:id="@+id/name_edit_text"
-            android:layout_width="272dp"
+            android:layout_width="246dp"
             android:layout_height="wrap_content"
             android:hint="Name"
             android:textAlignment="center"
             android:textSize="26dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="onSaveButtonClick"
-            android:text="save" />
+            android:text="save"
+            android:id="@+id/button" />
     </LinearLayout>
 
     <com.rpg.southparkavatars.view.CharacterView
@@ -177,24 +179,44 @@
 
                 <Button
                     android:id="@+id/skinColor_tab_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="59dp"
+                    android:layout_height="59dp"
+                    android:background="@drawable/button_skin_change"
                     android:onClick="onSkinButtonClick"
-                    android:text="Skin" />
+                    android:text="Skin"
+                    android:textSize="0sp"  />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/menu_background"
         android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/item_list_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+
             android:layout_height="50dp"
             android:orientation="horizontal"></LinearLayout>
     </HorizontalScrollView>
+
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/get_coolness"
+        android:background="@color/color1"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        android:layout_below="@+id/top_part_layout"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
