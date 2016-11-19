@@ -1,6 +1,7 @@
 package com.rpg.southparkavatars.character.clothing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rpg.southparkavatars.visitor.ClothingVisitor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,5 +45,13 @@ public class CompositeAbstractClothing extends AbstractClothing implements Itera
 
     public List<AbstractClothing> getClothes() {
         return clothes;
+    }
+
+    @Override
+    public void accept(ClothingVisitor visitor) {
+        visitor.visit(this);
+        for(AbstractClothing cloth : this.getClothes()){
+            cloth.accept(visitor);
+        }
     }
 }

@@ -69,6 +69,7 @@
         android:layout_alignStart="@+id/loadCharacters"
         android:layout_below="@+id/loadCharacters"
         android:layout_gravity="center"
+        android:onClick="onStatisticsButtonClick"
         android:layout_marginTop="30dp"
         android:background="@drawable/button_change"
         android:text="Statistics"

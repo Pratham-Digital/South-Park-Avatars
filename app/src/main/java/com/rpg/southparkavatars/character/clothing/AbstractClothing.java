@@ -12,6 +12,7 @@ import com.rpg.southparkavatars.character.clothing.concrete.Hat;
 import com.rpg.southparkavatars.character.clothing.concrete.Necklace;
 import com.rpg.southparkavatars.character.clothing.concrete.Pants;
 import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
+import com.rpg.southparkavatars.visitor.ClothingVisitor;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 @JsonSubTypes({
@@ -36,7 +37,17 @@ public abstract class AbstractClothing extends DrawableItem {
         return coolness;
     }
 
+    public void setCoolness(int coolness) {
+        if(this.coolness ==0)
+            this.coolness=coolness;
+    }
+
+
     public String getPath() {
         return path;
+    }
+
+    public void accept(ClothingVisitor visitor){
+        visitor.visit(this);
     }
 }

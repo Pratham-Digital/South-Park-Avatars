@@ -9,6 +9,7 @@ import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
+import com.rpg.southparkavatars.character.voice.Voice;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.observer.ObservableItem;
@@ -22,7 +23,7 @@ public class Character implements ObservableItem {
     private String name;
     private Skin skin;
     private String uuid;
-
+    private transient Voice currentVoice;
     private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
     private transient List<CharacterObserver> observers = new ArrayList<>();
@@ -38,6 +39,14 @@ public class Character implements ObservableItem {
         this.headFeatures = headFeatures;
         this.skin = skin;
         this.uuid = uuid;
+    }
+
+    public Voice getCurrentVoice() {
+        return currentVoice;
+    }
+
+    public void changeVoice(Voice voice){
+        this.currentVoice=voice;
     }
 
     public Character() {

@@ -2,14 +2,19 @@ package com.rpg.southparkavatars;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpg.southparkavatars.character.Character;
@@ -27,6 +32,12 @@ import com.rpg.southparkavatars.character.head.concrete.Beard;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
+import com.rpg.southparkavatars.character.voice.AsianVoice;
+import com.rpg.southparkavatars.character.voice.BlackVoice;
+import com.rpg.southparkavatars.character.voice.JerseyVoice;
+import com.rpg.southparkavatars.character.voice.LatinVoice;
+import com.rpg.southparkavatars.character.voice.Voice;
+import com.rpg.southparkavatars.character.voice.WhiteVoice;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
@@ -34,6 +45,7 @@ import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
 import com.rpg.southparkavatars.view.CharacterView;
+import com.rpg.southparkavatars.visitor.Visitor;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,6 +53,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener, CharacterObserver {
     private Character character;
@@ -50,13 +63,22 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private CharacterView characterView;
     private LinearLayout itemListLayout;
     private LinearLayout tabButtonLayout;
-
+    private TextView coolnessTextView;
     private EditText nameEditText;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        int[] imagesArray = {R.drawable.background_1,R.drawable.background_3,R.drawable.background_4,R.drawable.background_5,R.drawable.background_6,R.drawable.background_7,R.drawable.background_9,R.drawable.background_10,R.drawable.background_11};
+        Random rand = new Random();
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_play);
+        int i = rand.nextInt(imagesArray.length);
+        Drawable drawable = getResources().getDrawable(imagesArray[i]);
+        layout.setBackgroundDrawable(drawable);
+        coolnessTextView = (TextView)findViewById(R.id.get_coolness);
+        coolnessTextView.setVisibility(View.INVISIBLE);
 
         character = new Character();
         character.attach(this);
@@ -89,6 +111,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 Character savedCharacter = mapper.readValue(serialized, Character.class);
                 nameEditText.setText(savedCharacter.getName());
                 character.copy(savedCharacter);
+                Visitor visitor = new Visitor();
+                //  textView.setText(Integer.toString(savedCharacter.getClothes().getCoolness()));
+                savedCharacter.getClothes().accept(visitor);
+                coolnessTextView.setText("Overall coolness: "+Integer.toString(visitor.getOverallCoolness()));
+                coolnessTextView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -150,16 +177,47 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         for (final Skin skin : skins) {
             ImageView imageView = new ImageView(this);
             Bitmap bitmap = bitmapLoader.load(skin.getPath());
-
             imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    stopPlaying();
                     character.setSkin(skin);
+                    switch(character.getSkinColor()){
+                        case BLACK:
+                            character.changeVoice(new BlackVoice());
+                            break;
+                        case WHITE:
+                            character.changeVoice(new WhiteVoice());
+                            break;
+                        case ASIAN:
+                            character.changeVoice(new AsianVoice());
+                            break;
+                        case LATIN:
+                            character.changeVoice(new LatinVoice());
+                            break;
+                        case JERSEY:
+                            character.changeVoice(new JerseyVoice());
+                            break;
+                    }
+                    Voice voice = character.getCurrentVoice();
+                    mediaPlayer = MediaPlayer.create(PlayActivity.this,voice.handleVoice());
+                    mediaPlayer.start();
+
                 }
+
+
             });
 
             itemListLayout.addView(imageView);
+        }
+    }
+
+    private void stopPlaying() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
@@ -173,6 +231,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 Hat.class, Necklace.class, Pants.class, Shirt.class);
         for (final Class<? extends AbstractClothing> clothingClass : clothingClasses) {
             Button button = new Button(this);
+            int resourceId=getResources().getIdentifier("button_"+clothingClass.getSimpleName().toLowerCase()+"_change","drawable",getPackageName());
+            button.setBackgroundResource(resourceId);
+            button.setLayoutParams(new LinearLayout.LayoutParams(180,180));
+            button.setTextSize(0);
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -189,6 +252,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         List<Class<? extends AbstractHeadFeature>> featureClasses = Arrays.asList(Beard.class, Eyes.class, Hair.class, Mouth.class);
         for (final Class<? extends AbstractHeadFeature> featureClass : featureClasses) {
             Button button = new Button(this);
+            int resourceId=getResources().getIdentifier("button_"+featureClass.getSimpleName().toLowerCase()+"_change","drawable",getPackageName());
+            button.setBackgroundResource(resourceId);
+            button.setLayoutParams(new LinearLayout.LayoutParams(180,180));
+            button.setTextSize(0);
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -214,6 +282,12 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                     .show();
             return;
         }
+        else{
+            Snackbar.make(findViewById(R.id.activity_play),
+                    "Your character has been saved!",Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+
         File file = new File(getFilesDir() + File.separator + "characters.json");
         ItemPersister<Character> persister = new CharacterPersister(file);
 
