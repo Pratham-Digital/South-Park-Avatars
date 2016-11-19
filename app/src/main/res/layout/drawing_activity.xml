@@ -37,10 +37,10 @@
     <Button
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:id="@+id/save"
+        android:id="@+id/save_clothing_button"
         android:background="@drawable/save"
         android:layout_alignTop="@+id/fill"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
         android:layout_alignParentEnd="true" />
 
     <Button
@@ -50,7 +50,7 @@
         android:id="@+id/fill"
         android:background="@drawable/fill"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/save"
+        android:layout_toStartOf="@+id/save_clothing_button"
         android:layout_marginEnd="19dp" />
 
     <ImageView

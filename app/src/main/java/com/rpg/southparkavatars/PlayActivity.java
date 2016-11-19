@@ -3,29 +3,19 @@ package com.rpg.southparkavatars;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.Skin;
-import com.rpg.southparkavatars.character.clothing.Clothing;
+import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.clothing.concrete.Back;
 import com.rpg.southparkavatars.character.clothing.concrete.Glasses;
 import com.rpg.southparkavatars.character.clothing.concrete.Hand;
@@ -106,7 +96,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     @Override
-    public void onClothesAsyncTaskFinished(List<Clothing> clothes) {
+    public void onClothesAsyncTaskFinished(List<AbstractClothing> clothes) {
         itemListLayout.removeAllViews();
         fillItemListWithClothes(clothes);
     }
@@ -123,8 +113,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         fillItemListWithSkinColors(skins);
     }
 
-    private void fillItemListWithClothes(List<Clothing> clothes) {
-        for (final Clothing clothing : clothes) {
+    private void fillItemListWithClothes(List<AbstractClothing> clothes) {
+        for (final AbstractClothing clothing : clothes) {
             ImageView imageView = new ImageView(this);
             Bitmap bitmap = BitmapLoader.load(clothing.getPath());
 
@@ -179,9 +169,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     private void generateClothingButtons() {
-        List<Class<? extends Clothing>> clothingClasses = Arrays.asList(Back.class, Glasses.class, Hand.class,
+        List<Class<? extends AbstractClothing>> clothingClasses = Arrays.asList(Back.class, Glasses.class, Hand.class,
                 Hat.class, Necklace.class, Pants.class, Shirt.class);
-        for (final Class<? extends Clothing> clothingClass : clothingClasses) {
+        for (final Class<? extends AbstractClothing> clothingClass : clothingClasses) {
             Button button = new Button(this);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

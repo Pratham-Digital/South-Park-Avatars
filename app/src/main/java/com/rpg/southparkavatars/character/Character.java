@@ -2,15 +2,13 @@ package com.rpg.southparkavatars.character;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.character.clothing.CompositeClothing;
+import com.rpg.southparkavatars.character.clothing.AbstractClothing;
+import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.observer.CharacterChangedEvent;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 
 import java.util.ArrayList;
@@ -22,13 +20,13 @@ public class Character implements ObservableCharacter {
     private Skin skin;
     private String uuid;
 
-    private CompositeClothing clothes = new CompositeClothing();
+    private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
     private transient List<CharacterObserver> observers = new ArrayList<>();
 
     @JsonCreator
     public Character(@JsonProperty("name") String name,
-                     @JsonProperty("compositeClothes") CompositeClothing clothes,
+                     @JsonProperty("compositeClothes") CompositeAbstractClothing clothes,
                      @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
                      @JsonProperty("skin") Skin skin,
                      @JsonProperty("uuid") String uuid) {
@@ -94,8 +92,8 @@ public class Character implements ObservableCharacter {
         return skin;
     }
 
-    public void addClothing(Clothing clothing) {
-        Clothing oldClothing = getSameTypeObjectAlreadyWorn(clothing);
+    public void addClothing(AbstractClothing clothing) {
+        AbstractClothing oldClothing = getSameTypeObjectAlreadyWorn(clothing);
 
         if (oldClothing != null) {
             clothes.remove(oldClothing);
@@ -105,14 +103,14 @@ public class Character implements ObservableCharacter {
         notifyAllObservers();
     }
 
-    public CompositeClothing getClothes() {
+    public CompositeAbstractClothing getClothes() {
         return clothes;
     }
 
-    private Clothing getSameTypeObjectAlreadyWorn(Clothing newClothing) {
+    private AbstractClothing getSameTypeObjectAlreadyWorn(AbstractClothing newClothing) {
         Class<?> newClass = newClothing.getClass();
 
-        for (Clothing clothing : clothes) {
+        for (AbstractClothing clothing : clothes) {
             if (clothing.getClass().equals(newClass)) {
                 return clothing;
             }
@@ -133,7 +131,7 @@ public class Character implements ObservableCharacter {
         return null;
     }
 
-    public void removeClothing(Clothing clothing) {
+    public void removeClothing(AbstractClothing clothing) {
         clothes.remove(clothing);
     }
 

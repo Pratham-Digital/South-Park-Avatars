@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.rpg.southparkavatars.newcloth.PaintFacade;
-
-import petrov.kristiyan.colorpicker.ColorPicker;
+import com.rpg.southparkavatars.new_cloth.PaintFacade;
 
 public class DrawingActivity extends AppCompatActivity {
 

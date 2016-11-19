@@ -4,7 +4,7 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.rpg.southparkavatars.character.clothing.Clothing;
+import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoadClothesAsyncTask<T extends Clothing> extends AsyncTask<Void, Void, List<Clothing>> {
+public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<Void, Void, List<AbstractClothing>> {
     private AssetManager assetManager;
     private String path;
     private Class<T> clothingClass;
@@ -28,8 +28,8 @@ public class LoadClothesAsyncTask<T extends Clothing> extends AsyncTask<Void, Vo
     }
 
     @Override
-    protected List<Clothing> doInBackground(Void... params) {
-        List<Clothing> clothes = new ArrayList<>();
+    protected List<AbstractClothing> doInBackground(Void... params) {
+        List<AbstractClothing> clothes = new ArrayList<>();
 
         for (String item : getItemNameList()) {
             String filePath = path + '/' + item;
@@ -63,7 +63,7 @@ public class LoadClothesAsyncTask<T extends Clothing> extends AsyncTask<Void, Vo
     }
 
     @Override
-    protected void onPostExecute(List<Clothing> clothes) {
+    protected void onPostExecute(List<AbstractClothing> clothes) {
         super.onPostExecute(clothes);
         callback.onClothesAsyncTaskFinished(clothes);
     }

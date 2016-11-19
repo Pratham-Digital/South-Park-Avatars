@@ -1,42 +1,29 @@
 package com.rpg.southparkavatars.character.clothing;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.rpg.southparkavatars.character.DrawableItem;
-import com.rpg.southparkavatars.character.clothing.concrete.Back;
-import com.rpg.southparkavatars.character.clothing.concrete.Glasses;
-import com.rpg.southparkavatars.character.clothing.concrete.Hand;
-import com.rpg.southparkavatars.character.clothing.concrete.Hat;
-import com.rpg.southparkavatars.character.clothing.concrete.Necklace;
-import com.rpg.southparkavatars.character.clothing.concrete.Pants;
-import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
+import java.io.File;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Back.class, name = "back"),
-        @JsonSubTypes.Type(value = Glasses.class, name = "glasses"),
-        @JsonSubTypes.Type(value = Hand.class, name = "hand"),
-        @JsonSubTypes.Type(value = Hat.class, name = "hat"),
-        @JsonSubTypes.Type(value = Necklace.class, name = "necklace"),
-        @JsonSubTypes.Type(value = Pants.class, name = "pants"),
-        @JsonSubTypes.Type(value = Shirt.class, name = "shirt")
-})
-public abstract class Clothing extends DrawableItem {
-    private int coolness;
+public enum Clothing {
+    BACK("clothing" + File.separator + "back", 0),
+    GLASSES("clothing" + File.separator + "glasses", 0),
+    HAND("clothing" + File.separator + "hand", 0),
+    HAT("clothing" + File.separator + "hat", 170),
+    NECKLACE("clothing" + File.separator + "necklace", 0),
+    PANTS("clothing" + File.separator + "pants", 80),
+    SHIRT("clothing" + File.separator + "shirt", 190);
 
-    @JsonCreator
-    public Clothing(@JsonProperty("coolness") int coolness, @JsonProperty("path") String path) {
-        this.coolness = coolness;
+    private String path;
+    private int typeDimensionValue;
+
+    Clothing(String path, int typeDimensionValue) {
         this.path = path;
-    }
-
-    public int getCoolness() {
-        return coolness;
+        this.typeDimensionValue = typeDimensionValue;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public int getTypeDimensionValue() {
+        return typeDimensionValue;
     }
 }

@@ -1,10 +1,9 @@
 package com.rpg.southparkavatars.character.clothing.concrete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rpg.southparkavatars.R;
-import com.rpg.southparkavatars.character.clothing.Clothing;
+import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 
-public class Hand extends Clothing {
+public class Hand extends AbstractClothing {
     public Hand(@JsonProperty("coolness") int coolness, @JsonProperty("path") String path) {
         super(coolness, path);
 

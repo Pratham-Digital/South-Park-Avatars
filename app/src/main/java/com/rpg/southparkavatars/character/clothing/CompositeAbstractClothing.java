@@ -1,33 +1,30 @@
 package com.rpg.southparkavatars.character.clothing;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CompositeClothing extends Clothing implements Iterable<Clothing> {
+public class CompositeAbstractClothing extends AbstractClothing implements Iterable<AbstractClothing> {
     @JsonProperty("coolness")
     private int coolness = 0;
     @JsonProperty("clothes")
-    private List<Clothing> clothes = new ArrayList<>();
+    private List<AbstractClothing> clothes = new ArrayList<>();
 
-    public CompositeClothing() {
+    public CompositeAbstractClothing() {
         super(0, "");
     }
 
-    public void add(Clothing clothing) {
+    public void add(AbstractClothing clothing) {
         clothes.add(clothing);
     }
 
-    public void remove(Clothing clothing) {
+    public void remove(AbstractClothing clothing) {
         clothes.remove(clothing);
     }
 
-    public Clothing getChild(int index) {
+    public AbstractClothing getChild(int index) {
         if (index >= 0 && index < clothes.size()) {
             return clothes.get(index);
         } else {
@@ -36,7 +33,7 @@ public class CompositeClothing extends Clothing implements Iterable<Clothing> {
     }
 
     @Override
-    public Iterator<Clothing> iterator() {
+    public Iterator<AbstractClothing> iterator() {
         return clothes.iterator();
     }
 
@@ -45,7 +42,7 @@ public class CompositeClothing extends Clothing implements Iterable<Clothing> {
         return coolness;
     }
 
-    public List<Clothing> getClothes() {
+    public List<AbstractClothing> getClothes() {
         return clothes;
     }
 }

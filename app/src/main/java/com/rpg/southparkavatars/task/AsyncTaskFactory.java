@@ -1,11 +1,10 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 
-import com.rpg.southparkavatars.character.clothing.Clothes;
-import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.clothing.Clothing;
+import com.rpg.southparkavatars.character.head.HeadFeatures;
+import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 
 public class AsyncTaskFactory {
@@ -17,8 +16,8 @@ public class AsyncTaskFactory {
         this.assetManager = assetManager;
     }
 
-    public <T extends Clothing> LoadClothesAsyncTask<T> createClothingLoadingTask(Class<T> clothingClass) {
-        String path = Clothes.valueOf(clothingClass.getSimpleName().toUpperCase()).getPath();
+    public <T extends AbstractClothing> LoadClothesAsyncTask<T> createClothingLoadingTask(Class<T> clothingClass) {
+        String path = Clothing.valueOf(clothingClass.getSimpleName().toUpperCase()).getPath();
         return new LoadClothesAsyncTask<>(path, callback, assetManager, clothingClass);
     }
 
