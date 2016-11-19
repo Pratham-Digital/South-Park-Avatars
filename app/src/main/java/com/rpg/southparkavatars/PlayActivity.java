@@ -46,7 +46,7 @@ import java.util.List;
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener, CharacterObserver {
     private Character character;
     private AsyncTaskFactory asyncTaskFactory;
-    private AssetManager assetManager;
+    private BitmapLoader bitmapLoader;
 
     private CharacterView characterView;
     private LinearLayout itemListLayout;
@@ -62,7 +62,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         character = new Character();
         character.attach(this);
 
-        asyncTaskFactory = new AsyncTaskFactory(this, getAssets());
+        bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
+        asyncTaskFactory = new AsyncTaskFactory(this, getAssets(), getFilesDir());
 
         characterView = (CharacterView) findViewById(R.id.character_view);
 
@@ -71,7 +72,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
         nameEditText = (EditText) findViewById(R.id.name_edit_text);
 
-        asyncTaskFactory.createClothingLoadingTask(Hat.class)
+        asyncTaskFactory.createClothingLoadingTask(Shirt.class)
                 .execute();
 
         initButtons();
@@ -116,7 +117,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithClothes(List<AbstractClothing> clothes) {
         for (final AbstractClothing clothing : clothes) {
             ImageView imageView = new ImageView(this);
-            Bitmap bitmap = BitmapLoader.load(clothing.getPath());
+            Bitmap bitmap = bitmapLoader.load(clothing.getPath());
 
             imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +134,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithHeadFeatures(List<AbstractHeadFeature> features) {
         for (final AbstractHeadFeature feature : features) {
             ImageView imageView = new ImageView(this);
-            Bitmap bitmap = BitmapLoader.load(feature.getPath());
+            Bitmap bitmap = bitmapLoader.load(feature.getPath());
 
             imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +150,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithSkinColors(List<Skin> skins) {
         for (final Skin skin : skins) {
             ImageView imageView = new ImageView(this);
-            Bitmap bitmap = BitmapLoader.load(skin.getPath());
+            Bitmap bitmap = bitmapLoader.load(skin.getPath());
 
             imageView.setImageBitmap(bitmap);
             imageView.setOnClickListener(new View.OnClickListener() {

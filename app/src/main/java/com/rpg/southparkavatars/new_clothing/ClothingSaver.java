@@ -1,4 +1,4 @@
-package com.rpg.southparkavatars.new_cloth;
+package com.rpg.southparkavatars.new_clothing;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,15 +8,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.rpg.southparkavatars.R;
-import com.rpg.southparkavatars.new_cloth.CustomClothing;
+import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.view.PaintingView;
 
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 
 public class ClothingSaver {
-
     private Context context;
     private View view;
     private Activity activity;
@@ -41,7 +43,11 @@ public class ClothingSaver {
                 File file = new File(path);
 
                 try (FileOutputStream ostream = new FileOutputStream(file)) {
-                    paintingView.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, ostream);
+                    Clothing type = customClothing.getClothingType();
+                    Bitmap bitmap = paintingView.getBitmap();
+
+                    bitmap = Bitmap.createScaledBitmap(bitmap, type.getWidth(), type.getHeight(), false);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, ostream);
                     ostream.flush();
 
                     Toast.makeText(context, "image saved", Toast.LENGTH_LONG)
@@ -56,7 +62,7 @@ public class ClothingSaver {
     }
 
     public String filesInFolderCountString() {
-        final int PUSH_START_COUNTING = 15;
+        final int PUSH_START_COUNTING = 21;
         int numberOfFiles = 0;
         File dir = customClothing.getDirectory();
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.rpg.southparkavatars.new_cloth.ClothingOperationsFacade;
+import com.rpg.southparkavatars.new_clothing.ClothingOperationsFacade;
 
 public class DrawingActivity extends AppCompatActivity {
     private ClothingOperationsFacade clothingOperationsFacade;

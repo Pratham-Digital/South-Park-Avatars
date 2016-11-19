@@ -1,4 +1,4 @@
-package com.rpg.southparkavatars.new_cloth;
+package com.rpg.southparkavatars.new_clothing;
 
 import android.app.Activity;
 import android.content.Context;

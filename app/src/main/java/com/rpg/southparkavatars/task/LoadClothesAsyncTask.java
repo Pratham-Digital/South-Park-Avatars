@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -18,13 +19,15 @@ public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<
     private String path;
     private Class<T> clothingClass;
     private AsyncTaskListener callback;
+    private File internal;
 
-    public LoadClothesAsyncTask(String path, AsyncTaskListener callback, AssetManager assetManager,
+    public LoadClothesAsyncTask(String path, AsyncTaskListener callback, AssetManager assetManager, File internal,
                                 Class<T> clothingClass) {
         this.assetManager = assetManager;
         this.path = path;
         this.clothingClass = clothingClass;
         this.callback = callback;
+        this.internal = internal;
     }
 
     @Override
@@ -55,7 +58,12 @@ public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<
     private List<String> getItemNameList() {
         List<String> itemNameList = new ArrayList<>();
         try {
-            itemNameList = Arrays.asList(assetManager.list(path));
+            itemNameList = new ArrayList<>(Arrays.asList(assetManager.list(path)));
+
+            String[] fileNames = internal.list();
+            if (fileNames != null) {
+                itemNameList.addAll(Arrays.asList(internal.list()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

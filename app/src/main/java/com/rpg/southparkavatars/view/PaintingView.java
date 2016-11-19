@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import com.rpg.southparkavatars.ClothingTypePickerActivity;
 import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.new_cloth.AsyncPaintTask;
-import com.rpg.southparkavatars.new_cloth.DrawState;
+import com.rpg.southparkavatars.new_clothing.AsyncPaintTask;
+import com.rpg.southparkavatars.new_clothing.DrawState;
 import com.rpg.southparkavatars.observer.CustomClothingEventArgs;
 import com.rpg.southparkavatars.observer.CustomClothingObserver;
 

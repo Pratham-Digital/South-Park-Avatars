@@ -1,6 +1,6 @@
 package com.rpg.southparkavatars.observer;
 
-import com.rpg.southparkavatars.new_cloth.DrawState;
+import com.rpg.southparkavatars.new_clothing.DrawState;
 
 public class CustomClothingEventArgs {
     private int globalColor;

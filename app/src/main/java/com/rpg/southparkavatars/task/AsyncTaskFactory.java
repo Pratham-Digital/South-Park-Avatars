@@ -7,18 +7,23 @@ import com.rpg.southparkavatars.character.head.HeadFeatures;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
+import java.io.File;
+
 public class AsyncTaskFactory {
     private AsyncTaskListener callback;
     private AssetManager assetManager;
+    private File internalStorage;
 
-    public AsyncTaskFactory(AsyncTaskListener callback, AssetManager assetManager) {
+    public AsyncTaskFactory(AsyncTaskListener callback, AssetManager assetManager, File internalStorage) {
         this.callback = callback;
         this.assetManager = assetManager;
+        this.internalStorage = internalStorage;
     }
 
     public <T extends AbstractClothing> LoadClothesAsyncTask<T> createClothingLoadingTask(Class<T> clothingClass) {
         String path = Clothing.valueOf(clothingClass.getSimpleName().toUpperCase()).getPath();
-        return new LoadClothesAsyncTask<>(path, callback, assetManager, clothingClass);
+        File concreteClothingPath = new File(internalStorage.getPath() + File.separator + path);
+        return new LoadClothesAsyncTask<>(path, callback, assetManager, concreteClothingPath, clothingClass);
     }
 
     public <T extends AbstractHeadFeature> LoadHeadFeaturesAsyncTask<T> createHeadFeaturesLoadingTask(Class<T> headFeatureClass) {

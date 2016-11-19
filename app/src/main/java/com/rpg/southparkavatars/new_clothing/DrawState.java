@@ -1,4 +1,4 @@
-package com.rpg.southparkavatars.new_cloth;
+package com.rpg.southparkavatars.new_clothing;
 
 public enum DrawState {
     COLORING, DRAWING

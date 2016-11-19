@@ -6,12 +6,12 @@ import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
 import java.util.List;
 
-public class CharacterChangedEvent {
+public class CharacterChangedEventArgs {
     private List<AbstractHeadFeature> headFeatures;
     private List<AbstractClothing> clothes;
     private Skin skin;
 
-    public CharacterChangedEvent(List<AbstractHeadFeature> headFeatures, List<AbstractClothing> clothes, Skin skin) {
+    public CharacterChangedEventArgs(List<AbstractHeadFeature> headFeatures, List<AbstractClothing> clothes, Skin skin) {
         this.headFeatures = headFeatures;
         this.clothes = clothes;
         this.skin = skin;

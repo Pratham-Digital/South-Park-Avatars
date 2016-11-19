@@ -30,6 +30,7 @@ public class CharacterView extends LinearLayout {
     private Canvas canvas;
     private Bitmap bitmap;
     private Paint paint;
+    private BitmapLoader bitmapLoader;
 
     private RectF rect;
 
@@ -62,7 +63,7 @@ public class CharacterView extends LinearLayout {
         assetManager = parent.getAssets();
         rect = new RectF();
 
-        BitmapLoader.setAssetManager(assetManager);
+        bitmapLoader = new BitmapLoader(assetManager, parent.getFilesDir());
     }
 
     private void initCanvas() {
@@ -87,7 +88,7 @@ public class CharacterView extends LinearLayout {
     private <T extends DrawableItem> void drawItems(List<T> items) {
         for (T feature : items) {
             float scale = feature.getScale();
-            Bitmap bitmap = BitmapLoader.load(feature.getPath());
+            Bitmap bitmap = bitmapLoader.load(feature.getPath());
 
             float width = bitmap.getWidth();
             float height = bitmap.getHeight();
@@ -102,7 +103,7 @@ public class CharacterView extends LinearLayout {
 
 
     private <T extends DrawableItem> void drawItem(T item) {
-        Bitmap bitmap = BitmapLoader.load(item.getPath());
+        Bitmap bitmap = bitmapLoader.load(item.getPath());
 
         float scale = item.getScale();
         float width = bitmap.getWidth();
