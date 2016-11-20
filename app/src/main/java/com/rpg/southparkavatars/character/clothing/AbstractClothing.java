@@ -33,21 +33,25 @@ public abstract class AbstractClothing extends DrawableItem {
         this.path = path;
     }
 
+    public AbstractClothing(AbstractClothing abstractClothing) {
+        this.coolness = abstractClothing.getCoolness();
+        this.path = new String(abstractClothing.getPath());
+    }
+
     public int getCoolness() {
         return coolness;
     }
 
     public void setCoolness(int coolness) {
-        if(this.coolness ==0)
-            this.coolness=coolness;
+        if (this.coolness == 0)
+            this.coolness = coolness;
     }
-
 
     public String getPath() {
         return path;
     }
 
-    public void accept(ClothingVisitor visitor){
+    public void accept(ClothingVisitor visitor) {
         visitor.visit(this);
     }
 }
