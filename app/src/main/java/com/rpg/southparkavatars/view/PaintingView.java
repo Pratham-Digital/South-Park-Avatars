@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -115,7 +116,7 @@ public class PaintingView extends View implements CustomClothingObserver {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        canvas.drawColor(Color.TRANSPARENT);
         canvas.drawBitmap(bitmap, 0, 0, mBitmapPaint);
         canvas.drawPath(mPath, mPaint);
     }
