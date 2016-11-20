@@ -33,11 +33,11 @@ public interface AbstractCharacter extends ObservableItem {
 
     void copy(Character character);
 
+    void removeClothingType(Class<? extends AbstractClothing> clothingClass);
 
+    void removeHeadFeatureType(Class<? extends AbstractHeadFeature> headFeatureClass);
 
     void setSkinFeatures(Skin skin, Head head, Hand hand);
-
-    Character getRawCharacter();
 
     Head getHead();
 
@@ -50,4 +50,6 @@ public interface AbstractCharacter extends ObservableItem {
     Memento saveToMemento();
 
     void restoreFromMemento(Memento memento);
+
+    Character saveable();
 }

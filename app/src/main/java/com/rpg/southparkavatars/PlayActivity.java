@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -116,6 +117,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         initButtons();
         loadPersistedCharacter();
 
+        character.attach(this);
         characterView.draw(character);
     }
 
@@ -147,7 +149,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                                                                                                                         new Character()
                                                                                                                 ))))))))))))));
 
-        character.attach(this);
     }
 
     private void loadPersistedCharacter() {
@@ -196,7 +197,19 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         layout.setBackground(bitmaps.get(i));
     }
 
-    private void fillItemListWithClothes(List<AbstractClothing> clothes) {
+    private void fillItemListWithClothes(final List<AbstractClothing> clothes) {
+        Button button = new Button(this);
+        button.setText("del");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                caretaker.addMemento(character.saveToMemento());
+                character.removeClothingType(clothes.get(0).getClass());
+            }
+        });
+
+        itemListLayout.addView(button);
+
         for (final AbstractClothing clothing : clothes) {
             ImageView imageView = new ImageView(this);
             Bitmap bitmap = bitmapLoader.load(clothing.getPath());
@@ -214,7 +227,22 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         }
     }
 
-    private void fillItemListWithHeadFeatures(List<AbstractHeadFeature> features) {
+    private void fillItemListWithHeadFeatures(final List<AbstractHeadFeature> features) {
+        Class<? extends AbstractHeadFeature> featureClass = features.get(0).getClass();
+        if (featureClass == Beard.class || featureClass == Hair.class) {
+            Button button = new Button(this);
+            button.setText("del");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    caretaker.addMemento(character.saveToMemento());
+                    character.removeHeadFeatureType(features.get(0).getClass());
+                }
+            });
+
+            itemListLayout.addView(button);
+        }
+
         for (final AbstractHeadFeature feature : features) {
             ImageView imageView = new ImageView(this);
             Bitmap bitmap = bitmapLoader.load(feature.getPath());
@@ -333,6 +361,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     public void onSaveButtonClick(View view) {
+        hideKeyboard(view);
+
         String name = String.valueOf(nameEditText.getText());
         if (StringUtils.isEmpty(name)) {
             Snackbar.make(findViewById(R.id.activity_play),
@@ -349,8 +379,12 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         ItemPersister<Character> persister = new CharacterPersister(file);
 
         character.setName(name);
-        persister.save(character.getRawCharacter());
+        persister.save(character.saveable());
         characterView.saveAsPNG(character);
+    }
+
+    private void hideKeyboard(View view) {
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
     public void onUndoButtonClick(View view) {

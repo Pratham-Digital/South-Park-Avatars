@@ -79,7 +79,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
 
     public void onEditButtonClicked(View view) {
         Intent intent = new Intent(LoadCharacterActivity.this, PlayActivity.class);
-        String serialized = persister.serialize(currentCharacter.getRawCharacter());
+        String serialized = persister.serialize(currentCharacter.saveable());
 
         intent.putExtra("character", serialized);
         startActivity(intent);

@@ -23,12 +23,8 @@ public abstract class CharacterDecorator implements AbstractCharacter {
         this.itemClass = itemClass;
     }
 
-    public Character getRawCharacter() {
-        if (character.getClass() == Character.class) {
-            return (Character) character;
-        } else {
-            return character.getRawCharacter();
-        }
+    public Character saveable() {
+        return character.saveable();
     }
 
     @Override
@@ -103,6 +99,16 @@ public abstract class CharacterDecorator implements AbstractCharacter {
     @Override
     public void setSkinFeatures(Skin skin, Head head, Hand hand) {
         character.setSkinFeatures(skin, head, hand);
+    }
+
+    @Override
+    public void removeClothingType(Class<? extends AbstractClothing> clothingClass) {
+        character.removeClothingType(clothingClass);
+    }
+
+    @Override
+    public void removeHeadFeatureType(Class<? extends AbstractHeadFeature> headFeatureClass) {
+        character.removeHeadFeatureType(headFeatureClass);
     }
 
     @Override

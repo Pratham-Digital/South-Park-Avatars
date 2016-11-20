@@ -65,6 +65,7 @@ public class Character implements AbstractCharacter {
         notifyAllObservers();
     }
 
+    @Override
     public void copy(Character character) {
         name = character.name;
         clothes = character.clothes;
@@ -103,6 +104,26 @@ public class Character implements AbstractCharacter {
         notifyAllObservers();
     }
 
+    public void removeClothingType(Class<? extends AbstractClothing> clothingClass) {
+        for (AbstractClothing clothing : clothes) {
+            if (clothing.getClass() == clothingClass) {
+                clothes.remove(clothing);
+                notifyAllObservers();
+                return;
+            }
+        }
+    }
+
+    public void removeHeadFeatureType(Class<? extends AbstractHeadFeature> headFeatureClass) {
+        for (AbstractHeadFeature feature : headFeatures) {
+            if (feature.getClass() == headFeatureClass) {
+                headFeatures.remove(feature);
+                notifyAllObservers();
+                return;
+            }
+        }
+    }
+
     public Memento saveToMemento() {
         return Memento.builder()
                 .withHand(hand)
@@ -123,11 +144,6 @@ public class Character implements AbstractCharacter {
         headFeatures = memento.getHeadFeatures();
 
         notifyAllObservers();
-    }
-
-    @Override
-    public Character getRawCharacter() {
-        return this;
     }
 
     public String getName() {
@@ -204,6 +220,10 @@ public class Character implements AbstractCharacter {
 
         clothes.add(clothing);
         notifyAllObservers();
+    }
+
+    public Character saveable() {
+        return this;
     }
 
     public List<AbstractClothing> getClothes() {
