@@ -8,6 +8,7 @@ import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
+import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.observer.ItemObserver;
 
 import java.util.List;
@@ -111,5 +112,15 @@ public abstract class CharacterDecorator implements AbstractCharacter {
     @Override
     public Hand getHand() {
         return character.getHand();
+    }
+
+    @Override
+    public void setState(VoiceState state) {
+        character.setState(state);
+    }
+
+    @Override
+    public int handleVoice() {
+        return character.handleVoice();
     }
 }

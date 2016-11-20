@@ -4,6 +4,7 @@ import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
+import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.observer.ObservableItem;
 
 import java.util.List;
@@ -38,4 +39,8 @@ public interface AbstractCharacter extends ObservableItem {
     Head getHead();
 
     Hand getHand();
+
+    void setState(VoiceState state);
+
+    int handleVoice();
 }

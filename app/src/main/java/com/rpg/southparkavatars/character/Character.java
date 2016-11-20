@@ -13,7 +13,7 @@ import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.character.voice.Voice;
+import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
@@ -31,7 +31,7 @@ public class Character implements AbstractCharacter {
     private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
-    private transient Voice currentVoice;
+    private transient VoiceState currentVoiceState;
     private transient List<CharacterObserver> observers = new ArrayList<>();
 
     @JsonCreator
@@ -72,6 +72,14 @@ public class Character implements AbstractCharacter {
         uuid = character.uuid;
 
         notifyAllObservers();
+    }
+
+    public void setState(VoiceState state) {
+        currentVoiceState = state;
+    }
+
+    public int handleVoice() {
+        return currentVoiceState.handleVoice();
     }
 
     @Override
@@ -115,12 +123,8 @@ public class Character implements AbstractCharacter {
         return skin.getPath();
     }
 
-    public Voice getCurrentVoice() {
-        return currentVoice;
-    }
-
-    public void changeVoice(Voice voice) {
-        this.currentVoice = voice;
+    public VoiceState getCurrentVoiceState() {
+        return currentVoiceState;
     }
 
     public Skin getSkin() {

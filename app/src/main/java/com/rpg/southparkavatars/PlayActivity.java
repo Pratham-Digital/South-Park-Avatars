@@ -3,11 +3,11 @@ package com.rpg.southparkavatars;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.speech.tts.Voice;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -50,12 +50,12 @@ import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.character.voice.AsianVoice;
-import com.rpg.southparkavatars.character.voice.BlackVoice;
-import com.rpg.southparkavatars.character.voice.JerseyVoice;
-import com.rpg.southparkavatars.character.voice.LatinVoice;
-import com.rpg.southparkavatars.character.voice.Voice;
-import com.rpg.southparkavatars.character.voice.WhiteVoice;
+import com.rpg.southparkavatars.character.voice.AsianVoiceState;
+import com.rpg.southparkavatars.character.voice.BlackVoiceState;
+import com.rpg.southparkavatars.character.voice.JerseyVoiceState;
+import com.rpg.southparkavatars.character.voice.LatinVoiceState;
+import com.rpg.southparkavatars.character.voice.VoiceState;
+import com.rpg.southparkavatars.character.voice.WhiteVoiceState;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
@@ -233,35 +233,29 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 @Override
                 public void onClick(View v) {
                     stopPlaying();
+
                     String colorName = skin.getColor().toString().toLowerCase();
-
-                    switch (colorName) {
-                        case "white":
-                            character.getRawCharacter().changeVoice(new WhiteVoice());
-                            break;
-                        case "jersey":
-                            character.getRawCharacter().changeVoice(new JerseyVoice());
-                            break;
-                        case "asian":
-                            character.getRawCharacter().changeVoice(new AsianVoice());
-                            break;
-                        case "black":
-                            character.getRawCharacter().changeVoice(new BlackVoice());
-                            break;
-                        case "latin":
-                            character.getRawCharacter().changeVoice(new LatinVoice());
-                            break;
-
-                    }
-                    Voice voice = character.getRawCharacter().getCurrentVoice();
-                    mediaPlayer = MediaPlayer.create(PlayActivity.this, voice.handleVoice());
-                    mediaPlayer.start();
+                    selectCharacterVoice(colorName);
 
                     character.setSkinFeatures(
                             skin,
                             new Head(HeadFeature.HEAD.getPath() + File.separator + colorName + ".png"),
                             new com.rpg.southparkavatars.character.head.concrete.Hand(HeadFeature.HAND.getPath() + File.separator + colorName + ".png")
                     );
+                }
+
+                @NonNull
+                private String selectCharacterVoice(String colorName) {
+                    try {
+                        Class<?> voiceClass = Class.forName("com.rpg.southparkavatars.character.voice." + StringUtils.capitalize(colorName) + "VoiceState");
+                        character.setState((VoiceState) voiceClass.newInstance());
+
+                        mediaPlayer = MediaPlayer.create(PlayActivity.this, character.handleVoice());
+                        mediaPlayer.start();
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    return colorName;
                 }
             });
 
@@ -349,7 +343,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         character.setName(name);
         persister.save(character.getRawCharacter());
         characterView.saveAsPNG(character);
-//        Character[] characters = persister.loadAll();
     }
 
     @Override
