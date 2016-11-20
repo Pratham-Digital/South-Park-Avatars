@@ -1,12 +1,15 @@
 package com.rpg.southparkavatars;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,10 +24,13 @@ import java.io.File;
 public class LoadCharacterActivity extends AppCompatActivity {
     private LinearLayout characterNamesLayout;
     private ImageView previewImage;
+    private ImageButton removeButton;
 
     private BitmapLoader bitmapLoader;
     private AbstractCharacter currentCharacter;
     private ItemPersister<Character> persister;
+
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +39,32 @@ public class LoadCharacterActivity extends AppCompatActivity {
 
         characterNamesLayout = (LinearLayout) findViewById(R.id.character_names_layout);
         previewImage = (ImageView) findViewById(R.id.character_preview_image);
+        removeButton = (ImageButton) findViewById(R.id.remove_image);
 
         bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
 
         File file = new File(getFilesDir() + File.separator + "characters.json");
         persister = new CharacterPersister(file);
 
+        buildAlertDialog();
         loadPersistedCharacters();
+    }
 
-//        File file = new File(getFilesDir().getPath() + File.separator + "previews");
-
-//        String[] files = file.list();
-//        if (files != null) {
-//            Log.i("NUMBER:", files.length + "");
-//        }
+    private void buildAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        dialog = builder.setMessage("Are you sure you want to delete this character?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeAndReload();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create();
     }
 
     private void loadPersistedCharacters() {
@@ -70,6 +88,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
                         }
 
                         currentCharacter = character;
+                        removeButton.setVisibility(View.VISIBLE);
                     }
                 });
                 characterNamesLayout.addView(characterButton);
@@ -84,6 +103,21 @@ public class LoadCharacterActivity extends AppCompatActivity {
         intent.putExtra("character", serialized);
         startActivity(intent);
         finish();
+    }
+
+    public void onRemoveButtonClicked(View view) {
+        dialog.show();
+    }
+
+    private void removeAndReload() {
+        persister.remove(currentCharacter.saveable());
+
+        currentCharacter = null;
+        previewImage.setImageBitmap(null);
+        removeButton.setVisibility(View.INVISIBLE);
+        characterNamesLayout.removeAllViews();
+
+        loadPersistedCharacters();
     }
 }
 

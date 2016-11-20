@@ -4,34 +4,47 @@
     android:id="@+id/activity_load_character"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_8"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:background="@drawable/background_8"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.rpg.southparkavatars.LoadCharacterActivity">
 
     <Button
-        android:onClick="onEditButtonClicked"
         android:layout_width="match_parent"
-        android:background="#a56118"
-        android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:text="edit" />
+        android:background="#a56118"
+        android:onClick="onEditButtonClicked"
+        android:text="edit"
+        android:textColor="@color/white" />
 
     <ImageView
         android:id="@+id/character_preview_image"
         android:layout_width="match_parent"
-        android:paddingTop="100dp"
+        android:layout_height="500dp"
         android:paddingLeft="20dp"
-        android:layout_height="500dp" />
+        android:paddingTop="100dp" />
+
+    <ImageButton
+        android:id="@+id/remove_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/character_preview_image"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="-65dp"
+        android:onClick="onRemoveButtonClicked"
+        android:background="@drawable/remove"
+        android:visibility="invisible" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/character_preview_image"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_below="@id/character_preview_image"
         android:scrollbars="none"
         android:textAlignment="viewStart">
 

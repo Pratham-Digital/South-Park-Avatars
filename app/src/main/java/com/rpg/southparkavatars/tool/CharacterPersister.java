@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 public class CharacterPersister implements ItemPersister<Character> {
     private File path;
@@ -95,5 +96,27 @@ public class CharacterPersister implements ItemPersister<Character> {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void remove(Character character) {
+        Character[] characters = readCharacters();
+        int index = indexOfCharacter(characters, character);
+
+        if (index != -1 && characters != null) {
+            characters = ArrayUtils.remove(characters, index);
+        }
+
+        writeCharacter(characters);
+    }
+
+    public int indexOfCharacter(Character[] characters, Character character) {
+        for (int i = 0; i < characters.length; i++) {
+            if (characters[i].getUuid().equals(character.getUuid())) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }
