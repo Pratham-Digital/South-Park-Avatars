@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.rpg.southparkavatars.character.AbstractCharacter;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
@@ -22,7 +23,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
     private ImageView previewImage;
 
     private BitmapLoader bitmapLoader;
-    private Character currentCharacter;
+    private AbstractCharacter currentCharacter;
     private ItemPersister<Character> persister;
 
     @Override
@@ -49,10 +50,10 @@ public class LoadCharacterActivity extends AppCompatActivity {
     }
 
     private void loadPersistedCharacters() {
-        Character[] characters = persister.loadAll();
+        AbstractCharacter[] characters = persister.loadAll();
 
         if (characters != null) {
-            for (final Character character : characters) {
+            for (final AbstractCharacter character : characters) {
                 Button characterButton = new Button(this);
                 characterButton.setText(character.getName());
                 characterButton.setTextColor(Color.WHITE);
@@ -78,7 +79,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
 
     public void onEditButtonClicked(View view) {
         Intent intent = new Intent(LoadCharacterActivity.this, PlayActivity.class);
-        String serialized = persister.serialize(currentCharacter);
+        String serialized = persister.serialize(currentCharacter.getRawCharacter());
 
         intent.putExtra("character", serialized);
         startActivity(intent);

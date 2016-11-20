@@ -1,31 +1,37 @@
 package com.rpg.southparkavatars.character;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
-import com.rpg.southparkavatars.character.head.HeadFeatures;
+import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
+import com.rpg.southparkavatars.character.head.concrete.Hand;
+import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.character.voice.Voice;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
-import com.rpg.southparkavatars.observer.ObservableItem;
 import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class Character implements ObservableItem {
+public class Character implements AbstractCharacter {
     private String name;
     private Skin skin;
+    private Head head;
+    private Hand hand;
     private String uuid;
     private transient Voice currentVoice;
+
     private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
+
     private transient List<CharacterObserver> observers = new ArrayList<>();
 
     @JsonCreator
@@ -33,26 +39,26 @@ public class Character implements ObservableItem {
                      @JsonProperty("compositeClothes") CompositeAbstractClothing clothes,
                      @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
                      @JsonProperty("skin") Skin skin,
+                     @JsonProperty("head") Head head,
+                     @JsonProperty("hand") Hand hand,
                      @JsonProperty("uuid") String uuid) {
         this.name = name;
         this.clothes = clothes;
         this.headFeatures = headFeatures;
         this.skin = skin;
+        this.head = head;
+        this.hand = hand;
         this.uuid = uuid;
     }
 
-    public Voice getCurrentVoice() {
-        return currentVoice;
-    }
 
-    public void changeVoice(Voice voice){
-        this.currentVoice=voice;
-    }
 
     public Character() {
         skin = new Skin(Skin.Color.WHITE);
-        headFeatures.add(new Eyes(HeadFeatures.EYES.getDefaultPath()));
-        headFeatures.add(new Mouth(HeadFeatures.MOUTH.getDefaultPath()));
+        headFeatures.add(new Eyes(HeadFeature.EYES.getDefaultPath()));
+        headFeatures.add(new Mouth(HeadFeature.MOUTH.getDefaultPath()));
+        headFeatures.add(new Head(HeadFeature.HEAD.getDefaultPath()));
+        headFeatures.add(new Hand(HeadFeature.HAND.getDefaultPath()));
 
         uuid = UniqueIdentifierGenerator.getInstance().generateUuid();
 
@@ -81,9 +87,17 @@ public class Character implements ObservableItem {
         }
     }
 
-    public void setSkin(Skin skin) {
+    public void setSkinFeatures(Skin skin, Head head, Hand hand) {
         this.skin = skin;
+        this.hand = hand;
+        this.head = head;
+
         notifyAllObservers();
+    }
+
+    @Override
+    public Character getRawCharacter() {
+        return this;
     }
 
     public String getName() {
@@ -102,12 +116,57 @@ public class Character implements ObservableItem {
         return skin.getPath();
     }
 
+    public Voice getCurrentVoice() {
+        return currentVoice;
+    }
+
+    public void changeVoice(Voice voice){
+        this.currentVoice=voice;
+    }
+
     public Skin getSkin() {
         return skin;
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public DrawableItem find(Class<?> classToBeFound) {
+        if (AbstractClothing.class.isAssignableFrom(classToBeFound)) {
+            DrawableItem clothing = findClothing(classToBeFound);
+            if (clothing != null) return clothing;
+        } else if (AbstractHeadFeature.class.isAssignableFrom(classToBeFound)) {
+            DrawableItem feature = findHeadFeature(classToBeFound);
+            if (feature != null) return feature;
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private DrawableItem findHeadFeature(Class<?> classToBeFound) {
+        for (AbstractHeadFeature feature : headFeatures) {
+            if (feature.getClass() == classToBeFound) {
+                return feature;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private DrawableItem findClothing(Class<?> classToBeFound) {
+        for (AbstractClothing clothing : clothes) {
+            if (clothing.getClass() == classToBeFound) {
+                return clothing;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<DrawableItem> display() {
+        return new ArrayList<DrawableItem>();
     }
 
     public void addClothing(AbstractClothing clothing) {
@@ -121,7 +180,12 @@ public class Character implements ObservableItem {
         notifyAllObservers();
     }
 
-    public CompositeAbstractClothing getClothes() {
+    public List<AbstractClothing> getClothes() {
+        return clothes.getClothes();
+    }
+
+
+    public CompositeAbstractClothing getOnlyClothes(){
         return clothes;
     }
 
@@ -168,7 +232,15 @@ public class Character implements ObservableItem {
         headFeatures.remove(headFeature);
     }
 
-    public CompositeHeadFeature getHeadFeatures() {
-        return headFeatures;
+    public List<AbstractHeadFeature> getHeadFeatures() {
+        return headFeatures.getHeadFeatures();
+    }
+
+    public Head getHead() {
+        return head;
+    }
+
+    public Hand getHand() {
+        return hand;
     }
 }

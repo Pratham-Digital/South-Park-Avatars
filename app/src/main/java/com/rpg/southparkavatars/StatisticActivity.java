@@ -104,7 +104,7 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
 
         for(Character character : characters){
             Visitor visitor = new Visitor();
-            character.getClothes().accept(visitor);
+            character.getOnlyClothes().accept(visitor);
             coolness+=visitor.getOverallCoolness();
 
         }

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rpg.southparkavatars.character.AbstractCharacter;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.Skin;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
@@ -27,10 +28,26 @@ import com.rpg.southparkavatars.character.clothing.concrete.Hat;
 import com.rpg.southparkavatars.character.clothing.concrete.Necklace;
 import com.rpg.southparkavatars.character.clothing.concrete.Pants;
 import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
+import com.rpg.southparkavatars.character.decorator.BackDecorator;
+import com.rpg.southparkavatars.character.decorator.BeardDecorator;
+import com.rpg.southparkavatars.character.decorator.EyesDecorator;
+import com.rpg.southparkavatars.character.decorator.GlassesDecorator;
+import com.rpg.southparkavatars.character.decorator.HairDecorator;
+import com.rpg.southparkavatars.character.decorator.HandAccessoryDecorator;
+import com.rpg.southparkavatars.character.decorator.HandDecorator;
+import com.rpg.southparkavatars.character.decorator.HatDecorator;
+import com.rpg.southparkavatars.character.decorator.HeadDecorator;
+import com.rpg.southparkavatars.character.decorator.MouthDecorator;
+import com.rpg.southparkavatars.character.decorator.NecklaceDecorator;
+import com.rpg.southparkavatars.character.decorator.PantsDecorator;
+import com.rpg.southparkavatars.character.decorator.ShirtDecorator;
+import com.rpg.southparkavatars.character.decorator.SkinDecorator;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
+import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Beard;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
+import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.character.voice.AsianVoice;
 import com.rpg.southparkavatars.character.voice.BlackVoice;
@@ -56,7 +73,7 @@ import java.util.List;
 import java.util.Random;
 
 public class PlayActivity extends AppCompatActivity implements AsyncTaskListener, CharacterObserver {
-    private Character character;
+    private AbstractCharacter character;
     private AsyncTaskFactory asyncTaskFactory;
     private BitmapLoader bitmapLoader;
 
@@ -76,11 +93,27 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_play);
         int i = rand.nextInt(imagesArray.length);
         Drawable drawable = getResources().getDrawable(imagesArray[i]);
-        layout.setBackgroundDrawable(drawable);
+        layout.setBackground(drawable);
         coolnessTextView = (TextView)findViewById(R.id.get_coolness);
         coolnessTextView.setVisibility(View.INVISIBLE);
 
-        character = new Character();
+        character = new HatDecorator(
+                new GlassesDecorator(
+                        new HairDecorator(
+                                new BeardDecorator(
+                                        new EyesDecorator(
+                                                new MouthDecorator(
+                                                        new HandAccessoryDecorator(
+                                                                new HandDecorator(
+                                                                        new HeadDecorator(
+                                                                                new NecklaceDecorator(
+                                                                                        new ShirtDecorator(
+                                                                                                new PantsDecorator(
+                                                                                                        new SkinDecorator(
+                                                                                                                new BackDecorator(
+                                                                                                                        new Character()
+                                                                                                                ))))))))))))));
+
         character.attach(this);
 
         bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
@@ -113,7 +146,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 character.copy(savedCharacter);
                 Visitor visitor = new Visitor();
                 //  textView.setText(Integer.toString(savedCharacter.getClothes().getCoolness()));
-                savedCharacter.getClothes().accept(visitor);
+                savedCharacter.getOnlyClothes().accept(visitor);
                 coolnessTextView.setText("Overall coolness: "+Integer.toString(visitor.getOverallCoolness()));
                 coolnessTextView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
@@ -182,31 +215,36 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 @Override
                 public void onClick(View v) {
                     stopPlaying();
-                    character.setSkin(skin);
-                    switch(character.getSkinColor()){
-                        case BLACK:
-                            character.changeVoice(new BlackVoice());
+                    String colorName = skin.getColor().toString().toLowerCase();
+
+                    switch(colorName){
+                        case "white":
+                            character.getRawCharacter().changeVoice(new WhiteVoice());
                             break;
-                        case WHITE:
-                            character.changeVoice(new WhiteVoice());
+                        case "jersey":
+                            character.getRawCharacter().changeVoice(new JerseyVoice());
                             break;
-                        case ASIAN:
-                            character.changeVoice(new AsianVoice());
+                        case "asian":
+                            character.getRawCharacter().changeVoice(new AsianVoice());
                             break;
-                        case LATIN:
-                            character.changeVoice(new LatinVoice());
+                        case "black":
+                            character.getRawCharacter().changeVoice(new BlackVoice());
                             break;
-                        case JERSEY:
-                            character.changeVoice(new JerseyVoice());
+                        case "latin":
+                            character.getRawCharacter().changeVoice(new LatinVoice());
                             break;
+
                     }
-                    Voice voice = character.getCurrentVoice();
+                    Voice voice = character.getRawCharacter().getCurrentVoice();
                     mediaPlayer = MediaPlayer.create(PlayActivity.this,voice.handleVoice());
                     mediaPlayer.start();
 
+                    character.setSkinFeatures(
+                            skin,
+                            new Head(HeadFeature.HEAD.getPath() + File.separator + colorName + ".png"),
+                            new com.rpg.southparkavatars.character.head.concrete.Hand(HeadFeature.HAND.getPath() + File.separator + colorName + ".png")
+                    );
                 }
-
-
             });
 
             itemListLayout.addView(imageView);
@@ -292,7 +330,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         ItemPersister<Character> persister = new CharacterPersister(file);
 
         character.setName(name);
-        persister.save(character);
+        persister.save(character.getRawCharacter());
         characterView.saveAsPNG(character);
 //        Character[] characters = persister.loadAll();
     }

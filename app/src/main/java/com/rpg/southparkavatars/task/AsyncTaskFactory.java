@@ -3,7 +3,7 @@ package com.rpg.southparkavatars.task;
 import android.content.res.AssetManager;
 
 import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.character.head.HeadFeatures;
+import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 
@@ -27,7 +27,7 @@ public class AsyncTaskFactory {
     }
 
     public <T extends AbstractHeadFeature> LoadHeadFeaturesAsyncTask<T> createHeadFeaturesLoadingTask(Class<T> headFeatureClass) {
-        String path = HeadFeatures.valueOf(headFeatureClass.getSimpleName().toUpperCase()).getPath();
+        String path = HeadFeature.valueOf(headFeatureClass.getSimpleName().toUpperCase()).getPath();
         return new LoadHeadFeaturesAsyncTask<>(path, callback, assetManager, headFeatureClass);
     }
 

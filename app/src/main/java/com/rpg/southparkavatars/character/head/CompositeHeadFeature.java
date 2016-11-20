@@ -23,11 +23,6 @@ public class CompositeHeadFeature extends AbstractHeadFeature implements Iterabl
     }
 
     @Override
-    public int getrId() {
-        return 0;
-    }
-
-    @Override
     public Iterator<AbstractHeadFeature> iterator() {
         return headFeatures.iterator();
     }
