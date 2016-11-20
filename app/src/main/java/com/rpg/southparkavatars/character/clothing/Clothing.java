@@ -1,5 +1,7 @@
 package com.rpg.southparkavatars.character.clothing;
 
+
+
 import java.io.File;
 
 public enum Clothing {
@@ -38,4 +40,7 @@ public enum Clothing {
     public int getHeight() {
         return height;
     }
+
+
+
 }

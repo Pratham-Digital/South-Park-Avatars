@@ -2,6 +2,7 @@ package com.rpg.southparkavatars;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,6 +55,8 @@ public class LoadCharacterActivity extends AppCompatActivity {
             for (final Character character : characters) {
                 Button characterButton = new Button(this);
                 characterButton.setText(character.getName());
+                characterButton.setTextColor(Color.WHITE);
+                characterButton.setBackgroundResource(R.drawable.button_list_change);
                 characterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

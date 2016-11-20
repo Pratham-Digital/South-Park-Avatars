@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<Void, Void, List<AbstractClothing>> {
     private AssetManager assetManager;
@@ -20,7 +21,9 @@ public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<
     private Class<T> clothingClass;
     private AsyncTaskListener callback;
     private File internal;
-
+    private int max=10;
+    private int min=1;
+    Random rand=new Random();
     public LoadClothesAsyncTask(String path, AsyncTaskListener callback, AssetManager assetManager, File internal,
                                 Class<T> clothingClass) {
         this.assetManager = assetManager;
@@ -36,7 +39,17 @@ public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<
 
         for (String item : getItemNameList()) {
             String filePath = path + '/' + item;
+            int coolness=0;
+            if(item.equals("shirt_1.png") || item.equals("hat_6.png") || item.equals("accessories_10.png") || item.equals("necklace_4.png"))
+                coolness=max + rand.nextInt(5-1+1)+1;
+            else if(path.equals("clothing/necklace"))
+                coolness = rand.nextInt(7-1+1)+1;
+            else if(path.equals("clothing/glasses"))
+                coolness=rand.nextInt(5-1+1)+1;
+            else
+                coolness=rand.nextInt(max-min+1)+min;
             T object = createObject(filePath);
+            object.setCoolness(coolness);
             clothes.add(object);
         }
 
