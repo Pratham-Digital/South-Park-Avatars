@@ -83,7 +83,7 @@
                 <LinearLayout
                     android:id="@+id/list_coolest_clothes"
                     android:layout_width="match_parent"
-                    android:background="@color/gray"
+                    android:background="#444"
                     android:layout_height="match_parent"
                     android:paddingTop="15dp"
                     android:orientation="horizontal"

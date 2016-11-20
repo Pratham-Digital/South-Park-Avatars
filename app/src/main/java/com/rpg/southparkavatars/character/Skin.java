@@ -1,7 +1,5 @@
 package com.rpg.southparkavatars.character;
 
-import android.net.Uri;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.R;
@@ -49,16 +47,5 @@ public class Skin extends DrawableItem {
         public String getPath() {
             return path;
         }
-
-        public int getrDrawableHand() {
-            return rDrawableHand;
-        }
-
-
-        public int getrDrawableHead() {
-            return rDrawableHead;
-        }
-
-
     }
 }

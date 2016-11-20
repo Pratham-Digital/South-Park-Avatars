@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.rpg.southparkavatars.R;
+import com.rpg.southparkavatars.character.AbstractCharacter;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.DrawableItem;
 import com.rpg.southparkavatars.tool.BitmapLoader;
@@ -81,12 +82,23 @@ public class CharacterView extends LinearLayout {
         this.setBackground(new BitmapDrawable(getResources(), bitmap));
     }
 
-    public void draw(Character character) {
+    public void draw(AbstractCharacter character) {
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
-        drawItem(character.getSkin());
-        drawItems(character.getHeadFeatures().getHeadFeatures());
-        drawItems(character.getClothes().getClothes());
+        List<DrawableItem> items = character.display();
+        for (DrawableItem item : character.display()) {
+            float scale = item.getScale();
+            Bitmap bitmap = bitmapLoader.load(item.getPath());
+
+            float width = bitmap.getWidth();
+            float height = bitmap.getHeight();
+
+            float coordX = (canvas.getWidth() - scale * width) / item.getXPosDivider();
+            float coordY = (canvas.getHeight() - scale * height) / item.getYPosDivider();
+
+            rect.set(coordX, coordY, coordX + scale * width, coordY + scale * height);
+            canvas.drawBitmap(bitmap, null, rect, paint);
+        }
 
         this.invalidate();
     }
@@ -122,7 +134,7 @@ public class CharacterView extends LinearLayout {
         canvas.drawBitmap(bitmap, null, rect, paint);
     }
 
-    public Image saveAsPNG(Character character) {
+    public Image saveAsPNG(AbstractCharacter character) {
         File file = new File(getContext().getFilesDir().getPath()
                 + File.separator + "previews" + File.separator + character.getUuid() + ".png");
 
