@@ -1,12 +1,11 @@
 package com.rpg.southparkavatars.visitor;
 
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
+import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 
 
 public interface ClothingVisitor {
-    void visit(CompositeAbstractClothing cloth);
+    void visit(CompositeClothing cloth);
 
     void visit(AbstractClothing cloth);
 }

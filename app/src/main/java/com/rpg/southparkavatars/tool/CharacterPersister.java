@@ -27,10 +27,26 @@ public class CharacterPersister implements ItemPersister<Character> {
 
     @Override
     public void save(Character character) {
-        Character[] characters = null;
         createPathIfNotExists();
-        characters = readCharacters(characters);
-        writeCharacter(character, characters);
+        Character[] characters = readCharacters();
+
+        if (filterDuplicates(character, characters)) {
+            writeCharacter(characters);
+        } else {
+            writeCharacter(ArrayUtils.add(characters, character));
+        }
+    }
+
+    private boolean filterDuplicates(Character character, Character[] characters) {
+        if (characters != null) {
+            for (Character item : characters) {
+                if (item.getUuid().equals(character.getUuid())) {
+                    item.copy(character);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void createPathIfNotExists() {
@@ -43,18 +59,17 @@ public class CharacterPersister implements ItemPersister<Character> {
         }
     }
 
-    private void writeCharacter(Character character, Character[] characters) {
+    private void writeCharacter(Character[] characters) {
         try (FileWriter fileOut = new FileWriter(path, false)) {
-            mapper.writeValue(fileOut, ArrayUtils.add(characters, character));
+            mapper.writeValue(fileOut, characters);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private Character[] readCharacters(Character[] characters) {
+    private Character[] readCharacters() {
         try (FileReader fileIn = new FileReader(path)) {
-            characters = mapper.readValue(fileIn, Character[].class);
-            return characters;
+            return mapper.readValue(fileIn, Character[].class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

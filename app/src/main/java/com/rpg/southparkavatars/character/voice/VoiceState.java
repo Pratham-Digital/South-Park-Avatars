@@ -1,7 +1,5 @@
 package com.rpg.southparkavatars.character.voice;
 
-
-
-public interface Voice {
+public interface VoiceState {
     int handleVoice();
 }

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
+import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
@@ -13,7 +13,8 @@ import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.character.voice.Voice;
+import com.rpg.southparkavatars.character.voice.VoiceState;
+import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
@@ -27,45 +28,42 @@ public class Character implements AbstractCharacter {
     private Head head;
     private Hand hand;
     private String uuid;
-    private transient Voice currentVoice;
 
-    private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
+    private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
+    private transient VoiceState currentVoiceState;
     private transient List<CharacterObserver> observers = new ArrayList<>();
 
     @JsonCreator
     public Character(@JsonProperty("name") String name,
-                     @JsonProperty("compositeClothes") CompositeAbstractClothing clothes,
+                     @JsonProperty("compositeClothes") CompositeClothing clothes,
                      @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
                      @JsonProperty("skin") Skin skin,
                      @JsonProperty("head") Head head,
                      @JsonProperty("hand") Hand hand,
                      @JsonProperty("uuid") String uuid) {
         this.name = name;
-        this.clothes = clothes;
-        this.headFeatures = headFeatures;
         this.skin = skin;
         this.head = head;
         this.hand = hand;
         this.uuid = uuid;
+        this.clothes = clothes;
+        this.headFeatures = headFeatures;
     }
-
-
 
     public Character() {
         skin = new Skin(Skin.Color.WHITE);
+        head = new Head(HeadFeature.HEAD.getDefaultPath());
+        hand = new Hand(HeadFeature.HAND.getDefaultPath());
+
         headFeatures.add(new Eyes(HeadFeature.EYES.getDefaultPath()));
         headFeatures.add(new Mouth(HeadFeature.MOUTH.getDefaultPath()));
-        headFeatures.add(new Head(HeadFeature.HEAD.getDefaultPath()));
-        headFeatures.add(new Hand(HeadFeature.HAND.getDefaultPath()));
 
         uuid = UniqueIdentifierGenerator.getInstance().generateUuid();
 
         notifyAllObservers();
     }
-
-
 
     public void copy(Character character) {
         name = character.name;
@@ -77,7 +75,13 @@ public class Character implements AbstractCharacter {
         notifyAllObservers();
     }
 
+    public void setState(VoiceState state) {
+        currentVoiceState = state;
+    }
 
+    public int handleVoice() {
+        return currentVoiceState.handleVoice();
+    }
 
     @Override
     public void attach(ItemObserver observer) {
@@ -95,6 +99,28 @@ public class Character implements AbstractCharacter {
         this.skin = skin;
         this.hand = hand;
         this.head = head;
+
+        notifyAllObservers();
+    }
+
+    public Memento saveToMemento() {
+        return Memento.builder()
+                .withHand(hand)
+                .withHead(head)
+                .withSkin(skin)
+                .withCompositeClothing(clothes)
+                .withHeadFeatures(headFeatures)
+                .build();
+    }
+
+    public void restoreFromMemento(Memento memento) {
+        if (memento == null) return;
+
+        hand = memento.getHand();
+        head = memento.getHead();
+        skin = memento.getSkin();
+        clothes = memento.getClothes();
+        headFeatures = memento.getHeadFeatures();
 
         notifyAllObservers();
     }
@@ -120,12 +146,8 @@ public class Character implements AbstractCharacter {
         return skin.getPath();
     }
 
-    public Voice getCurrentVoice() {
-        return currentVoice;
-    }
-
-    public void changeVoice(Voice voice){
-        this.currentVoice=voice;
+    public VoiceState getCurrentVoiceState() {
+        return currentVoiceState;
     }
 
     public Skin getSkin() {
@@ -189,7 +211,7 @@ public class Character implements AbstractCharacter {
     }
 
 
-    public CompositeAbstractClothing getOnlyClothes(){
+    public CompositeClothing getOnlyClothes() {
         return clothes;
     }
 

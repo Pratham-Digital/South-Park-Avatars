@@ -1,13 +1,10 @@
 package com.rpg.southparkavatars.character.voice;
 
-import android.view.View;
-
 import com.rpg.southparkavatars.R;
 
-
-public class BlackVoice implements Voice {
+public class JerseyVoiceState implements VoiceState {
     @Override
     public int handleVoice() {
-        return R.raw.black_sound;
+        return R.raw.jersey_sound;
     }
 }

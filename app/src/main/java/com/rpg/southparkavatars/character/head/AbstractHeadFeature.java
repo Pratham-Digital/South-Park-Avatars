@@ -26,4 +26,8 @@ public abstract class AbstractHeadFeature extends DrawableItem {
     public String getPath() {
         return path;
     }
+
+    public AbstractHeadFeature(AbstractHeadFeature headFeature) {
+        this.path = headFeature.getPath();
+    }
 }

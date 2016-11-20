@@ -15,22 +15,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<Void, Void, List<AbstractClothing>> {
+public class LoadClothingAsyncTask<T extends AbstractClothing> extends AsyncTask<Void, Void, List<AbstractClothing>> {
+    private static final int MAX = 10;
+    private static final int MIN = 1;
+
     private AssetManager assetManager;
     private String path;
     private Class<T> clothingClass;
     private AsyncTaskListener callback;
     private File internal;
-    private int max=10;
-    private int min=1;
-    Random rand=new Random();
-    public LoadClothesAsyncTask(String path, AsyncTaskListener callback, AssetManager assetManager, File internal,
-                                Class<T> clothingClass) {
+    private Random rand;
+
+    public LoadClothingAsyncTask(String path, AsyncTaskListener callback, AssetManager assetManager, File internal,
+                                 Class<T> clothingClass) {
         this.assetManager = assetManager;
         this.path = path;
         this.clothingClass = clothingClass;
         this.callback = callback;
         this.internal = internal;
+
+        rand = new Random();
     }
 
     @Override
@@ -39,27 +43,31 @@ public class LoadClothesAsyncTask<T extends AbstractClothing> extends AsyncTask<
 
         for (String item : getItemNameList()) {
             String filePath = path + '/' + item;
-            int coolness=0;
-            if(item.equals("shirt_1.png") || item.equals("hat_6.png") || item.equals("accessories_10.png") || item.equals("necklace_4.png"))
-                coolness=max + rand.nextInt(5-1+1)+1;
-            else if(path.equals("clothing/necklace"))
-                coolness = rand.nextInt(7-1+1)+1;
-            else if(path.equals("clothing/glasses"))
-                coolness=rand.nextInt(5-1+1)+1;
-            else
-                coolness=rand.nextInt(max-min+1)+min;
-            T object = createObject(filePath);
-            object.setCoolness(coolness);
+            int coolness = calculateCoolness(item);
+            T object = createObject(filePath, coolness);
             clothes.add(object);
         }
 
         return clothes;
     }
 
-    private T createObject(String path) {
+    private int calculateCoolness(String item) {
+        int coolness;
+        if (item.equals("shirt_1.png") || item.equals("hat_6.png") || item.equals("accessories_10.png") || item.equals("necklace_4.png"))
+            coolness = MAX + rand.nextInt(5 - 1 + 1) + 1;
+        else if (path.equals("clothing/necklace"))
+            coolness = rand.nextInt(7 - 1 + 1) + 1;
+        else if (path.equals("clothing/glasses"))
+            coolness = rand.nextInt(5 - 1 + 1) + 1;
+        else
+            coolness = rand.nextInt(MAX - MIN + 1) + MIN;
+        return coolness;
+    }
+
+    private T createObject(String path, int coolness) {
         try {
             Constructor<T> ctor = clothingClass.getConstructor(int.class, String.class);
-            return ctor.newInstance(0, path);
+            return ctor.newInstance(coolness, path);
         } catch (NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();

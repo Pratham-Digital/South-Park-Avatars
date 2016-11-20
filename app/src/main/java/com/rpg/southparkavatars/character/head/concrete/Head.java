@@ -7,6 +7,16 @@ public class Head extends AbstractHeadFeature {
     public Head(@JsonProperty("path") String path) {
         super(path);
 
+        setScalingFeatures();
+    }
+
+    public Head(Head head) {
+        super(head);
+
+        setScalingFeatures();
+    }
+
+    private void setScalingFeatures() {
         setScale(0.9f);
         setXPosDivider(2);
         setYPosDivider(2.95f);
