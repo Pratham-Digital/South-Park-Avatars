@@ -96,7 +96,17 @@ public class LoadCharacterActivity extends AppCompatActivity {
         }
     }
 
+    private void goToMainMenu() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void onEditButtonClicked(View view) {
+        if (characterNamesLayout.getChildCount() == 0) {
+            return;
+        }
+
         Intent intent = new Intent(LoadCharacterActivity.this, PlayActivity.class);
         String serialized = persister.serialize(currentCharacter.saveable());
 
@@ -118,6 +128,10 @@ public class LoadCharacterActivity extends AppCompatActivity {
         characterNamesLayout.removeAllViews();
 
         loadPersistedCharacters();
+    }
+
+    public void onMenuButtonClicked(View view) {
+        goToMainMenu();
     }
 }
 

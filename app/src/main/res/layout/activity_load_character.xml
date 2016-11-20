@@ -23,6 +23,8 @@
         android:id="@+id/character_preview_image"
         android:layout_width="match_parent"
         android:layout_height="500dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:paddingLeft="20dp"
         android:paddingTop="100dp" />
 
@@ -35,8 +37,8 @@
         android:layout_marginBottom="30dp"
         android:layout_marginRight="70dp"
         android:layout_marginTop="-65dp"
-        android:onClick="onRemoveButtonClicked"
         android:background="@drawable/remove"
+        android:onClick="onRemoveButtonClicked"
         android:visibility="invisible" />
 
     <HorizontalScrollView
@@ -54,5 +56,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
     </HorizontalScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#a56118"
+        android:onClick="onMenuButtonClicked"
+        android:text="menu"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
