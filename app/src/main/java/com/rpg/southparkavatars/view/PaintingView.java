@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;

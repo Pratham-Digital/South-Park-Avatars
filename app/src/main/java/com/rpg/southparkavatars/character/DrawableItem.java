@@ -1,7 +1,5 @@
 package com.rpg.southparkavatars.character;
 
-import android.graphics.Canvas;
-
 public abstract class DrawableItem {
     private transient float scale;
     private transient float xPosDivider;

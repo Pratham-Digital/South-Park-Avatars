@@ -69,8 +69,8 @@ public class CompositeClothing extends AbstractClothing implements Iterable<Abst
     @Override
     public void accept(ClothingVisitor visitor) {
         visitor.visit(this);
-        for (AbstractClothing cloth : this.getClothes()) {
-            cloth.accept(visitor);
+        for (AbstractClothing clothing : this.getClothes()) {
+            clothing.accept(visitor);
         }
     }
 }

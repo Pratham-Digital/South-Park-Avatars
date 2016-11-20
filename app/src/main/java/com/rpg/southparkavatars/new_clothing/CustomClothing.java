@@ -15,11 +15,11 @@ import android.widget.ImageView;
 
 import com.rpg.southparkavatars.ClothingTypePickerActivity;
 import com.rpg.southparkavatars.R;
+import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.observer.CustomClothingEventArgs;
+import com.rpg.southparkavatars.observer.CustomClothingObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.observer.ObservableItem;
-import com.rpg.southparkavatars.character.clothing.Clothing;
-import com.rpg.southparkavatars.observer.CustomClothingObserver;
 
 import java.io.File;
 import java.util.ArrayList;

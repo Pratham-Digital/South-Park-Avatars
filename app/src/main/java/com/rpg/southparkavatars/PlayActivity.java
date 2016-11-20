@@ -50,12 +50,7 @@ import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hair;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
-import com.rpg.southparkavatars.character.voice.AsianVoiceState;
-import com.rpg.southparkavatars.character.voice.BlackVoiceState;
-import com.rpg.southparkavatars.character.voice.JerseyVoiceState;
-import com.rpg.southparkavatars.character.voice.LatinVoiceState;
 import com.rpg.southparkavatars.character.voice.VoiceState;
-import com.rpg.southparkavatars.character.voice.WhiteVoiceState;
 import com.rpg.southparkavatars.memento.Caretaker;
 import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.CharacterObserver;
@@ -65,7 +60,7 @@ import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
 import com.rpg.southparkavatars.view.CharacterView;
-import com.rpg.southparkavatars.visitor.Visitor;
+import com.rpg.southparkavatars.visitor.ClothingCoolnessVisitor;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -161,8 +156,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 nameEditText.setText(savedCharacter.getName());
                 character.copy(savedCharacter);
 
-                Visitor visitor = new Visitor();
-                savedCharacter.getOnlyClothes().accept(visitor);
+                ClothingCoolnessVisitor visitor = new ClothingCoolnessVisitor();
+                savedCharacter.accept(visitor);
+
                 coolnessTextView.setText("Overall coolness: " + Integer.toString(visitor.getOverallCoolness()));
                 coolnessTextView.setVisibility(View.VISIBLE);
             } catch (IOException e) {

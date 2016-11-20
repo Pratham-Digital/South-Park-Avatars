@@ -13,6 +13,7 @@ import com.rpg.southparkavatars.character.clothing.concrete.Necklace;
 import com.rpg.southparkavatars.character.clothing.concrete.Pants;
 import com.rpg.southparkavatars.character.clothing.concrete.Shirt;
 import com.rpg.southparkavatars.visitor.ClothingVisitor;
+import com.rpg.southparkavatars.visitor.VisitableClothing;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 @JsonSubTypes({
@@ -24,7 +25,7 @@ import com.rpg.southparkavatars.visitor.ClothingVisitor;
         @JsonSubTypes.Type(value = Pants.class, name = "pants"),
         @JsonSubTypes.Type(value = Shirt.class, name = "shirt")
 })
-public abstract class AbstractClothing extends DrawableItem {
+public abstract class AbstractClothing extends DrawableItem implements VisitableClothing {
     private int coolness;
 
     @JsonCreator
@@ -51,6 +52,7 @@ public abstract class AbstractClothing extends DrawableItem {
         return path;
     }
 
+    @Override
     public void accept(ClothingVisitor visitor) {
         visitor.visit(this);
     }

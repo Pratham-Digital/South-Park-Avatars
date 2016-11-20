@@ -4,8 +4,8 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,7 +20,6 @@ import com.androidplot.pie.SegmentFormatter;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.Skin;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.character.clothing.concrete.Back;
 import com.rpg.southparkavatars.character.clothing.concrete.Glasses;
 import com.rpg.southparkavatars.character.clothing.concrete.Hand;
@@ -34,10 +33,9 @@ import com.rpg.southparkavatars.task.AsyncTaskListener;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
-import com.rpg.southparkavatars.visitor.Visitor;
+import com.rpg.southparkavatars.visitor.ClothingCoolnessVisitor;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,15 +68,13 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
         displayCoolness = (TextView) findViewById(R.id.display_avg_coolness);
         displayCoolness.setText("Average coolness value of characters: " + Integer.toString(getAverageCharacterCoolness()));
 
-
         pie = (PieChart) findViewById(R.id.chart);
         createPieChart();
 
         bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
+
         asyncTaskFactory = new AsyncTaskFactory(this, getAssets(), getFilesDir());
         createClothingLoadingTasks();
-//        asyncTaskFactory.createLoadCLothesTask()
-//                .execute();
 
         clothLayout = (LinearLayout) findViewById(R.id.list_coolest_clothes);
     }
@@ -110,8 +106,9 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
         int coolness = 0;
 
         for (Character character : characters) {
-            Visitor visitor = new Visitor();
-            character.getOnlyClothes().accept(visitor);
+            ClothingCoolnessVisitor visitor = new ClothingCoolnessVisitor();
+
+            character.accept(visitor);
             coolness += visitor.getOverallCoolness();
         }
 
@@ -124,11 +121,15 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
         int index = 0;
         int coolness = 0;
         int maxIndex = 0;
-        if (countClothTypes.size() <= 7)
+
+        if (countClothTypes.size() <= 7) {
             countClothTypes.add(clothes.size());
-        else
+        } else {
             countClothTypes = new ArrayList<Integer>();
+        }
+
         updatePieChart();
+
         for (AbstractClothing cloth : clothes) {
             if (cloth.getCoolness() > coolness) {
                 coolness = cloth.getCoolness();

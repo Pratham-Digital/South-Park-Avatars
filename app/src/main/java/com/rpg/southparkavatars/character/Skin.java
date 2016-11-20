@@ -2,9 +2,6 @@ package com.rpg.southparkavatars.character;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rpg.southparkavatars.R;
-
-import java.io.Serializable;
 
 public class Skin extends DrawableItem {
     private Color color;
@@ -38,20 +35,16 @@ public class Skin extends DrawableItem {
         return color;
     }
 
-    public enum Color implements Serializable {
-        WHITE(R.drawable.white_character_hand, R.drawable.white_character_head, "skin_color/white.png"),
-        LATIN(R.drawable.latin_character_hand, R.drawable.latin_character_head, "skin_color/latin.png"),
-        BLACK(R.drawable.black_character_hand, R.drawable.black_character_head, "skin_color/black.png"),
-        ASIAN(R.drawable.asian_character_hand, R.drawable.asian_character_head, "skin_color/asian.png"),
-        JERSEY(R.drawable.jersey_character_hand, R.drawable.jersey_character_head, "skin_color/jersey.png");
+    public enum Color {
+        WHITE("skin_color/white.png"),
+        LATIN("skin_color/latin.png"),
+        BLACK("skin_color/black.png"),
+        ASIAN("skin_color/asian.png"),
+        JERSEY("skin_color/jersey.png");
 
-        private int rDrawableHand;
-        private int rDrawableHead;
         private String path;
 
-        Color(int rDrawableHand, int rDrawableHead, String path) {
-            this.rDrawableHand = rDrawableHand;
-            this.rDrawableHead = rDrawableHead;
+        Color(String path) {
             this.path = path;
         }
 

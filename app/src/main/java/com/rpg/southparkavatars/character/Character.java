@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
 import com.rpg.southparkavatars.character.clothing.CompositeClothing;
-import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
+import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Eyes;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
@@ -18,6 +18,7 @@ import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
+import com.rpg.southparkavatars.visitor.ClothingVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -231,8 +232,8 @@ public class Character implements AbstractCharacter {
     }
 
 
-    public CompositeClothing getOnlyClothes() {
-        return clothes;
+    public void accept(ClothingVisitor visitor) {
+        clothes.accept(visitor);
     }
 
     private AbstractClothing getSameTypeObjectAlreadyWorn(AbstractClothing newClothing) {

@@ -7,6 +7,7 @@ import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.ObservableItem;
+import com.rpg.southparkavatars.visitor.ClothingVisitor;
 
 import java.util.List;
 
@@ -52,4 +53,6 @@ public interface AbstractCharacter extends ObservableItem {
     void restoreFromMemento(Memento memento);
 
     Character saveable();
+
+    void accept(ClothingVisitor visitor);
 }

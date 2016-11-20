@@ -1,6 +1,5 @@
 package com.rpg.southparkavatars.task;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 
 import com.rpg.southparkavatars.character.Skin;

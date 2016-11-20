@@ -1,7 +1,6 @@
 package com.rpg.southparkavatars.task;
 
 import android.content.res.AssetManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 

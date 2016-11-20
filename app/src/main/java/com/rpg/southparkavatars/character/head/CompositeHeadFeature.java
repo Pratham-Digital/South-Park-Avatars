@@ -1,8 +1,6 @@
 package com.rpg.southparkavatars.character.head;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

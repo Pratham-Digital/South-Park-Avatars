@@ -17,12 +17,10 @@ import android.widget.LinearLayout;
 
 import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.AbstractCharacter;
-import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.character.DrawableItem;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ClassPathUtils;
 
 import java.io.File;
 import java.io.IOException;

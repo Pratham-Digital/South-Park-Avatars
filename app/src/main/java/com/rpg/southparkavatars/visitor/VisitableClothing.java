@@ -1,5 +1,5 @@
 package com.rpg.southparkavatars.visitor;
 
-public interface VisitableCloth {
+public interface VisitableClothing {
     void accept(ClothingVisitor visitor);
 }

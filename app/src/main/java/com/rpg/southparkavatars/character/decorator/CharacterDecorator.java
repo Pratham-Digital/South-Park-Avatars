@@ -11,6 +11,7 @@ import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.ItemObserver;
+import com.rpg.southparkavatars.visitor.ClothingVisitor;
 
 import java.util.List;
 
@@ -109,6 +110,11 @@ public abstract class CharacterDecorator implements AbstractCharacter {
     @Override
     public void removeHeadFeatureType(Class<? extends AbstractHeadFeature> headFeatureClass) {
         character.removeHeadFeatureType(headFeatureClass);
+    }
+
+    @Override
+    public void accept(ClothingVisitor visitor) {
+        character.accept(visitor);
     }
 
     @Override

@@ -11,12 +11,8 @@ import com.rpg.southparkavatars.R;
 import com.rpg.southparkavatars.character.clothing.Clothing;
 import com.rpg.southparkavatars.view.PaintingView;
 
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Arrays;
 
 public class ClothingSaver {
     private Context context;
