@@ -12,7 +12,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MediaPlayer player = MediaPlayer.create(this,R.raw.theme_song);
+        MediaPlayer player = MediaPlayer.create(this, R.raw.theme_song);
         player.start();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -20,8 +20,6 @@ public class SplashActivity extends Activity {
                 Intent intent = new Intent(SplashActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
-        },3000);
-
-
+        }, 2000);
     }
 }

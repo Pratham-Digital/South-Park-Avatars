@@ -27,11 +27,11 @@ public class Character implements AbstractCharacter {
     private Head head;
     private Hand hand;
     private String uuid;
-    private transient Voice currentVoice;
 
     private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
+    private transient Voice currentVoice;
     private transient List<CharacterObserver> observers = new ArrayList<>();
 
     @JsonCreator
@@ -43,22 +43,21 @@ public class Character implements AbstractCharacter {
                      @JsonProperty("hand") Hand hand,
                      @JsonProperty("uuid") String uuid) {
         this.name = name;
-        this.clothes = clothes;
-        this.headFeatures = headFeatures;
         this.skin = skin;
         this.head = head;
         this.hand = hand;
         this.uuid = uuid;
+        this.clothes = clothes;
+        this.headFeatures = headFeatures;
     }
-
-
 
     public Character() {
         skin = new Skin(Skin.Color.WHITE);
+        head = new Head(HeadFeature.HEAD.getDefaultPath());
+        hand = new Hand(HeadFeature.HAND.getDefaultPath());
+
         headFeatures.add(new Eyes(HeadFeature.EYES.getDefaultPath()));
         headFeatures.add(new Mouth(HeadFeature.MOUTH.getDefaultPath()));
-        headFeatures.add(new Head(HeadFeature.HEAD.getDefaultPath()));
-        headFeatures.add(new Hand(HeadFeature.HAND.getDefaultPath()));
 
         uuid = UniqueIdentifierGenerator.getInstance().generateUuid();
 
@@ -120,8 +119,8 @@ public class Character implements AbstractCharacter {
         return currentVoice;
     }
 
-    public void changeVoice(Voice voice){
-        this.currentVoice=voice;
+    public void changeVoice(Voice voice) {
+        this.currentVoice = voice;
     }
 
     public Skin getSkin() {
@@ -185,7 +184,7 @@ public class Character implements AbstractCharacter {
     }
 
 
-    public CompositeAbstractClothing getOnlyClothes(){
+    public CompositeAbstractClothing getOnlyClothes() {
         return clothes;
     }
 

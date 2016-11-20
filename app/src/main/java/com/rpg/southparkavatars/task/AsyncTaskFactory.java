@@ -20,10 +20,10 @@ public class AsyncTaskFactory {
         this.internalStorage = internalStorage;
     }
 
-    public <T extends AbstractClothing> LoadClothesAsyncTask<T> createClothingLoadingTask(Class<T> clothingClass) {
+    public <T extends AbstractClothing> LoadClothingAsyncTask<T> createClothingLoadingTask(Class<T> clothingClass) {
         String path = Clothing.valueOf(clothingClass.getSimpleName().toUpperCase()).getPath();
         File concreteClothingPath = new File(internalStorage.getPath() + File.separator + path);
-        return new LoadClothesAsyncTask<>(path, callback, assetManager, concreteClothingPath, clothingClass);
+        return new LoadClothingAsyncTask<>(path, callback, assetManager, concreteClothingPath, clothingClass);
     }
 
     public <T extends AbstractHeadFeature> LoadHeadFeaturesAsyncTask<T> createHeadFeaturesLoadingTask(Class<T> headFeatureClass) {
@@ -34,5 +34,9 @@ public class AsyncTaskFactory {
     public LoadSkinAsyncTask createSkinLoadingTask() {
         String path = "skin_color";
         return new LoadSkinAsyncTask(path, callback, assetManager);
+    }
+
+    public LoadBackgroundsAsyncTask createLoadBackgroundsTask() {
+        return new LoadBackgroundsAsyncTask(assetManager, callback);
     }
 }

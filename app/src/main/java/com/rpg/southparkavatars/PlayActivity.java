@@ -2,6 +2,7 @@ package com.rpg.southparkavatars;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -88,15 +89,42 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-        int[] imagesArray = {R.drawable.background_1,R.drawable.background_3,R.drawable.background_4,R.drawable.background_5,R.drawable.background_6,R.drawable.background_7,R.drawable.background_9,R.drawable.background_10,R.drawable.background_11};
-        Random rand = new Random();
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_play);
-        int i = rand.nextInt(imagesArray.length);
-        Drawable drawable = getResources().getDrawable(imagesArray[i]);
-        layout.setBackground(drawable);
-        coolnessTextView = (TextView)findViewById(R.id.get_coolness);
-        coolnessTextView.setVisibility(View.INVISIBLE);
 
+        initCoolness();
+        createCharacter();
+
+        bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
+        asyncTaskFactory = new AsyncTaskFactory(this, getAssets(), getFilesDir());
+
+        loadBackground();
+
+        characterView = (CharacterView) findViewById(R.id.character_view);
+
+        itemListLayout = (LinearLayout) findViewById(R.id.item_list_layout);
+        tabButtonLayout = (LinearLayout) findViewById(R.id.tab_button_layout);
+
+        nameEditText = (EditText) findViewById(R.id.name_edit_text);
+
+        asyncTaskFactory.createClothingLoadingTask(Shirt.class)
+                .execute();
+
+        initButtons();
+        loadPersistedCharacter();
+
+        characterView.draw(character);
+    }
+
+    private void loadBackground() {
+        asyncTaskFactory.createLoadBackgroundsTask()
+                .execute();
+    }
+
+    private void initCoolness() {
+        coolnessTextView = (TextView) findViewById(R.id.get_coolness);
+        coolnessTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void createCharacter() {
         character = new HatDecorator(
                 new GlassesDecorator(
                         new HairDecorator(
@@ -115,24 +143,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                                                                                                                 ))))))))))))));
 
         character.attach(this);
-
-        bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
-        asyncTaskFactory = new AsyncTaskFactory(this, getAssets(), getFilesDir());
-
-        characterView = (CharacterView) findViewById(R.id.character_view);
-
-        itemListLayout = (LinearLayout) findViewById(R.id.item_list_layout);
-        tabButtonLayout = (LinearLayout) findViewById(R.id.tab_button_layout);
-
-        nameEditText = (EditText) findViewById(R.id.name_edit_text);
-
-        asyncTaskFactory.createClothingLoadingTask(Shirt.class)
-                .execute();
-
-        initButtons();
-        loadPersistedCharacter();
-
-        characterView.draw(character);
     }
 
     private void loadPersistedCharacter() {
@@ -144,10 +154,10 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 Character savedCharacter = mapper.readValue(serialized, Character.class);
                 nameEditText.setText(savedCharacter.getName());
                 character.copy(savedCharacter);
+
                 Visitor visitor = new Visitor();
-                //  textView.setText(Integer.toString(savedCharacter.getClothes().getCoolness()));
                 savedCharacter.getOnlyClothes().accept(visitor);
-                coolnessTextView.setText("Overall coolness: "+Integer.toString(visitor.getOverallCoolness()));
+                coolnessTextView.setText("Overall coolness: " + Integer.toString(visitor.getOverallCoolness()));
                 coolnessTextView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -171,6 +181,14 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     public void onSkinAsyncTaskFinished(List<Skin> skins) {
         itemListLayout.removeAllViews();
         fillItemListWithSkinColors(skins);
+    }
+
+    @Override
+    public void onBackgroundsLoaded(List<BitmapDrawable> bitmaps) {
+        Random rand = new Random();
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_play);
+        int i = rand.nextInt(bitmaps.size());
+        layout.setBackground(bitmaps.get(i));
     }
 
     private void fillItemListWithClothes(List<AbstractClothing> clothes) {
@@ -217,7 +235,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                     stopPlaying();
                     String colorName = skin.getColor().toString().toLowerCase();
 
-                    switch(colorName){
+                    switch (colorName) {
                         case "white":
                             character.getRawCharacter().changeVoice(new WhiteVoice());
                             break;
@@ -236,7 +254,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
                     }
                     Voice voice = character.getRawCharacter().getCurrentVoice();
-                    mediaPlayer = MediaPlayer.create(PlayActivity.this,voice.handleVoice());
+                    mediaPlayer = MediaPlayer.create(PlayActivity.this, voice.handleVoice());
                     mediaPlayer.start();
 
                     character.setSkinFeatures(
@@ -269,9 +287,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 Hat.class, Necklace.class, Pants.class, Shirt.class);
         for (final Class<? extends AbstractClothing> clothingClass : clothingClasses) {
             Button button = new Button(this);
-            int resourceId=getResources().getIdentifier("button_"+clothingClass.getSimpleName().toLowerCase()+"_change","drawable",getPackageName());
+            int resourceId = getResources().getIdentifier("button_" + clothingClass.getSimpleName().toLowerCase() + "_change", "drawable", getPackageName());
             button.setBackgroundResource(resourceId);
-            button.setLayoutParams(new LinearLayout.LayoutParams(180,180));
+            button.setLayoutParams(new LinearLayout.LayoutParams(180, 180));
             button.setTextSize(0);
 
             button.setOnClickListener(new View.OnClickListener() {
@@ -290,9 +308,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         List<Class<? extends AbstractHeadFeature>> featureClasses = Arrays.asList(Beard.class, Eyes.class, Hair.class, Mouth.class);
         for (final Class<? extends AbstractHeadFeature> featureClass : featureClasses) {
             Button button = new Button(this);
-            int resourceId=getResources().getIdentifier("button_"+featureClass.getSimpleName().toLowerCase()+"_change","drawable",getPackageName());
+            int resourceId = getResources().getIdentifier("button_" + featureClass.getSimpleName().toLowerCase() + "_change", "drawable", getPackageName());
             button.setBackgroundResource(resourceId);
-            button.setLayoutParams(new LinearLayout.LayoutParams(180,180));
+            button.setLayoutParams(new LinearLayout.LayoutParams(180, 180));
             button.setTextSize(0);
 
             button.setOnClickListener(new View.OnClickListener() {
@@ -319,10 +337,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                     "ERROR: Name cannot be empty!", Snackbar.LENGTH_SHORT)
                     .show();
             return;
-        }
-        else{
+        } else {
             Snackbar.make(findViewById(R.id.activity_play),
-                    "Your character has been saved!",Snackbar.LENGTH_SHORT)
+                    "Your character has been saved!", Snackbar.LENGTH_SHORT)
                     .show();
         }
 
