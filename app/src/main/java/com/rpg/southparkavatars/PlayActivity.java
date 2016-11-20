@@ -2,12 +2,15 @@ package com.rpg.southparkavatars;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +58,9 @@ import com.rpg.southparkavatars.character.voice.JerseyVoice;
 import com.rpg.southparkavatars.character.voice.LatinVoice;
 import com.rpg.southparkavatars.character.voice.Voice;
 import com.rpg.southparkavatars.character.voice.WhiteVoice;
+import com.rpg.southparkavatars.memento.CareTaker;
+import com.rpg.southparkavatars.memento.Memento;
+import com.rpg.southparkavatars.memento.Originator;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
@@ -83,11 +89,15 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private TextView coolnessTextView;
     private EditText nameEditText;
     private MediaPlayer mediaPlayer;
-
+    private Button undo;
+    private Originator originator;
+    private CareTaker careTaker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        originator = new Originator();
+        careTaker = new CareTaker();
         int[] imagesArray = {R.drawable.background_1,R.drawable.background_3,R.drawable.background_4,R.drawable.background_5,R.drawable.background_6,R.drawable.background_7,R.drawable.background_9,R.drawable.background_10,R.drawable.background_11};
         Random rand = new Random();
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.activity_play);
@@ -96,7 +106,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         layout.setBackground(drawable);
         coolnessTextView = (TextView)findViewById(R.id.get_coolness);
         coolnessTextView.setVisibility(View.INVISIBLE);
-
+        undo = (Button)findViewById(R.id.undo_button);
+        undo.setVisibility(View.INVISIBLE);
         character = new HatDecorator(
                 new GlassesDecorator(
                         new HairDecorator(
@@ -132,7 +143,13 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         initButtons();
         loadPersistedCharacter();
 
-        characterView.draw(character);
+        //characterView.draw(character);
+
+        originator.setCharacter(character);
+        careTaker.addMemento(originator.saveToMemento());
+        originator.restoreFromMemento(careTaker.get(0));
+        characterView.draw(originator.getCharacter());
+
     }
 
     private void loadPersistedCharacter() {
@@ -183,6 +200,10 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 @Override
                 public void onClick(View v) {
                     character.addClothing(clothing);
+                    originator.setCharacter(character);
+                    careTaker.addMemento(originator.saveToMemento());
+                    undo.setVisibility(View.VISIBLE);
+                    characterView.draw(originator.getCharacter());
                 }
             });
 
@@ -200,6 +221,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 @Override
                 public void onClick(View v) {
                     character.addHeadFeature(feature);
+
+                    originator.setCharacter(character);
+                    careTaker.addMemento(originator.saveToMemento());
+                    undo.setVisibility(View.VISIBLE);
+                    characterView.draw(originator.getCharacter());
                 }
             });
             itemListLayout.addView(imageView);
@@ -244,6 +270,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                             new Head(HeadFeature.HEAD.getPath() + File.separator + colorName + ".png"),
                             new com.rpg.southparkavatars.character.head.concrete.Hand(HeadFeature.HAND.getPath() + File.separator + colorName + ".png")
                     );
+
+                    originator.setCharacter(character);
+                    careTaker.addMemento(originator.saveToMemento());
+                    undo.setVisibility(View.VISIBLE);
+                    characterView.draw(originator.getCharacter());
                 }
             });
 
@@ -306,6 +337,26 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
             tabButtonLayout.addView(button);
         }
     }
+    String tmp;
+    public void onUndoButtonClick(View view){
+
+        try {
+            int size = careTaker.getMementoList().size();
+            if(size>1)
+               originator.restoreFromMemento(careTaker.get(size-1));
+            else
+              originator.restoreFromMemento(careTaker.get(0));
+            careTaker.removeMemento();
+            if(size == 1)
+                undo.setVisibility(View.INVISIBLE);
+            characterView.draw(originator.getCharacter());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void onSkinButtonClick(View view) {
         asyncTaskFactory.createSkinLoadingTask()

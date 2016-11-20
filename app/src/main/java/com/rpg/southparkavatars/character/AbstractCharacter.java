@@ -31,6 +31,8 @@ public interface AbstractCharacter extends ObservableItem {
 
     void copy(Character character);
 
+
+
     void setSkinFeatures(Skin skin, Head head, Hand hand);
 
     Character getRawCharacter();

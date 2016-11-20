@@ -65,6 +65,8 @@ public class Character implements AbstractCharacter {
         notifyAllObservers();
     }
 
+
+
     public void copy(Character character) {
         name = character.name;
         clothes = character.clothes;
@@ -74,6 +76,8 @@ public class Character implements AbstractCharacter {
 
         notifyAllObservers();
     }
+
+
 
     @Override
     public void attach(ItemObserver observer) {
