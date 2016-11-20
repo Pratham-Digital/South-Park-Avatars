@@ -11,14 +11,18 @@
     <LinearLayout
         android:id="@+id/top_part_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+
+        android:background="@drawable/top_board"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <EditText
             android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:cursorVisible="false"
+            android:background="@android:color/transparent"
             android:hint="Name"
             android:textAlignment="center"
             android:textSize="26dp" />
@@ -27,7 +31,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_part_layout">
+        android:layout_below="@id/top_part_layout"
+        android:paddingTop="5dp">
 
         <ImageButton
             android:layout_width="40dp"
