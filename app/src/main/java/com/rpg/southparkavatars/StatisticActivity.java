@@ -62,7 +62,6 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
         layout = (RelativeLayout) findViewById(R.id.activity_statistic);
         TextView numOfCharacters = (TextView) findViewById(R.id.num_of_characters);
         numOfCharacters.setText("Number of characters that have been created:  " + Integer.toString(countAllCharacters()));
-        numOfCharacters.setTextColor(Color.WHITE);
         numOfCharacters.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         displayCoolness = (TextView) findViewById(R.id.display_avg_coolness);
