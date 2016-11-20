@@ -110,8 +110,9 @@ public class StatisticActivity extends AppCompatActivity implements AsyncTaskLis
             character.accept(visitor);
             coolness += visitor.getOverallCoolness();
         }
-
-        return (coolness / countAllCharacters());
+        if(countAllCharacters()!= 0)
+            return (coolness / countAllCharacters());
+        return 0;
     }
 
 
