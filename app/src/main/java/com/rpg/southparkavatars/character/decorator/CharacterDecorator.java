@@ -9,6 +9,7 @@ import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.voice.VoiceState;
+import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.ItemObserver;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public abstract class CharacterDecorator implements AbstractCharacter {
         if (character.getClass() == Character.class) {
             return (Character) character;
         } else {
-            return ((CharacterDecorator) character).getRawCharacter();
+            return character.getRawCharacter();
         }
     }
 
@@ -122,5 +123,15 @@ public abstract class CharacterDecorator implements AbstractCharacter {
     @Override
     public int handleVoice() {
         return character.handleVoice();
+    }
+
+    @Override
+    public Memento saveToMemento() {
+        return character.saveToMemento();
+    }
+
+    @Override
+    public void restoreFromMemento(Memento memento) {
+        character.restoreFromMemento(memento);
     }
 }

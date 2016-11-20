@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rpg.southparkavatars.character.clothing.AbstractClothing;
-import com.rpg.southparkavatars.character.clothing.CompositeAbstractClothing;
+import com.rpg.southparkavatars.character.clothing.CompositeClothing;
 import com.rpg.southparkavatars.character.head.CompositeHeadFeature;
 import com.rpg.southparkavatars.character.head.AbstractHeadFeature;
 import com.rpg.southparkavatars.character.head.HeadFeature;
@@ -14,6 +14,7 @@ import com.rpg.southparkavatars.character.head.concrete.Hand;
 import com.rpg.southparkavatars.character.head.concrete.Head;
 import com.rpg.southparkavatars.character.head.concrete.Mouth;
 import com.rpg.southparkavatars.character.voice.VoiceState;
+import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.observer.ItemObserver;
 import com.rpg.southparkavatars.tool.UniqueIdentifierGenerator;
@@ -28,7 +29,7 @@ public class Character implements AbstractCharacter {
     private Hand hand;
     private String uuid;
 
-    private CompositeAbstractClothing clothes = new CompositeAbstractClothing();
+    private CompositeClothing clothes = new CompositeClothing();
     private CompositeHeadFeature headFeatures = new CompositeHeadFeature();
 
     private transient VoiceState currentVoiceState;
@@ -36,7 +37,7 @@ public class Character implements AbstractCharacter {
 
     @JsonCreator
     public Character(@JsonProperty("name") String name,
-                     @JsonProperty("compositeClothes") CompositeAbstractClothing clothes,
+                     @JsonProperty("compositeClothes") CompositeClothing clothes,
                      @JsonProperty("compositeHeadFeatures") CompositeHeadFeature headFeatures,
                      @JsonProperty("skin") Skin skin,
                      @JsonProperty("head") Head head,
@@ -98,6 +99,28 @@ public class Character implements AbstractCharacter {
         this.skin = skin;
         this.hand = hand;
         this.head = head;
+
+        notifyAllObservers();
+    }
+
+    public Memento saveToMemento() {
+        return Memento.builder()
+                .withHand(hand)
+                .withHead(head)
+                .withSkin(skin)
+                .withCompositeClothing(clothes)
+                .withHeadFeatures(headFeatures)
+                .build();
+    }
+
+    public void restoreFromMemento(Memento memento) {
+        if (memento == null) return;
+
+        hand = memento.getHand();
+        head = memento.getHead();
+        skin = memento.getSkin();
+        clothes = memento.getClothes();
+        headFeatures = memento.getHeadFeatures();
 
         notifyAllObservers();
     }
@@ -188,7 +211,7 @@ public class Character implements AbstractCharacter {
     }
 
 
-    public CompositeAbstractClothing getOnlyClothes() {
+    public CompositeClothing getOnlyClothes() {
         return clothes;
     }
 

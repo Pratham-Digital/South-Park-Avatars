@@ -18,9 +18,20 @@ public class Skin extends DrawableItem {
         this.color = color;
         this.path = path;
 
+        setScalingFactors();
+    }
+
+    private void setScalingFactors() {
         setScale(4);
         setXPosDivider(2f);
         setYPosDivider(2f);
+    }
+
+    public Skin(Skin skin) {
+        color = skin.getColor();
+        path = new String(skin.getPath());
+
+        setScalingFactors();
     }
 
     public Color getColor() {

@@ -38,10 +38,12 @@ public class CharacterPersister implements ItemPersister<Character> {
     }
 
     private boolean filterDuplicates(Character character, Character[] characters) {
-        for (Character item : characters) {
-            if (item.getUuid().equals(character.getUuid())) {
-                item.copy(character);
-                return true;
+        if (characters != null) {
+            for (Character item : characters) {
+                if (item.getUuid().equals(character.getUuid())) {
+                    item.copy(character);
+                    return true;
+                }
             }
         }
         return false;

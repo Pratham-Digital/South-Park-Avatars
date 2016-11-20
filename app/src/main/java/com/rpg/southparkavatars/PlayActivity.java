@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.speech.tts.Voice;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +55,8 @@ import com.rpg.southparkavatars.character.voice.JerseyVoiceState;
 import com.rpg.southparkavatars.character.voice.LatinVoiceState;
 import com.rpg.southparkavatars.character.voice.VoiceState;
 import com.rpg.southparkavatars.character.voice.WhiteVoiceState;
+import com.rpg.southparkavatars.memento.Caretaker;
+import com.rpg.southparkavatars.memento.Memento;
 import com.rpg.southparkavatars.observer.CharacterObserver;
 import com.rpg.southparkavatars.task.AsyncTaskFactory;
 import com.rpg.southparkavatars.task.AsyncTaskListener;
@@ -85,6 +86,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private EditText nameEditText;
     private MediaPlayer mediaPlayer;
 
+    private Caretaker caretaker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
         initCoolness();
         createCharacter();
+
+        caretaker = new Caretaker();
 
         bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
         asyncTaskFactory = new AsyncTaskFactory(this, getAssets(), getFilesDir());
@@ -200,6 +205,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    caretaker.addMemento(character.saveToMemento());
                     character.addClothing(clothing);
                 }
             });
@@ -217,6 +223,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    caretaker.addMemento(character.saveToMemento());
                     character.addHeadFeature(feature);
                 }
             });
@@ -237,6 +244,7 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                     String colorName = skin.getColor().toString().toLowerCase();
                     selectCharacterVoice(colorName);
 
+                    caretaker.addMemento(character.saveToMemento());
                     character.setSkinFeatures(
                             skin,
                             new Head(HeadFeature.HEAD.getPath() + File.separator + colorName + ".png"),
@@ -343,6 +351,11 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         character.setName(name);
         persister.save(character.getRawCharacter());
         characterView.saveAsPNG(character);
+    }
+
+    public void onUndoButtonClick(View view) {
+        Memento memento = caretaker.getMemento();
+        character.restoreFromMemento(memento);
     }
 
     @Override
