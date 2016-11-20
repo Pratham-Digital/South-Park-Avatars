@@ -195,7 +195,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
 
     private void fillItemListWithClothes(final List<AbstractClothing> clothes) {
         Button button = new Button(this);
-        button.setText("del");
+        button.setBackgroundResource(R.drawable.remove);
+        button.setLayoutParams(new LinearLayout.LayoutParams(160, 160));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,7 +228,8 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         Class<? extends AbstractHeadFeature> featureClass = features.get(0).getClass();
         if (featureClass == Beard.class || featureClass == Hair.class) {
             Button button = new Button(this);
-            button.setText("del");
+            button.setBackgroundResource(R.drawable.remove);
+            button.setLayoutParams(new LinearLayout.LayoutParams(160, 160));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
