@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -194,9 +195,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     }
 
     private void fillItemListWithClothes(final List<AbstractClothing> clothes) {
-        Button button = new Button(this);
+        ImageButton button = new ImageButton(this);
         button.setBackgroundResource(R.drawable.remove);
-        button.setLayoutParams(new LinearLayout.LayoutParams(160, 160));
+        button.setLayoutParams(new LinearLayout.LayoutParams(145, 145));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,9 +228,9 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private void fillItemListWithHeadFeatures(final List<AbstractHeadFeature> features) {
         Class<? extends AbstractHeadFeature> featureClass = features.get(0).getClass();
         if (featureClass == Beard.class || featureClass == Hair.class) {
-            Button button = new Button(this);
+            ImageButton button = new ImageButton(this);
             button.setBackgroundResource(R.drawable.remove);
-            button.setLayoutParams(new LinearLayout.LayoutParams(160, 160));
+            button.setLayoutParams(new LinearLayout.LayoutParams(145, 145));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
