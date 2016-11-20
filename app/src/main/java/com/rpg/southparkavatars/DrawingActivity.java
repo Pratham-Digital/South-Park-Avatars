@@ -15,9 +15,8 @@ public class DrawingActivity extends AppCompatActivity {
         setContentView(v);
 
         clothingOperationsFacade = new ClothingOperationsFacade(DrawingActivity.this, this, v);
-    }
 
-    public void onSaveClothingButtonClick(View view) {
         clothingOperationsFacade.persistClothing();
     }
+
 }

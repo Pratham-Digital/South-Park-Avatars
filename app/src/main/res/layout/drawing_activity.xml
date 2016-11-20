@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF">
+    android:background="@drawable/background_2">
 
     <ImageView
         android:id="@+id/color"
@@ -12,14 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <Button
-        android:id="@+id/pen"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignTop="@+id/fill"
-        android:layout_marginEnd="22dp"
-        android:layout_toStartOf="@+id/fill"
-        android:background="@drawable/pen" />
+
 
 
     <LinearLayout
@@ -32,25 +25,6 @@
         android:background="@drawable/border"
         android:orientation="horizontal" />
 
-    <Button
-        android:id="@+id/save_clothing_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/fill"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/save"
-        android:onClick="onSaveClothingButtonClick" />
-
-    <Button
-        android:id="@+id/fill"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="13dp"
-        android:layout_marginEnd="19dp"
-        android:layout_toStartOf="@+id/save_clothing_button"
-        android:background="@drawable/fill" />
 
     <ImageView
         android:id="@+id/drawTitle"
@@ -59,4 +33,48 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp" />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:background="@drawable/menu_background"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/pen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="90dp"
+            android:background="@drawable/pen"
+            />
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/fill"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="13dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/fill" />
+
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/save_clothing_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/save"
+            android:layout_marginEnd="60dp"  />
+
+    </LinearLayout>
+
 </RelativeLayout>
