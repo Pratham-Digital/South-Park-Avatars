@@ -12,12 +12,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.rpg.southparkavatars.character.AbstractCharacter;
 import com.rpg.southparkavatars.character.Character;
 import com.rpg.southparkavatars.tool.BitmapLoader;
 import com.rpg.southparkavatars.tool.CharacterPersister;
 import com.rpg.southparkavatars.tool.ItemPersister;
+import com.rpg.southparkavatars.visitor.ClothingCoolnessVisitor;
 
 import java.io.File;
 
@@ -25,6 +27,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
     private LinearLayout characterNamesLayout;
     private ImageView previewImage;
     private ImageButton removeButton;
+    private TextView coolnessTextView;
 
     private BitmapLoader bitmapLoader;
     private AbstractCharacter currentCharacter;
@@ -37,9 +40,12 @@ public class LoadCharacterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_character);
 
+        coolnessTextView = (TextView) findViewById(R.id.get_coolness);
         characterNamesLayout = (LinearLayout) findViewById(R.id.character_names_layout);
         previewImage = (ImageView) findViewById(R.id.character_preview_image);
         removeButton = (ImageButton) findViewById(R.id.remove_image);
+
+        coolnessTextView.setVisibility(View.INVISIBLE);
 
         bitmapLoader = new BitmapLoader(getAssets(), getFilesDir());
 
@@ -89,6 +95,12 @@ public class LoadCharacterActivity extends AppCompatActivity {
 
                         currentCharacter = character;
                         removeButton.setVisibility(View.VISIBLE);
+
+                        ClothingCoolnessVisitor visitor = new ClothingCoolnessVisitor();
+                        currentCharacter.accept(visitor);
+
+                        coolnessTextView.setText("Overall coolness: " + Integer.toString(visitor.getOverallCoolness()));
+                        coolnessTextView.setVisibility(View.VISIBLE);
                     }
                 });
                 characterNamesLayout.addView(characterButton);
@@ -104,6 +116,7 @@ public class LoadCharacterActivity extends AppCompatActivity {
 
     public void onEditButtonClicked(View view) {
         if (characterNamesLayout.getChildCount() == 0) {
+            coolnessTextView.setVisibility(View.INVISIBLE);
             return;
         }
 

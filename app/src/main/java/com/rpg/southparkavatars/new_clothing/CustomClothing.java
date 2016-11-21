@@ -61,15 +61,6 @@ public class CustomClothing implements ObservableItem {
         inferTypeName();
         ensureDirectoriesExist();
 
-//        ImageView drawTitle = (ImageView) activity.findViewById(R.id.drawTitle);
-//        LinearLayout paintingArea = (LinearLayout) activity.findViewById(R.id.paint);
-//        ViewGroup.LayoutParams params = paintingArea.getLayoutParams();
-//
-//        paintingView = new PaintingView(paintingArea.getContext());
-//        paintingArea.addView(paintingView);
-
-//        initPaint();
-//        drawImages(drawTitle, params);
         setFillColor();
         setPenColor();
     }
@@ -168,10 +159,8 @@ public class CustomClothing implements ObservableItem {
                         globalColor = color;
                         mPaint.setColor(globalColor);
 
-//                        if (drawState == DrawState.COLORING) {
                         drawState = DrawState.DRAWING;
                         notifyAllObservers();
-//                        }
                     }
 
                     @Override

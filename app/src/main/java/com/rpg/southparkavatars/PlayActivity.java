@@ -79,7 +79,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
     private CharacterView characterView;
     private LinearLayout itemListLayout;
     private LinearLayout tabButtonLayout;
-    private TextView coolnessTextView;
     private EditText nameEditText;
     private MediaPlayer mediaPlayer;
 
@@ -90,7 +89,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        initCoolness();
         createCharacter();
 
         caretaker = new Caretaker();
@@ -122,11 +120,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 .execute();
     }
 
-    private void initCoolness() {
-        coolnessTextView = (TextView) findViewById(R.id.get_coolness);
-        coolnessTextView.setVisibility(View.INVISIBLE);
-    }
-
     private void createCharacter() {
         character = new HatDecorator(
                 new GlassesDecorator(
@@ -156,12 +149,6 @@ public class PlayActivity extends AppCompatActivity implements AsyncTaskListener
                 Character savedCharacter = mapper.readValue(serialized, Character.class);
                 nameEditText.setText(savedCharacter.getName());
                 character.copy(savedCharacter);
-
-                ClothingCoolnessVisitor visitor = new ClothingCoolnessVisitor();
-                savedCharacter.accept(visitor);
-
-                coolnessTextView.setText("Overall coolness: " + Integer.toString(visitor.getOverallCoolness()));
-                coolnessTextView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

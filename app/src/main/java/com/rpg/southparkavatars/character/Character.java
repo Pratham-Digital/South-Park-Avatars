@@ -72,6 +72,8 @@ public class Character implements AbstractCharacter {
         clothes = character.clothes;
         headFeatures = character.headFeatures;
         skin = character.skin;
+        head = character.head;
+        hand = character.hand;
         uuid = character.uuid;
 
         notifyAllObservers();
